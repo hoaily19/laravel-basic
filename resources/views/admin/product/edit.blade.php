@@ -1,12 +1,12 @@
-<!-- resources/views/products/create.blade.php -->
-
 @extends('layouts.admin')
 
 @section('content')
     <div class="container">
-        <h2>Thêm Sản Phẩm Mới</h2>
+        <h2>Chỉnh sửa sản phẩm</h2>
         <form action="{{ route('admin.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT') <!-- Important for PUT requests to indicate we're updating the resource -->
+
             <div class="form-group">
                 <label for="name">Tên Sản Phẩm</label>
                 <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $product->name) }}" required>
@@ -14,7 +14,6 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-
 
             <div class="form-group">
                 <label for="category">Danh Mục</label>
@@ -53,11 +52,23 @@
 
             <div class="form-group">
                 <label for="image">Ảnh Chính</label>
-                <input type="file" class="form-control" id="image" name="image" value="{{ old('image', $product->image) }}" required>                          
+                @if($product->image)
+                    <div>
+                        <img src="{{ Storage::url($product->image) }}" alt="Product Image" style="max-width: 200px; max-height: 200px;">
+                    </div>
+                @endif
+                <input type="file" class="form-control" id="image" name="image" value="{{ old('image', $product->image) }}">
             </div>
-        
+
             <div class="form-group">
                 <label for="images">Ảnh Khác</label>
+                @if($product->images)
+                    <div>
+                        @foreach(json_decode($product->images) as $image)
+                            <img src="{{ Storage::url($image) }}" alt="Additional Image" style="max-width: 100px; max-height: 100px; margin-right: 10px;">
+                        @endforeach
+                    </div>
+                @endif
                 <input type="file" id="images" name="images[]" class="form-control" multiple>
             </div>
 
@@ -67,7 +78,45 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Lưu</button>
+                <h3>Biến thể Sản Phẩm</h3>
+                @foreach($variations as $index => $variation)
+                    <div class="variation-group">
+                        <h5>Biến thể {{ $index + 1 }}</h5>
+                        <div class="form-group">
+                            <label for="variations[{{ $index }}][size]">Kích Cỡ</label>
+                            <input type="text" name="variations[{{ $index }}][size]" class="form-control" value="{{ old("variations.$index.size", $variation->size) }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="variations[{{ $index }}][color]">Màu Sắc</label>
+                            <input type="text" name="variations[{{ $index }}][color]" class="form-control" value="{{ old("variations.$index.color", $variation->color) }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="variations[{{ $index }}][price]">Giá</label>
+                            <input type="number" name="variations[{{ $index }}][price]" class="form-control" value="{{ old("variations.$index.price", $variation->price) }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="variations[{{ $index }}][stock]">Số Lượng</label>
+                            <input type="number" name="variations[{{ $index }}][stock]" class="form-control" value="{{ old("variations.$index.stock", $variation->stock) }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="variations[{{ $index }}][image]">Ảnh Biến Thể</label>
+                            @if($variation->image)
+                                <div>
+                                    <img src="{{ Storage::url($variation->image) }}" alt="Variation Image" style="max-width: 100px; max-height: 100px;">
+                                </div>
+                            @endif
+                            <input type="file" name="variations[{{ $index }}][image]" class="form-control">
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Cập Nhật</button>
                 <a href="{{ route('admin.product.index') }}" class="btn btn-secondary">Thoát</a>
             </div>
         </form>

@@ -4,7 +4,6 @@
     <div class="container my-4">
         <h1 class="mb-3">{{ $product->name }}</h1>
 
-        <!-- Hiển thị thông báo nếu có -->
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
@@ -96,14 +95,12 @@
             </div>
         </div>
 
-        <!-- Nút quay lại -->
         <div class="mt-4">
             <a href="{{ route('product.index') }}" class="btn btn-secondary">Quay lại danh sách sản phẩm</a>
         </div>
     </div>
 
     <style>
-        /* CSS cho ảnh chính và phụ */
         #mainImageContainer {
             position: relative;
             overflow: hidden;
@@ -113,7 +110,7 @@
             transition: opacity 0.3s ease-in-out;
         }
         .additional-image:hover {
-            border-color: #ff5722; /* Màu cam khi hover */
+            border-color: #ff5722; 
             opacity: 0.8;
         }
         .variation-option {
@@ -157,17 +154,15 @@
         function updateVariation(variationId) {
             const variation = @json($variations)->find(v => v.id == variationId);
             if (variation) {
-                // Cập nhật giá
                 const dynamicPrice = document.getElementById('dynamicPrice');
                 const dynamicPriceMax = document.getElementById('dynamicPriceMax');
                 const originalPrice = document.getElementById('originalPrice');
                 const discountBadge = document.getElementById('discountBadge');
 
-                // Nếu biến thể có giá riêng, hiển thị giá của biến thể
                 if (variation.price) {
                     const price = variation.price;
-                    const discountedPrice = price * 0.8; // Giá giảm 20%
-                    const originalPriceValue = price * 1.2; // Giá gốc giả định (cao hơn 20%)
+                    const discountedPrice = price * 0.8;
+                    const originalPriceValue = price * 1.2; 
                     const discountPercentage = Math.round(((originalPriceValue - discountedPrice) / originalPriceValue) * 100);
 
                     dynamicPrice.textContent = number_format(discountedPrice, 0);
@@ -175,14 +170,12 @@
                     originalPrice.textContent = 'đ' + number_format(originalPriceValue, 0);
                     discountBadge.textContent = `-${discountPercentage}%`;
                 } else {
-                    // Nếu biến thể không có giá riêng, quay lại giá của sản phẩm
                     dynamicPrice.textContent = number_format({{ $product->price * 0.8 }}, 0);
                     dynamicPriceMax.textContent = ' - đ' + number_format({{ $product->price }}, 0);
                     originalPrice.textContent = 'đ' + number_format({{ $product->price * 1.2 }}, 0);
                     discountBadge.textContent = '-43%';
                 }
 
-                // Cập nhật ảnh
                 if (variation.image) {
                     changeMainImage('{{ Storage::url('') }}' + variation.image);
                 } else {
@@ -197,7 +190,6 @@
             }
         }
 
-        // Hàm định dạng số (tương tự number_format trong PHP)
         function number_format(number, decimals = 0, dec_point = '.', thousands_sep = ',') {
             number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
             const n = !isFinite(+number) ? 0 : +number;
@@ -220,7 +212,6 @@
             return s.join(dec);
         }
 
-        // Tạm thời thêm Font Awesome nếu chưa có
         if (!document.querySelector('link[href*="fontawesome"]')) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -228,7 +219,6 @@
             document.head.appendChild(link);
         }
 
-        // Tự động chọn biến thể đầu tiên (nếu có)
         document.addEventListener('DOMContentLoaded', function() {
             const firstVariation = document.querySelector('input[name="variation"]');
             if (firstVariation) {
