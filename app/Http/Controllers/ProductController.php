@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Category;
+use App\Models\Brands;
 
 class ProductController extends Controller
 {
@@ -19,8 +21,7 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(5);
-        $categories = DB::table('categories')->get();
-
+        $categories = Category::with('brands')->get();
         return view('index', compact('products', 'categories'));
     }
 
@@ -42,7 +43,8 @@ class ProductController extends Controller
     {
         $title = 'Thêm sản phẩm';
         $categories = DB::table('categories')->get();
-        return view('admin.product.create', compact('categories', 'title'));
+        $brands = DB::table('brand')->get();
+        return view('admin.product.create', compact('categories', 'brands', 'title'));
     }
 
     public function store(Request $request)
@@ -56,6 +58,7 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories_id' => 'nullable|exists:categories,id',
+            'brand_id' => 'nullable|exists:brand,id',
             'variations.*.size' => 'nullable|string|max:50',
             'variations.*.color' => 'nullable|string|max:50',
             'variations.*.price' => 'nullable|numeric',
@@ -96,6 +99,7 @@ class ProductController extends Controller
             'image' => $imagePath,
             'images' => !empty($additionalImages) ? json_encode($additionalImages) : null,
             'categories_id' => $request->categories_id,
+            'brand_id' => $request->brand_id,
             'is_active' => $request->has('is_active') ? 1 : 0,
             'view_count' => $request->view_count ?? 0,
             'created_at' => now(),
@@ -131,6 +135,7 @@ class ProductController extends Controller
         $title = 'Chỉnh sửa sản phẩm';
         $product = DB::table('products')->where('id', $id)->first();
         $categories = DB::table('categories')->get();
+        $brands = DB::table('brand')->get();
         $variations = DB::table('product_variations')->where('product_id', $id)->get();
         return view('admin.product.edit', compact('product', 'categories', 'title', 'variations'));
     }
@@ -146,6 +151,7 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories_id' => 'nullable|exists:categories,id',
+            'brand_id' => 'nullable|exists:brand,id',
             'variations.*.size' => 'nullable|string|max:50',
             'variations.*.color' => 'nullable|string|max:50',
             'variations.*.price' => 'nullable|numeric',
@@ -189,6 +195,7 @@ class ProductController extends Controller
             'image' => $imagePath,
             'images' => !empty($additionalImages) ? json_encode($additionalImages) : null,
             'categories_id' => $request->categories_id,
+            'brand_id' => $request->brand_id,
             'is_active' => $request->has('is_active') ? 1 : 0,
             'view_count' => $request->view_count ?? 0,
             'updated_at' => now(),

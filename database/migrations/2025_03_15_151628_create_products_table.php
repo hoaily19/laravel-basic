@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->unsignedBigInteger('categories_id')->nullable();
+            $table->unsignedBigInteger('brand_id')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);  // Giá cơ bản của sản phẩm
-            $table->integer('stock');  // Tổng số lượng tồn kho
+            $table->decimal('price', 10, 2);  
+            $table->integer('stock');  
             $table->string('sku')->nullable()->unique();
-            $table->string('image')->nullable();  // Ảnh chính của sản phẩm
-            $table->json('images')->nullable();  // Các ảnh phụ của sản phẩm (mảng đường dẫn ảnh)
+            $table->string('image')->nullable();  
+            $table->json('images')->nullable();  
             $table->boolean('is_active')->default(true);
             $table->integer('view_count')->default(0);
             $table->timestamps();

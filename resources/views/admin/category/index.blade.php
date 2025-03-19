@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h2>Danh sách danh mục </h2>
-
+    <a href="{{ route('admin.category.create') }}" class="btn btn-primary">Thêm danh mục</a>
 
     @if(session('success'))
         <div class="alert alert-success mt-3">{{ session('success') }}</div>

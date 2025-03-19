@@ -37,6 +37,21 @@
             </div>
 
             <div class="form-group">
+                <label for="brand_id">Thương Hiệu</label>
+                <select id="brand_id" name="brand_id" class="form-control @error('brand_id') is-invalid @enderror">
+                    <option value="">Chọn Thương Hiệu</option>
+                    @foreach($brands as $brand)
+                        <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
+                            {{ $brand->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('brand_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <label for="description">Mô Tả</label>
                 <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" 
                           rows="4">{{ old('description') }}</textarea>

@@ -40,7 +40,7 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('admin.logo.toggleActive', $logo->id) }}" class="btn btn-sm {{ $logo->is_active ? 'btn-warning' : 'btn-primary' }}">
+                    <a href="{{ route('admin.logo.toggle-active', $logo->id) }}" class="btn btn-sm {{ $logo->is_active ? 'btn-warning' : 'btn-primary' }}">
                         {{ $logo->is_active ? 'Ẩn' : 'Hiển thị' }}
                     </a>
                 </td>

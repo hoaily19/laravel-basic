@@ -1,22 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class RegisterController extends Controller
+
+class UserController extends Controller
 {
+    public function index() {
+        return view('user.index');
+    }
+
     public function showRegistrationForm()
     {
         return view('auth.register');
     }
 
-    public function register(Request $request)
-    {
+    public function register(Request $request){
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -35,7 +38,7 @@ class RegisterController extends Controller
         return redirect('/login')->with('success', 'Registration successful. Please login.');
     }
 
-
+    //Login
     public function LoginForm()
     {
         return view('auth.login');
@@ -50,7 +53,7 @@ class RegisterController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/'); 
         }
 
         return back()->withErrors([
@@ -64,4 +67,5 @@ class RegisterController extends Controller
         $request->session()->invalidate();
         return redirect('/login');
     }
+
 }

@@ -178,8 +178,8 @@
                 </a>
                 <div class="collapse" id="categoriesMenu">
                     <ul class="nav flex-column ps-3">
-                        <li><a class="nav-link" href="{{ route('admin.category.index') }}">Danh sách danh mục</a></li>
-                        <li><a class="nav-link" href="{{ route('admin.category.create') }}">Thêm danh mục</a></li>
+                        <li><a class="nav-link" href="{{ route('admin.category.index') }}">Quản lí danh mục</a></li>
+                        <li><a class="nav-link" href="{{ route('admin.brand.index') }}">Quản lí thương hiệu</a></li>
                     </ul>
                 </div>
             </li>

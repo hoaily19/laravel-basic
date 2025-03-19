@@ -72,6 +72,7 @@
             background-color: #fff;
             border-top: 1px solid #e0e0e0;
             padding: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .category-link {
@@ -88,8 +89,8 @@
 
         /* Remove or adjust existing navbar styles */
         .navbar {
-            box-shadow: none; /* Override previous navbar shadow */
-            background-color: #ee4d2d; /* Override previous background */
+            box-shadow: none; 
+            background-color: #ee4d2d; 
         }
 
         .navbar-brand {
@@ -121,6 +122,51 @@
         .navbar-toggler-icon {
             background-color: #007bff;
         }
+
+        .category-item {
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .category-link {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .brand-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            min-width: 150px;
+            z-index: 1000;
+            padding: 5px 0;
+        }
+
+        .brand-link {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #555;
+        }
+
+        .brand-link:hover {
+            background: #ff5722;
+            color: white;
+        }
+
+        /* Hiển thị thương hiệu khi di chuột vào danh mục */
+        .category-item:hover .brand-dropdown {
+            display: block;
+        }
+
        
     </style>
     @yield('styles')
@@ -215,20 +261,28 @@
 
 
     <!-- Categories Bar -->
-
     <div class="shopee-categories-bar">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-center">
                 @if (isset($categories) && $categories->isNotEmpty())
                     @foreach ($categories as $category)
-                        <a href="{{ route('product.index', ['category' => $category->id]) }}" class="category-link">{{ $category->name }}</a>
+                        <div class="category-item">
+                            <a href="{{ route('product.index', ['category' => $category->id]) }}" class="category-link">{{ $category->name }}</a>
+                            
+                            @if ($category->brands->isNotEmpty()) 
+                                <div class="brand-dropdown">
+                                    @foreach ($category->brands as $brand)
+                                        <a href="{{ route('product.index', ['category' => $category->id, 'brand' => $brand->id]) }}" class="brand-link">{{ $brand->name }}</a>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     @endforeach
                 @endif
             </div>
         </div>
     </div>
-
-
+    
 
     <div class="container mt-4">
         @yield('content')

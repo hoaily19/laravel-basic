@@ -15,6 +15,7 @@ class Product extends Model
         'name', 
         'slug', 
         'categories_id', 
+        'brand_id',
         'description', 
         'price',  
         'stock', 
@@ -30,4 +31,6 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'categories_id');
     }
+
+    
 }

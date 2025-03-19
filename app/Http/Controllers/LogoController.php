@@ -56,4 +56,12 @@ class LogoController extends Controller
         $status = $logo->is_active ? 'hiển thị' : 'không hiển thị';
         return redirect()->route('admin.logo.index')->with('success', "Logo đã được thay đổi trạng thái thành $status.");
     }
+
+    public function delete($id)
+    {
+        $logo = Logo::findOrFail($id);
+        $logo->delete();
+
+        return redirect()->route('admin.logo.index')->with('success', 'Logo đã được xóa thành công.');
+    }
 }
