@@ -60,9 +60,10 @@ class BrandController extends Controller
 
     public function edit($id)
     {
+        $title = 'Sửa thương hiệu';
         $brand = Brands::findOrFail($id);
         $categories = DB::table('categories')->get();
-        return view('admin.brand.edit', compact('brand', 'categories'));
+        return view('admin.brand.edit', compact('brand', 'categories', 'title'));
     }
 
     public function update(Request $request, $id)

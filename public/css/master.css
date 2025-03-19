@@ -1,0 +1,232 @@
+/* Shopee Top Bar */
+.shopee-top-bar {
+    background-color: #ee4d2d; /* Shopee's orange */
+    padding: 8px 0;
+    font-size: 0.9rem;
+}
+
+.shopee-top-links a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.shopee-top-links a:hover {
+    color: #ffd700; 
+}
+
+.shopee-navbar {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+}
+
+.shopee-logo img {
+    height: 40px;
+}
+
+.shopee-search {
+    width: 60%;
+}
+
+.shopee-search .form-control {
+    border-radius: 20px 0 0 20px;
+    border: 1px solid #ee4d2d;
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+.shopee-search .btn-orange {
+    background-color: #ee4d2d;
+    color: #fff;
+    border-radius: 0 20px 20px 0;
+    border: none;
+    padding: 10px 15px;
+}
+
+.shopee-search .btn-orange:hover {
+    background-color: #d73211;
+}
+
+.shopee-cart-icon {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.shopee-cart-icon:hover {
+    color: #ecc5bd;
+}
+
+/* Shopee Categories Bar */
+.shopee-categories-bar {
+    background-color: #fff;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.category-link {
+    color: #555;
+    font-size: 0.9rem;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.category-link:hover {
+    color: #ee4d2d;
+}
+
+.navbar {
+    box-shadow: none; 
+    background-color: #ee4d2d; 
+}
+
+.navbar-brand {
+    font-weight: normal;
+    color: inherit !important;
+    font-size: inherit;
+}
+
+.navbar-nav .nav-link {
+    color: inherit !important;
+    font-size: inherit;
+    transition: none;
+}
+
+.navbar-nav .nav-link:hover {
+    color: inherit !important;
+    text-decoration: none;
+}
+
+.navbar-nav .dropdown-menu {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-color: #007bff;
+}
+
+.category-item {
+    position: relative;
+    margin: 0 10px;
+}
+
+.category-link {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    position: relative;
+}
+
+.brand-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    min-width: 150px;
+    z-index: 1000;
+    padding: 5px 0;
+}
+
+.brand-link {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #555;
+}
+
+.brand-link:hover {
+    background: #ff5722;
+    color: white;
+}
+
+/* Hiển thị thương hiệu khi di chuột vào danh mục */
+.category-item:hover .brand-dropdown {
+    display: block;
+}
+
+shopee-footer {
+    background-color: #fff;
+    padding: 40px 0;
+    border-top: 1px solid #e0e0e0;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.shopee-footer h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.shopee-footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.shopee-footer ul li {
+    margin-bottom: 10px;
+}
+
+.shopee-footer ul li a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.shopee-footer ul li a:hover {
+    color: #ee4d2d; /* Shopee's orange */
+}
+
+.shopee-footer .payment-methods img,
+.shopee-footer .tracking-methods img,
+.shopee-footer .app-downloads img {
+    height: 30px;
+    margin: 5px;
+}
+
+.shopee-footer .social-icons a {
+    color: #555;
+    margin-right: 10px;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.shopee-footer .social-icons a:hover {
+    color: #ee4d2d;
+}
+
+.shopee-footer .qr-codes img {
+    height: 60px;
+    margin: 5px;
+}
+
+.shopee-footer .copyright {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.shopee-footer .international-links a {
+    color: #555;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: color 0.3s ease;
+}
+
+.shopee-footer .international-links a:hover {
+    color: #ee4d2d;
+}

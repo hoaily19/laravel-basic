@@ -5,164 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? '' }} | Admin Dashboard</title>
-    <!-- Bootstrap CSS -->
+    <link rel="icon" tye="image/x-icon" href="https://finatech.s3.ap-southeast-1.amazonaws.com/20220929/23109627/Shopee.jpg" class="">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
-
-    <style>
-        .sidebar {
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #212529;
-            padding-top: 20px;
-        }
-
-        .sidebar .nav-link {
-            color: #adb5bd;
-            transition: all 0.3s;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: #fff;
-            background-color: #343a40;
-            border-radius: 5px;
-        }
-
-        .sidebar .nav-link i {
-            font-size: 18px;
-        }
-
-        .sidebar .dropdown-menu {
-            background-color: #343a40;
-            border: none;
-            padding: 0;
-        }
-
-        .sidebar .dropdown-menu .dropdown-item {
-            color: #adb5bd;
-            padding: 8px 20px;
-            transition: all 0.3s;
-        }
-
-        .sidebar .dropdown-menu .dropdown-item:hover {
-            color: #fff;
-            background-color: #495057;
-        }
-
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            width: calc(100% - 250px);
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 200px;
-            }
-
-            .content {
-                margin-left: 210px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: relative;
-            }
-
-            .content {
-                margin-left: 0;
-                width: 100%;
-            }
-        }
-    </style><style>
-        .sidebar {
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #212529;
-            padding-top: 20px;
-        }
-
-        .sidebar .nav-link {
-            color: #adb5bd;
-            transition: all 0.3s;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            color: #fff;
-            background-color: #343a40;
-            border-radius: 5px;
-        }
-
-        .sidebar .nav-link i {
-            font-size: 18px;
-        }
-
-        .sidebar .dropdown-menu {
-            background-color: #343a40;
-            border: none;
-            padding: 0;
-        }
-
-        .sidebar .dropdown-menu .dropdown-item {
-            color: #adb5bd;
-            padding: 8px 20px;
-            transition: all 0.3s;
-        }
-
-        .sidebar .dropdown-menu .dropdown-item:hover {
-            color: #fff;
-            background-color: #495057;
-        }
-
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            width: calc(100% - 250px);
-        }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .sidebar {
-                width: 200px;
-            }
-
-            .content {
-                margin-left: 210px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: relative;
-            }
-
-            .content {
-                margin-left: 0;
-                width: 100%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="/" class="text-decoration-none"><h4 class="text-white text-center mb-4">Admin Panel</h4></a>
+        <a href="/" class="text-decoration-none"><h4 class="text-white text-center mb-4">Admin Shop</h4></a>
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link active" href="/admin#dashboard">

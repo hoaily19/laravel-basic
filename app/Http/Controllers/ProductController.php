@@ -19,24 +19,26 @@ class ProductController extends Controller
             $search = request()->input('search');
             $query->where('name', 'like', '%' . $search . '%');
         }
-
+        $title = 'Sản phẩm';
         $products = $query->paginate(5);
         $categories = Category::with('brands')->get();
-        return view('index', compact('products', 'categories'));
+        return view('index', compact('products', 'categories', 'title'));
     }
 
     public function show($slug)
     {
         $product = DB::table('products')->where('slug', $slug)->first();
         $variations = DB::table('product_variations')->where('product_id', $product->id)->get();
-
-        return view('detail', compact('product', 'variations'));
+        $category = DB::table('categories')->where('id', $product->categories_id)->first();
+        $brand = DB::table('brand')->where('id', $product->brand_id)->first();
+        return view('detail', compact('product', 'variations', 'category', 'brand'));
     }
 
     public function indexadmin()
     {
+        $title = 'Quản lí sản phẩm';
         $products = DB::table('products')->paginate(5);
-        return view('admin.product.index', compact('products'));
+        return view('admin.product.index', compact('products', 'title'));
     }
 
     public function create()

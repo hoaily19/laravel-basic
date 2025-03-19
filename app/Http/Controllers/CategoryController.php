@@ -12,13 +12,15 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('admin.category.index', compact('categories'));
+        $title = 'Quản lí danh mục';
+        return view('admin.category.index', compact('categories', 'title'));
     }
 
 
     public function create()
     {
-        return view('admin.category.create');
+        $title = 'Thêm danh mục';
+        return view('admin.category.create', compact('title'));
     }
 
     public function store(Request $request)
@@ -45,8 +47,9 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
+        $title = 'Sửa danh mục';
         $category = Category::findOrFail($id);
-        return view('admin.category.edit', compact('category'));
+        return view('admin.category.edit', compact('category', 'title'));
     }
 
     public function update(Request $request, $id)

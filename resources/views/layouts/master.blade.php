@@ -3,175 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Trang Chủ')</title>
+    <title>@yield('title', 'Trang Chủ') | HoaiLy Shop</title>
+    <link rel="icon" type="image/png" href="https://finatech.s3.ap-southeast-1.amazonaws.com/20220929/23109627/Shopee.jpg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-       /* Shopee Top Bar */
-        .shopee-top-bar {
-            background-color: #ee4d2d; /* Shopee's orange */
-            padding: 8px 0;
-            font-size: 0.9rem;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        .shopee-top-links a {
-            color: #fff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
+    <link rel="stylesheet" href="{{ asset('css/master.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
 
-        .shopee-top-links a:hover {
-            color: #ffd700; /* Yellow hover effect */
-        }
-
-        /* Shopee Main Navbar */
-        .shopee-navbar {
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 10px 0;
-        }
-
-        .shopee-logo img {
-            height: 40px;
-        }
-
-        .shopee-search {
-            width: 60%;
-        }
-
-        .shopee-search .form-control {
-            border-radius: 20px 0 0 20px;
-            border: 1px solid #ee4d2d;
-            padding: 10px;
-            font-size: 0.95rem;
-        }
-
-        .shopee-search .btn-orange {
-            background-color: #ee4d2d;
-            color: #fff;
-            border-radius: 0 20px 20px 0;
-            border: none;
-            padding: 10px 15px;
-        }
-
-        .shopee-search .btn-orange:hover {
-            background-color: #d73211;
-        }
-
-        .shopee-cart-icon {
-            color: #ffffff;
-            transition: color 0.3s ease;
-        }
-
-        .shopee-cart-icon:hover {
-            color: #ecc5bd;
-        }
-
-        /* Shopee Categories Bar */
-        .shopee-categories-bar {
-            background-color: #fff;
-            border-top: 1px solid #e0e0e0;
-            padding: 10px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .category-link {
-            color: #555;
-            font-size: 0.9rem;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-
-        .category-link:hover {
-            color: #ee4d2d;
-        }
-
-        /* Remove or adjust existing navbar styles */
-        .navbar {
-            box-shadow: none; 
-            background-color: #ee4d2d; 
-        }
-
-        .navbar-brand {
-            font-weight: normal;
-            color: inherit !important;
-            font-size: inherit;
-        }
-
-        .navbar-nav .nav-link {
-            color: inherit !important;
-            font-size: inherit;
-            transition: none;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: inherit !important;
-            text-decoration: none;
-        }
-
-        .navbar-nav .dropdown-menu {
-            border: none;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-toggler {
-            border: none;
-        }
-
-        .navbar-toggler-icon {
-            background-color: #007bff;
-        }
-
-        .category-item {
-            position: relative;
-            margin: 0 10px;
-        }
-
-        .category-link {
-            display: block;
-            padding: 10px 15px;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            position: relative;
-        }
-
-        .brand-dropdown {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: white;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            min-width: 150px;
-            z-index: 1000;
-            padding: 5px 0;
-        }
-
-        .brand-link {
-            display: block;
-            padding: 8px 12px;
-            text-decoration: none;
-            color: #555;
-        }
-
-        .brand-link:hover {
-            background: #ff5722;
-            color: white;
-        }
-
-        /* Hiển thị thương hiệu khi di chuột vào danh mục */
-        .category-item:hover .brand-dropdown {
-            display: block;
-        }
-
-       
-    </style>
     @yield('styles')
+    
 </head>
+    <style >
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 <body>
+
+
     <!-- Top Bar -->
     <div class="shopee-top-bar">
         <div class="container">
@@ -180,7 +31,7 @@
                 <div class="shopee-top-links">
                     <a href="#" class="text-white">Kênh Người Bán</a>
                     <span class="text-white mx-2">|</span>
-                    <a href="#" class="text-white">Trở thành Người bán Shopee</a>
+                    <a href="#" class="text-white">Trở thành Người bán </a>
                     <span class="text-white mx-2">|</span>
                     <a href="#" class="text-white">Tải ứng dụng</a>
                     <span class="text-white mx-2">|</span>
@@ -243,15 +94,15 @@
             <form class="d-flex mx-auto shopee-search" method="GET" action="{{ route('product.index') }}">
                 <div class="input-group">
                     <input type="text" class="form-control me-2" placeholder="Tìm kiếm trên shophoaily..." name="search" value="{{ request()->input('search') }}">
-                    <button class="btn btn-orange" type="submit"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-orange border" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
 
-            @if (isset($products) && $products->isEmpty())
+            {{-- @if (isset($products) && $products->isEmpty())
                 <div class="no-products-message">
                     <p>Không tìm thấy sản phẩm "{{ request()->input('search') }}".</p>
                 </div>
-            @endif
+            @endif --}}
 
             <a href="{{ url('/cart') }}" class="shopee-cart-icon">
                 <i class="fas fa-shopping-cart fa-2x"></i>
@@ -288,36 +139,95 @@
         @yield('content')
     </div>
 
-    <footer>
+    <footer class="shopee-footer bg-light">
+        <br>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="footer-logo">ShopHoaiLy</div>
-                    <p>Chúng tôi mang đến những sản phẩm tốt nhất cho bạn.</p>
+                <!-- Customer Service -->
+                <div class="col-md-3">
+                    <h5>DỊCH VỤ KHÁCH HÀNG</h5>
+                    <ul>
+                        <li><a href="#">Trung Tâm Trợ Giúp</a></li>
+                        <li><a href="#">Hướng Dẫn Mua Hàng/Đặt Hàng</a></li>
+                        <li><a href="#">Hướng Dẫn Bán Hàng</a></li>
+                        <li><a href="#">Đơn Hàng</a></li>
+                        <li><a href="#">Trả Hàng/Hoàn Tiền</a></li>
+                        <li><a href="#">Liên Hệ HOAILY</a></li>
+                        <li><a href="#">Chính Sách Bảo Hành</a></li>
+                    </ul>
                 </div>
-                <div class="col-md-4">
-                    <div class="footer-links">
-                        <h5>Liên kết</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="{{ url('/about') }}">Giới thiệu</a></li>
-                            <li><a href="#">Chính sách bảo mật</a></li>
-                            <li><a href="#">Điều khoản dịch vụ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
+
+                <!-- About HOAILY Vietnam -->
+                <div class="col-md-3">
+                    <h5>VỀ HOAILY VIỆT NAM</h5>
+                    <ul>
+                        <li><a href="#">Tuyển Dụng</a></li>
+                        <li><a href="#">Điều Khoản </a></li>
+                        <li><a href="#">Chính Sách Bảo Mật</a></li>
+                        <li><a href="#">Kênh Người Bán</a></li>
+                    </ul>
+                </div>
+
+                <!-- Payment Methods -->
+                <div class="col-md-2">
+                    <h5>THANH TOÁN</h5>
+                    <div class="payment-methods">
+                    
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="footer-links">
-                        <h5>Theo dõi chúng tôi</h5>
-                        <a href="#" class="google-btn"><i class="fab fa-google"></i> Google</a>
-                        <a href="#" class="facebook-btn"><i class="fab fa-facebook-f"></i> Facebook</a>
+
+                <!-- Tracking and Social Media -->
+                <div class="col-md-2">
+                    <h5>THEO DÕI HOAILY</h5>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                    <h5 class="mt-4">ĐƠN VỊ VẬN CHUYỂN</h5>
+                    <div class="tracking-methods">
+                        <img src="https://down-vn.img.susercontent.com/file/957f4e2d8f5a5f5a5e2a5f5a5e2a5f5a" alt="SPX Express">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Viettel Post">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Vietnam Post">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="J&T Express">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="GrabExpress">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Ninja Van">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Be">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="AhaMove">
+                    </div>
+                </div>
+
+                <!-- App Downloads -->
+                <div class="col-md-2">
+                    <h5>TẢI ỨNG DỤNG HOAILY</h5>
+                    <div class="qr-codes">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="QR Code">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="QR Code">
+                    </div>
+                    <div class="app-downloads">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="App Store">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Google Play">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="App Gallery">
                     </div>
                 </div>
             </div>
+
+            <!-- Copyright and International Links -->
             <div class="copyright">
-                <p>© Copyright <strong>ShopHoaiLy</strong>. All Rights Reserved</p>
-                <div class="credits">
-                    Designed by <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>
+                <p>© 2025 HoaiLy. Tất cả các quyền được bảo lưu.</p>
+                <div class="international-links">
+                    <span>Quốc gia & Khu vực:</span>
+                    <a href="#">Singapore</a> |
+                    <a href="#">Indonesia</a> |
+                    <a href="#">Thái Lan</a> |
+                    <a href="#">Malaysia</a> |
+                    <a href="#">Việt Nam</a> |
+                    <a href="#">Philippines</a> |
+                    <a href="#">Brazil</a> |
+                    <a href="#">Mexico</a> |
+                    <a href="#">Colombia</a> |
+                    <a href="#">Chile</a> |
+                    <a href="#">Đài Loan</a>
                 </div>
             </div>
         </div>

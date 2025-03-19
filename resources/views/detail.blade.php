@@ -2,27 +2,40 @@
 
 @section('content')
     <div class="container my-4">
-        <h1 class="mb-3">{{ $product->name }}</h1>
-
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('product.index') }}">Trang chủ</a></li>
+                @if ($category)
+                    <li class="breadcrumb-item"><a href="#">{{ $category->name }}</a></li>
+                @else
+                    <li class="breadcrumb-item"><a href="#">Không có danh mục</a></li>
+                @endif
+                @if ($brand)
+                    <li class="breadcrumb-item"><a href="#">{{ $brand->name }}</a></li>
+                @else
+                    <li class="breadcrumb-item"><a href="#">Không có thương hiệu</a></li>
+                @endif
+                <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
+            </ol>
+        </nav>
+        <h2 class="mb-3">{{ $product->name }}</h2>
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
-
+        
         <div class="row">
             <!-- Ảnh sản phẩm -->
             <div class="col-md-6">
-                <!-- Ảnh chính -->
                 <div id="mainImageContainer" class="position-relative">
                     @if ($product->image)
-                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" id="mainImage" class="img-fluid mb-3 rounded" style="max-height: 400px; object-fit: cover; transition: opacity 0.3s;">
+                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" id="mainImage" class="img-fluid mb-3 rounded image-format" style="max-height: 400px; object-fit: cover; transition: opacity 0.3s;">
                     @else
-                        <img src="https://via.placeholder.com/400" alt="No Image" id="mainImage" class="img-fluid mb-3 rounded">
+                        <img src="https://via.placeholder.com/400" alt="No Image" id="mainImage" class="img-fluid mb-3 rounded image-format">
                     @endif
                 </div>
 
-                <!-- Ảnh phụ -->
                 @if ($product->images)
                     <div class="row g-2">
                         @foreach (json_decode($product->images, true) as $image)
@@ -36,57 +49,73 @@
 
             <!-- Thông tin sản phẩm -->
             <div class="col-md-6">
-                <!-- Đánh giá và lượt bán -->
                 <div class="d-flex align-items-center mb-2">
                     <span class="text-warning me-2"><i class="fas fa-star"></i> 4.8</span>
                     <span class="text-muted">| 952 Đánh Giá</span>
                     <span class="text-muted ms-2">| 6.9k Đã Bán</span>
                 </div>
 
-                <!-- Giá sản phẩm (động) -->
                 <div class="mb-3" id="priceDisplay">
-                    <span class="text-danger h4 fw-bold">đ<span id="dynamicPrice">{{ number_format($product->price * 0.8, 0) }}</span></span>
-                    <span class="text-danger h4 fw-bold ms-2" id="dynamicPriceMax"> - đ{{ number_format($product->price, 0) }}</span>
-                    <span class="text-decoration-line-through text-muted ms-2" id="originalPrice">đ{{ number_format($product->price * 1.2, 0) }}</span>
-                    <span class="badge bg-success ms-2" id="discountBadge">-43%</span>
+                    <span class="text-danger h4 fw-bold">đ<span id="dynamicPrice">{{ number_format($product->price, 0) }}</span></span>
                 </div>
-
-                <!-- Thông tin shop -->
+                <p class="mb-2">
+                    <strong>Thương hiệu: </strong> <span id="brand">{{ $brand->name }}</span>
+                </p>
                 <div class="mb-3">
-                    <a href="#" class="text-decoration-none text-dark">Cửa Shop</a>
+                    <a href="#" class="text-decoration-none text-dark">Ưu đãi</a>
                     <span class="badge bg-warning text-dark ms-2">Mã Giảm 1k</span>
                 </div>
 
-                <!-- Mô tả và thông tin khác -->
-                <p class="mb-2"><strong>Mô tả:</strong> {{ $product->description ?? 'Không có mô tả' }}</p>
-                <p class="mb-2"><strong>Số lượng tồn kho:</strong> {{ $product->stock }}</p>
+                <p class="mb-2"><strong>Số lượng tồn kho:</strong> <span id="stock">{{ $product->stock }}</span></p>
                 <p class="mb-2"><strong>SKU:</strong> {{ $product->sku ?? 'N/A' }}</p>
                 <p class="mb-2"><strong>Lượt xem:</strong> {{ $product->view_count }}</p>
 
                 <!-- Biến thể sản phẩm -->
-                @if ($variations->isNotEmpty())
-                    <h5 class="mt-4">Biến Thể Sản Phẩm</h5>
-                    <div class="mb-3">
-                        @foreach ($variations as $variation)
-                            <div class="form-check variation-option">
-                                <input type="radio" class="form-check-input" name="variation" id="variation_{{ $variation->id }}" value="{{ $variation->id }}" onchange="updateVariation({{ $variation->id }})">
-                                <label class="form-check-label" for="variation_{{ $variation->id }}">
-                                    {{ $variation->size ?? 'N/A' }} - {{ $variation->color ?? 'N/A' }} - đ{{ number_format($variation->price ?? $product->price, 0) }}
-                                </label>
+                @if ($variations->isNotEmpty() && $variations->contains(function ($variation) {
+                    return !is_null($variation->size) || !is_null($variation->color);
+                }))
+                    <!-- Kích Cỡ -->
+                    @if ($variations->contains(fn($variation) => !is_null($variation->size)))
+                        <div class="form-group mb-4">
+                            <label class="d-block mb-2"><strong>Chọn Size</strong></label>
+                            <div id="size-buttons" class="d-flex flex-wrap gap-2" role="group" aria-label="Size select">
+                                @foreach ($variations->filter(fn($variation) => !is_null($variation->size))->unique('size') as $variation)
+                                    <div class="size-option">
+                                        <input type="radio" id="size-{{ $variation->size }}" name="size_variation" class="btn-check" value="{{ $variation->size }}" onchange="updateVariation({{ $variation->id }})">
+                                        <label class="size-label" for="size-{{ $variation->size }}">
+                                            {{ $variation->size }}
+                                        </label>
+                                    </div>
+                                @endforeach
                             </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endif
+
+                    <!-- Màu sắc -->
+                    @if ($variations->contains(fn($variation) => !is_null($variation->color)))
+                        <div class="form-group mb-4">
+                            <label class="d-block mb-2"><strong>Chọn Màu</strong></label>
+                            <div id="color-buttons" class="d-flex flex-wrap gap-2" role="group" aria-label="Color select">
+                                @foreach ($variations->filter(fn($variation) => !is_null($variation->color))->unique('color') as $variation)
+                                    <div class="color-option">
+                                        <input type="radio" id="color-{{ $variation->color }}" name="color_variation" class="btn-check" value="{{ $variation->color }}" onchange="updateVariation({{ $variation->id }})">
+                                        <label class="color-label" for="color-{{ $variation->color }}">
+                                            <span class="color-name">{{ $variation->color }}</span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 @else
                     <p class="mt-4">Sản phẩm này không có biến thể.</p>
                 @endif
 
-                <!-- Nút mua hàng -->
                 <div class="d-grid gap-2">
                     <button class="btn btn-outline-danger btn-lg" type="button">Thêm Vào Giỏ Hàng</button>
                     <button class="btn btn-danger btn-lg" type="button">Mua Ngay</button>
                 </div>
 
-                <!-- Chính sách -->
                 <div class="mt-3 small text-muted">
                     <p><i class="fas fa-truck"></i> Vận Chuyển: Nhận trong 22 Th03 - 27 Th03, phí giao hàng <strong>0</strong></p>
                     <p><i class="fas fa-shield-alt"></i> An Tâm Mua Sắm Cùng Shopee</p>
@@ -94,57 +123,99 @@
                 </div>
             </div>
         </div>
-
-        <div class="mt-4">
-            <a href="{{ route('product.index') }}" class="btn btn-secondary">Quay lại danh sách sản phẩm</a>
+        <div class="row">
+            <div class="col-md-12"> 
+                <h3 class="">Mô tả</h3>
+                <p class="mb-2"> {{ $product->description ?? 'Không có mô tả' }}</p>
+            </div>
         </div>
     </div>
 
     <style>
-        #mainImageContainer {
-            position: relative;
-            overflow: hidden;
-        }
-        #mainImage {
+        #mainImageContainer { position: relative; overflow: hidden; }
+        #mainImage { width: 100%; transition: opacity 0.3s ease-in-out; }
+        .additional-image:hover { border-color: #ff5722; opacity: 0.8; }
+        .variation-option { margin-bottom: 10px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; transition: background-color 0.3s; }
+        .variation-option:hover { background-color: #f9f9f9; }
+        .btn-outline-danger { border-color: #ff5722; color: #ff5722; }
+        .btn-outline-danger:hover { background-color: #ff5722; color: #fff; }
+        .btn-danger { background-color: #ff5722; border-color: #ff5722; }
+        .btn-danger:hover { background-color: #e64a19; border-color: #e64a19; }
+
+        .image-format {
             width: 100%;
-            transition: opacity 0.3s ease-in-out;
+            max-height: 600px;
+            object-fit: contain;
+            cursor: pointer;
         }
-        .additional-image:hover {
-            border-color: #ff5722; 
-            opacity: 0.8;
+        .color-option,
+        .size-option {
+            position: relative;
         }
-        .variation-option {
-            margin-bottom: 10px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+        .color-label,
+        .size-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .variation-option:hover {
-            background-color: #f9f9f9;
+        .color-label:hover,
+        .size-label:hover {
+            border-color: #cbd5e0;
+            background-color: #f7fafc;
         }
-        .btn-outline-danger {
-            border-color: #ff5722;
-            color: #ff5722;
+        .btn-check:checked+.color-label,
+        .btn-check:checked+.size-label {
+            border-color: #DC1E35;
+            background-color: #eff6ff;
         }
-        .btn-outline-danger:hover {
-            background-color: #ff5722;
-            color: #fff;
+        .color-name {
+            font-size: 0.9rem;
         }
-        .btn-danger {
-            background-color: #ff5722;
-            border-color: #ff5722;
+        .size-label {
+            min-width: 60px;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 500;
         }
-        .btn-danger:hover {
-            background-color: #e64a19;
-            border-color: #e64a19;
+        .btn-check:disabled+.color-label,
+        .btn-check:disabled+.size-label {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        @keyframes select-pop {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .btn-check:checked+.color-label,
+        .btn-check:checked+.size-label {
+            animation: select-pop 0.2s ease-out;
         }
     </style>
 
     <script>
         function changeMainImage(imageUrl) {
             const mainImage = document.getElementById('mainImage');
+            if (!mainImage) {
+                console.error('Main image element not found');
+                return;
+            }
+            if (!imageUrl || typeof imageUrl !== 'string' || imageUrl.trim() === '') {
+                console.error('Invalid image URL:', imageUrl);
+                return;
+            }
+            console.log('Changing main image to:', imageUrl);
             mainImage.style.opacity = '0';
+            mainImage.onerror = () => {
+                console.error('Failed to load image:', imageUrl);
+                mainImage.src = 'https://via.placeholder.com/400';
+                mainImage.style.opacity = '1';
+            };
             setTimeout(() => {
                 mainImage.src = imageUrl;
                 mainImage.style.opacity = '1';
@@ -152,28 +223,16 @@
         }
 
         function updateVariation(variationId) {
-            const variation = @json($variations)->find(v => v.id == variationId);
+            const variations = @json($variations);
+            const variation = variations.find(v => v.id == variationId);
             if (variation) {
                 const dynamicPrice = document.getElementById('dynamicPrice');
-                const dynamicPriceMax = document.getElementById('dynamicPriceMax');
-                const originalPrice = document.getElementById('originalPrice');
-                const discountBadge = document.getElementById('discountBadge');
+                const stock = document.getElementById('stock');
 
                 if (variation.price) {
-                    const price = variation.price;
-                    const discountedPrice = price * 0.8;
-                    const originalPriceValue = price * 1.2; 
-                    const discountPercentage = Math.round(((originalPriceValue - discountedPrice) / originalPriceValue) * 100);
-
-                    dynamicPrice.textContent = number_format(discountedPrice, 0);
-                    dynamicPriceMax.textContent = ' - đ' + number_format(price, 0);
-                    originalPrice.textContent = 'đ' + number_format(originalPriceValue, 0);
-                    discountBadge.textContent = `-${discountPercentage}%`;
+                    dynamicPrice.textContent = number_format(variation.price, 0);
                 } else {
-                    dynamicPrice.textContent = number_format({{ $product->price * 0.8 }}, 0);
-                    dynamicPriceMax.textContent = ' - đ' + number_format({{ $product->price }}, 0);
-                    originalPrice.textContent = 'đ' + number_format({{ $product->price * 1.2 }}, 0);
-                    discountBadge.textContent = '-43%';
+                    dynamicPrice.textContent = number_format({{ $product->price }}, 0);
                 }
 
                 if (variation.image) {
@@ -185,6 +244,8 @@
                         changeMainImage('https://via.placeholder.com/400');
                     @endif
                 }
+
+                stock.textContent = variation.stock ?? {{ $product->stock }};
             } else {
                 console.error('Variation not found for ID:', variationId);
             }
@@ -211,22 +272,5 @@
             }
             return s.join(dec);
         }
-
-        if (!document.querySelector('link[href*="fontawesome"]')) {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
-            document.head.appendChild(link);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstVariation = document.querySelector('input[name="variation"]');
-            if (firstVariation) {
-                firstVariation.checked = true;
-                updateVariation(firstVariation.value);
-            } else {
-                console.log('No variations found.');
-            }
-        });
     </script>
 @endsection

@@ -1,0 +1,142 @@
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #212529;
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    color: #adb5bd;
+    transition: all 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: #fff;
+    background-color: #343a40;
+    border-radius: 5px;
+}
+
+.sidebar .nav-link i {
+    font-size: 18px;
+}
+
+.sidebar .dropdown-menu {
+    background-color: #343a40;
+    border: none;
+    padding: 0;
+}
+
+.sidebar .dropdown-menu .dropdown-item {
+    color: #adb5bd;
+    padding: 8px 20px;
+    transition: all 0.3s;
+}
+
+.sidebar .dropdown-menu .dropdown-item:hover {
+    color: #fff;
+    background-color: #495057;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 210px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #212529;
+    padding-top: 20px;
+}
+
+.sidebar .nav-link {
+    color: #adb5bd;
+    transition: all 0.3s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: #fff;
+    background-color: #343a40;
+    border-radius: 5px;
+}
+
+.sidebar .nav-link i {
+    font-size: 18px;
+}
+
+.sidebar .dropdown-menu {
+    background-color: #343a40;
+    border: none;
+    padding: 0;
+}
+
+.sidebar .dropdown-menu .dropdown-item {
+    color: #adb5bd;
+    padding: 8px 20px;
+    transition: all 0.3s;
+}
+
+.sidebar .dropdown-menu .dropdown-item:hover {
+    color: #fff;
+    background-color: #495057;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 210px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
