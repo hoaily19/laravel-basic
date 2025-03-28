@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -15,19 +17,28 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('avatar')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('phone')->nullable();
             $table->string('role')->default('user');
+            $table->string('reset_token')->nullable();
+            $table->timestamp('reset_token_expires_at')->nullable();
+            $table->string('oauth_provider')->nullable();
+            $table->string('oauth_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
 
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
+        DB::table('users')->insert([
+            'name' => 'admin',
+            'email' => 'admin@admin.admin',
+            'password' => Hash::make('111111'),
+            'role' => 'admin',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
@@ -45,7 +56,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

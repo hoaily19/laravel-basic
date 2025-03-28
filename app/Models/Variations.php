@@ -16,4 +16,19 @@ class Variations extends Model
         'stock',
         'sku',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function size()
+    {
+        return $this->belongsTo(Size::class, 'size_id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo(Color::class, 'color_id');
+    }
 }

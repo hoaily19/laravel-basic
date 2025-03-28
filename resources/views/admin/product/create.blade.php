@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label for="name">Tên Sản Phẩm</label>
                 <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" 
-                       value="{{ old('name') }}" >
+                       value="{{ old('name') }}">
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -63,7 +63,7 @@
             <div class="form-group">
                 <label for="price">Giá Sản Phẩm</label>
                 <input type="number" id="price" name="price" class="form-control @error('price') is-invalid @enderror" 
-                       value="{{ old('price') }}" step="0.01" >
+                       value="{{ old('price') }}" step="0.01">
                 @error('price')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -72,7 +72,7 @@
             <div class="form-group">
                 <label for="stock">Số Lượng Sản Phẩm</label>
                 <input type="number" id="stock" name="stock" class="form-control @error('stock') is-invalid @enderror" 
-                       value="{{ old('stock') }}" >
+                       value="{{ old('stock') }}">
                 @error('stock')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -113,34 +113,65 @@
             <div class="form-group">
                 <label>Biến Thể Sản Phẩm</label>
                 <div id="variations-container">
-                    <div class="variation-row mb-3 p-3 border rounded" id="variation-template" style="display: none;">
-                        <div class="row">
+                    <!-- Biến thể mặc định -->
+                    <div class="variation-row mb-3 p-3 border rounded">
+                        <div class="row align-items-end">
                             <div class="col-md-2">
                                 <label>Kích Thước</label>
-                                <input type="text" name="variations[0][size]" class="form-control" placeholder="VD: S, M, L">
+                                <select name="variations[0][size_id]" class="form-control @error('variations.0.size_id') is-invalid @enderror">
+                                    <option value="">Chọn kích thước</option>
+                                    @foreach($sizes as $size)
+                                        <option value="{{ $size->id }}" {{ old('variations.0.size_id') == $size->id ? 'selected' : '' }}>
+                                            {{ $size->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('variations.0.size_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-2">
                                 <label>Màu Sắc</label>
-                                <input type="text" name="variations[0][color]" class="form-control" placeholder="VD: Đỏ, Xanh">
+                                <select name="variations[0][color_id]" class="form-control @error('variations.0.color_id') is-invalid @enderror">
+                                    <option value="">Chọn màu sắc</option>
+                                    @foreach($colors as $color)
+                                        <option value="{{ $color->id }}" {{ old('variations.0.color_id') == $color->id ? 'selected' : '' }}>
+                                            {{ $color->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('variations.0.color_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-2">
                                 <label>Giá</label>
-                                <input type="number" name="variations[0][price]" class="form-control" step="0.01" placeholder="Giá riêng">
+                                <input type="number" name="variations[0][price]" class="form-control @error('variations.0.price') is-invalid @enderror" 
+                                       value="{{ old('variations.0.price') }}" step="0.01" placeholder="Giá riêng">
+                                @error('variations.0.price')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-2">
                                 <label>Số Lượng</label>
-                                <input type="number" name="variations[0][stock]" class="form-control" placeholder="Số lượng">
+                                <input type="number" name="variations[0][stock]" class="form-control @error('variations.0.stock') is-invalid @enderror" 
+                                       value="{{ old('variations.0.stock') }}" placeholder="Số lượng">
+                                @error('variations.0.stock')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-2">
                                 <label>Ảnh</label>
-                                <input type="file" name="variations[0][image]" class="form-control" accept="image/*" onchange="previewVariationImage(event, 0)">
+                                <input type="file" name="variations[0][image]" class="form-control @error('variations.0.image') is-invalid @enderror" 
+                                       accept="image/*" onchange="previewVariationImage(event, 0)">
                                 <img class="variation-preview" src="#" alt="Preview" style="display: none; max-width: 100px; height: auto; margin-top: 5px;">
+                                @error('variations.0.image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <br>
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-danger remove-variation w-100">Xóa biến thể</button>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger remove-variation">Xóa</button>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -161,12 +192,11 @@
     </div>
 
     <script>
-        let variationCount = 0;
+        let variationCount = 1; // Bắt đầu từ 1 vì đã có biến thể 0 mặc định
 
         function previewImage(event) {
             const imagePreview = document.getElementById('imagePreview');
             const file = event.target.files[0];
-
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function() {
@@ -181,9 +211,8 @@
 
         function previewMultipleImages(event) {
             const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-            imagePreviewContainer.innerHTML = ''; 
+            imagePreviewContainer.innerHTML = '';
             const files = event.target.files;
-
             for (let i = 0; i < files.length; i++) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -201,7 +230,6 @@
         function previewVariationImage(event, index) {
             const file = event.target.files[0];
             const preview = event.target.nextElementSibling;
-
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function() {
@@ -226,25 +254,56 @@
             const variationsContainer = document.getElementById('variations-container');
 
             addVariationBtn.addEventListener('click', function() {
-                const template = document.getElementById('variation-template').cloneNode(true);
-                template.style.display = 'block';
-                template.id = '';
-
-                template.querySelectorAll('input').forEach(input => {
-                    const name = input.name.replace('variations[0]', `variations[${variationCount}]`);
-                    input.name = name;
-                    if (input.type === 'file') {
-                        input.setAttribute('onchange', `previewVariationImage(event, ${variationCount})`);
-                    }
-                });
-
-                variationsContainer.appendChild(template);
+                const newVariation = `
+                    <div class="variation-row mb-3 p-3 border rounded">
+                        <div class="row align-items-end">
+                            <div class="col-md-2">
+                                <label>Kích Thước</label>
+                                <select name="variations[${variationCount}][size_id]" class="form-control">
+                                    <option value="">Chọn kích thước</option>
+                                    @foreach($sizes as $size)
+                                        <option value="{{ $size->id }}">{{ $size->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Màu Sắc</label>
+                                <select name="variations[${variationCount}][color_id]" class="form-control">
+                                    <option value="">Chọn màu sắc</option>
+                                    @foreach($colors as $color)
+                                        <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Giá</label>
+                                <input type="number" name="variations[${variationCount}][price]" class="form-control" step="0.01" placeholder="Giá riêng">
+                            </div>
+                            <div class="col-md-2">
+                                <label>Số Lượng</label>
+                                <input type="number" name="variations[${variationCount}][stock]" class="form-control" placeholder="Số lượng">
+                            </div>
+                            <div class="col-md-2">
+                                <label>Ảnh</label>
+                                <input type="file" name="variations[${variationCount}][image]" class="form-control" accept="image/*" onchange="previewVariationImage(event, ${variationCount})">
+                                <img class="variation-preview" src="#" alt="Preview" style="display: none; max-width: 100px; height: auto; margin-top: 5px;">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger remove-variation">Xóa</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                variationsContainer.insertAdjacentHTML('beforeend', newVariation);
                 variationCount++;
             });
 
             variationsContainer.addEventListener('click', function(event) {
                 if (event.target.classList.contains('remove-variation')) {
-                    event.target.closest('.variation-row').remove();
+                    const variationRows = variationsContainer.getElementsByClassName('variation-row');
+                    if (variationRows.length > 1) {
+                        event.target.closest('.variation-row').remove();
+                    }
                 }
             });
         });

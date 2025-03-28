@@ -5,6 +5,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ColorController;
+use App\Http\Controllers\SizeController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\LogoController;
 
@@ -51,13 +55,47 @@ Route::middleware('check.role:admin')->group(function () {
         Route::get('/toggle-active/{id}', [LogoController::class, 'toggleActive'])->name('toggle-active');
         Route::get('/delete/{id}', [LogoController::class, 'delete'])->name('delete');
     });
-    
+    //color
+    Route::prefix('admin/color')->name('admin.variants.color.')->group(function () {
+        Route::get('/', [ColorController::class, 'index'])->name('index');
+        Route::get('/create', [ColorController::class, 'create'])->name('create');
+        Route::post('/store', [ColorController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [ColorController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [ColorController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [ColorController::class, 'delete'])->name('delete');
+    });
+
+    //Size
+    Route::prefix('admin/size')->name('admin.variants.size.')->group(function () {
+        Route::get('/', [SizeController::class, 'index'])->name('index');
+        Route::get('/create', [SizeController::class, 'create'])->name('create');
+        Route::post('/store', [SizeController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [SizeController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [SizeController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [SizeController::class, 'delete'])->name('delete');
+    });
+    Route::prefix('admin')->group(function () {
+        Route::get('/variants', [HomeController::class, 'variations'])->name('variants.index');
+    });
 });
 
 
 //User
-Route::get('/', [ProductController::class, 'index'])->name('product.index');
-Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/', [HomeController::class, 'index'])->name('product.index');
+Route::get('/product', [HomeController::class, 'product'])->name('product.product');
+Route::get('/product/{slug}', [HomeController::class, 'show'])->name('product.show');
+
+//profile
+Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
+Route::post('/profile/delete-avatar', [UserController::class, 'deleteAvatar'])->name('profile.delete.avatar');
+Route::get('/profile/change-password', [UserController::class, 'changePassword'])->name('profile.changePassword');
+Route::put('/profile/update-password', [UserController::class, 'updatePassword'])->name('profile.updatePassword');
+
+//address
+Route::get('/profile/address', [UserController::class, 'address'])->name('profile.address');
+Route::post('/profile/address/store', [UserController::class, 'storeAddress'])->name('profile.storeAddress');
+Route::delete('/profile/address/delete/{id}', [UserController::class, 'deleteAddress'])->name('profile.deleteAddress');
 
 
 // Route đăng ký
@@ -65,8 +103,27 @@ Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('
 Route::post('/register', [UserController::class, 'register']);
 Route::get('/login', [UserController::class, 'LoginForm'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
+
+//google
+Route::get('/auth/google', [UserController::class, 'redirectToGoogle']);
+Route::get('/login/google/callback', [UserController::class, 'handleGoogleCallback']);
+
 // Route đăng xuất
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
+//cart
+
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::get('/cart/update/{id}/{change}', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/update-quantity/{id}', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
+    Route::get('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
+    Route::post('/cart/delete-selected', [CartController::class, 'deleteSelected'])->name('cart.delete.selected');
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+});
+
+
 
 
 //404 Notfound

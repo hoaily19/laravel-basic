@@ -71,50 +71,69 @@
                 <p class="mb-2"><strong>Lượt xem:</strong> {{ $product->view_count }}</p>
 
                 <!-- Biến thể sản phẩm -->
-                @if ($variations->isNotEmpty() && $variations->contains(function ($variation) {
-                    return !is_null($variation->size) || !is_null($variation->color);
-                }))
-                    <!-- Kích Cỡ -->
-                    @if ($variations->contains(fn($variation) => !is_null($variation->size)))
-                        <div class="form-group mb-4">
-                            <label class="d-block mb-2"><strong>Chọn Size</strong></label>
-                            <div id="size-buttons" class="d-flex flex-wrap gap-2" role="group" aria-label="Size select">
-                                @foreach ($variations->filter(fn($variation) => !is_null($variation->size))->unique('size') as $variation)
-                                    <div class="size-option">
-                                        <input type="radio" id="size-{{ $variation->size }}" name="size_variation" class="btn-check" value="{{ $variation->size }}" onchange="updateVariation({{ $variation->id }})">
-                                        <label class="size-label" for="size-{{ $variation->size }}">
-                                            {{ $variation->size }}
-                                        </label>
-                                    </div>
-                                @endforeach
+                <form id="add-to-cart-form" action="{{ route('cart.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="product_variations_id" id="selected-variation-id">
+
+                    @if ($variations->isNotEmpty() && $variations->contains(function ($variation) {
+                        return !is_null($variation->size_id) || !is_null($variation->color_id);
+                    }))
+                        <!-- Kích thước -->
+                        @if ($variations->contains(fn($variation) => !is_null($variation->size_id)))
+                            <div class="form-group mb-4">
+                                <label class="d-block mb-2"><strong>Chọn Kích Thước</strong></label>
+                                <div id="size-buttons" class="d-flex flex-wrap gap-2" role="group" aria-label="Size select">
+                                    @foreach ($variations->filter(fn($variation) => !is_null($variation->size_id))->unique('size_id') as $variation)
+                                        <div class="size-option">
+                                            <input type="radio" id="size-{{ $variation->size_id }}" name="size_variation" class="btn-check" value="{{ $variation->size_id }}" onchange="updateVariation({{ $variation->id }})">
+                                            <label class="size-label" for="size-{{ $variation->size_id }}">
+                                                {{ $variation->size_name ?? 'N/A' }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
+                        <!-- Màu sắc -->
+                        @if ($variations->contains(fn($variation) => !is_null($variation->color_id)))
+                            <div class="form-group mb-4">
+                                <label class="d-block mb-2"><strong>Chọn Màu Sắc</strong></label>
+                                <div id="color-buttons" class="d-flex flex-wrap gap-2" role="group" aria-label="Color select">
+                                    @foreach ($variations->filter(fn($variation) => !is_null($variation->color_id))->unique('color_id') as $variation)
+                                        <div class="color-option">
+                                            <input type="radio" id="color-{{ $variation->color_id }}" name="color_variation" class="btn-check" value="{{ $variation->color_id }}" onchange="updateVariation({{ $variation->id }})">
+                                            <label class="color-label" for="color-{{ $variation->color_id }}">
+                                                <span class="color-name">{{ $variation->color_name ?? 'N/A' }}</span>
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    @else
+                        <p class="mt-4">Sản phẩm này không có biến thể.</p>
                     @endif
 
-                    <!-- Màu sắc -->
-                    @if ($variations->contains(fn($variation) => !is_null($variation->color)))
-                        <div class="form-group mb-4">
-                            <label class="d-block mb-2"><strong>Chọn Màu</strong></label>
-                            <div id="color-buttons" class="d-flex flex-wrap gap-2" role="group" aria-label="Color select">
-                                @foreach ($variations->filter(fn($variation) => !is_null($variation->color))->unique('color') as $variation)
-                                    <div class="color-option">
-                                        <input type="radio" id="color-{{ $variation->color }}" name="color_variation" class="btn-check" value="{{ $variation->color }}" onchange="updateVariation({{ $variation->id }})">
-                                        <label class="color-label" for="color-{{ $variation->color }}">
-                                            <span class="color-name">{{ $variation->color }}</span>
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
+                    <!-- Trường số lượng -->
+                    <div class="form-group mb-4">
+                        <label for="quantity" class="d-block mb-2"><strong>Số lượng</strong></label>
+                        <div class="input-group" style="width: 150px;">
+                            <button type="button" class="btn btn-outline-secondary" onclick="updateQuantity(-1)">-</button>
+                            <input type="number" name="quantity" id="quantity" class="form-control text-center" value="1" min="1" max="{{ $product->stock }}" required>
+                            <button type="button" class="btn btn-outline-secondary" onclick="updateQuantity(1)">+</button>
                         </div>
-                    @endif
-                @else
-                    <p class="mt-4">Sản phẩm này không có biến thể.</p>
-                @endif
+                        @error('quantity')
+                            <div class="text-danger mt-2">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                <div class="d-grid gap-2">
-                    <button class="btn btn-outline-danger btn-lg" type="button">Thêm Vào Giỏ Hàng</button>
-                    <button class="btn btn-danger btn-lg" type="button">Mua Ngay</button>
-                </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-danger btn-lg">Thêm Vào Giỏ Hàng</button>
+                        <button type="button" class="btn btn-danger btn-lg">Mua Ngay</button>
+                    </div>
+                </form>
 
                 <div class="mt-3 small text-muted">
                     <p><i class="fas fa-truck"></i> Vận Chuyển: Nhận trong 22 Th03 - 27 Th03, phí giao hàng <strong>0</strong></p>
@@ -126,7 +145,7 @@
         <div class="row">
             <div class="col-md-12"> 
                 <h3 class="">Mô tả</h3>
-                <p class="mb-2"> {{ $product->description ?? 'Không có mô tả' }}</p>
+                <p class="mb-2">{{ $product->description ?? 'Không có mô tả' }}</p>
             </div>
         </div>
     </div>
@@ -141,61 +160,16 @@
         .btn-outline-danger:hover { background-color: #ff5722; color: #fff; }
         .btn-danger { background-color: #ff5722; border-color: #ff5722; }
         .btn-danger:hover { background-color: #e64a19; border-color: #e64a19; }
-
-        .image-format {
-            width: 100%;
-            max-height: 600px;
-            object-fit: contain;
-            cursor: pointer;
-        }
-        .color-option,
-        .size-option {
-            position: relative;
-        }
-        .color-label,
-        .size-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .color-label:hover,
-        .size-label:hover {
-            border-color: #cbd5e0;
-            background-color: #f7fafc;
-        }
-        .btn-check:checked+.color-label,
-        .btn-check:checked+.size-label {
-            border-color: #DC1E35;
-            background-color: #eff6ff;
-        }
-        .color-name {
-            font-size: 0.9rem;
-        }
-        .size-label {
-            min-width: 60px;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .btn-check:disabled+.color-label,
-        .btn-check:disabled+.size-label {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        @keyframes select-pop {
-            0% { transform: scale(0.95); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-        .btn-check:checked+.color-label,
-        .btn-check:checked+.size-label {
-            animation: select-pop 0.2s ease-out;
-        }
+        .image-format { width: 100%; max-height: 600px; object-fit: contain; cursor: pointer; }
+        .color-option, .size-option { position: relative; }
+        .color-label, .size-label { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .color-label:hover, .size-label:hover { border-color: #cbd5e0; background-color: #f7fafc; }
+        .btn-check:checked+.color-label, .btn-check:checked+.size-label { border-color: #DC1E35; background-color: #eff6ff; }
+        .color-name { font-size: 0.9rem; }
+        .size-label { min-width: 60px; justify-content: center; font-size: 0.9rem; font-weight: 500; }
+        .btn-check:disabled+.color-label, .btn-check:disabled+.size-label { opacity: 0.5; cursor: not-allowed; }
+        @keyframes select-pop { 0% { transform: scale(0.95); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .btn-check:checked+.color-label, .btn-check:checked+.size-label { animation: select-pop 0.2s ease-out; }
     </style>
 
     <script>
@@ -228,6 +202,8 @@
             if (variation) {
                 const dynamicPrice = document.getElementById('dynamicPrice');
                 const stock = document.getElementById('stock');
+                const selectedVariationInput = document.getElementById('selected-variation-id');
+                const quantityInput = document.getElementById('quantity');
 
                 if (variation.price) {
                     dynamicPrice.textContent = number_format(variation.price, 0);
@@ -246,9 +222,22 @@
                 }
 
                 stock.textContent = variation.stock ?? {{ $product->stock }};
+                quantityInput.max = variation.stock ?? {{ $product->stock }}; 
+                selectedVariationInput.value = variation.id; 
             } else {
                 console.error('Variation not found for ID:', variationId);
             }
+        }
+
+        function updateQuantity(change) {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value) + change;
+            const maxQuantity = parseInt(quantityInput.max);
+
+            if (quantity < 1) quantity = 1;
+            if (quantity > maxQuantity) quantity = maxQuantity;
+
+            quantityInput.value = quantity;
         }
 
         function number_format(number, decimals = 0, dec_point = '.', thousands_sep = ',') {

@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
 
-    // Các cột cho phép gán giá trị hàng loạt (mass-assignment)
     protected $fillable = [
         'name', 
         'slug', 
@@ -26,7 +24,6 @@ class Product extends Model
         'view_count'
     ];
 
-    // Định nghĩa quan hệ với bảng categories
     public function category()
     {
         return $this->belongsTo(Category::class, 'categories_id');

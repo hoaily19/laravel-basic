@@ -10,16 +10,16 @@
     @endif
 
     <table class="table table-bordered mt-3">
-        <thead>
+        <thead class="text-center">
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Tên Danh Mục</th>
                 <th>Slug</th>
                 <th>Hình Ảnh</th>
                 <th>Hành Động</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
             @foreach ($categories as $category)
             <tr>
                 <td>{{ $category->id }}</td>
@@ -31,9 +31,9 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('admin.category.edit', $category->id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                    <a href="{{ route('admin.category.edit', $category->id) }}" class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></a> |
                     <a href="{{ route('admin.category.delete', $category->id) }}" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Bạn có chắc muốn xóa danh mục?')">Xóa</a>
+                        onclick="return confirm('Bạn có chắc muốn xóa danh mục?')"> <i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
             @endforeach

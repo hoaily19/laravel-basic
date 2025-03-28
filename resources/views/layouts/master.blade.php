@@ -118,12 +118,12 @@
                 @if (isset($categories) && $categories->isNotEmpty())
                     @foreach ($categories as $category)
                         <div class="category-item">
-                            <a href="{{ route('product.index', ['category' => $category->id]) }}" class="category-link">{{ $category->name }}</a>
+                            <a href="{{ route('product.product', ['category' => $category->id]) }}" class="category-link">{{ $category->name }}</a>
                             
                             @if ($category->brands->isNotEmpty()) 
                                 <div class="brand-dropdown">
                                     @foreach ($category->brands as $brand)
-                                        <a href="{{ route('product.index', ['category' => $category->id, 'brand' => $brand->id]) }}" class="brand-link">{{ $brand->name }}</a>
+                                        <a href="{{ route('product.product', ['category' => $category->id, 'brand' => $brand->id]) }}" class="brand-link">{{ $brand->name }}</a>
                                     @endforeach
                                 </div>
                             @endif

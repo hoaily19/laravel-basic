@@ -6,33 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Category;
-use App\Models\Brands;
+use App\Models\Size;
+use App\Models\Color;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        $query = DB::table('products');
 
-        if (request()->has('search')) {
-            $search = request()->input('search');
-            $query->where('name', 'like', '%' . $search . '%');
-        }
-        $title = 'Sản phẩm';
-        $products = $query->paginate(5);
-        $categories = Category::with('brands')->get();
-        return view('index', compact('products', 'categories', 'title'));
-    }
-
-    public function show($slug)
-    {
-        $product = DB::table('products')->where('slug', $slug)->first();
-        $variations = DB::table('product_variations')->where('product_id', $product->id)->get();
-        $category = DB::table('categories')->where('id', $product->categories_id)->first();
-        $brand = DB::table('brand')->where('id', $product->brand_id)->first();
-        return view('detail', compact('product', 'variations', 'category', 'brand'));
-    }
 
     public function indexadmin()
     {
@@ -46,7 +25,9 @@ class ProductController extends Controller
         $title = 'Thêm sản phẩm';
         $categories = DB::table('categories')->get();
         $brands = DB::table('brand')->get();
-        return view('admin.product.create', compact('categories', 'brands', 'title'));
+        $sizes = DB::table('sizes')->get();
+        $colors = DB::table('colors')->get();
+        return view('admin.product.create', compact('categories', 'brands', 'title', 'sizes', 'colors'));
     }
 
     public function store(Request $request)
@@ -61,19 +42,18 @@ class ProductController extends Controller
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories_id' => 'nullable|exists:categories,id',
             'brand_id' => 'nullable|exists:brand,id',
-            'variations.*.size' => 'nullable|string|max:50',
-            'variations.*.color' => 'nullable|string|max:50',
+            'variations.*.size_id' => 'nullable|exists:sizes,id',
+            'variations.*.color_id' => 'nullable|exists:colors,id',
             'variations.*.price' => 'nullable|numeric',
             'variations.*.stock' => 'nullable|integer',
             'variations.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ],[
+        ], [
             'name.required' => 'Tên sản phẩm không được để trống',
             'description.required' => 'Mô tả sản phẩm không được để trống',
             'price.required' => 'Giá sản phẩm không được để trống',
             'stock.required' => 'Số lượng tồn kho không được để trống',
             'image.image' => 'Ảnh sản phẩm phải là hình ảnh',
             'image.max' => 'Dung lượng ảnh sản phẩm không được vượt quá 2MB',
-
         ]);
 
         $imagePath = null;
@@ -117,9 +97,9 @@ class ProductController extends Controller
 
                 DB::table('product_variations')->insert([
                     'product_id' => $productId,
-                    'size' => $variation['size'] ?? null,
-                    'color' => $variation['color'] ?? null,
-                    'price' => $variation['price'] ?? $request->price, 
+                    'size_id' => $variation['size_id'] ?? null, // Chỉ lấy từ $variation
+                    'color_id' => $variation['color_id'] ?? null, // Chỉ lấy từ $variation
+                    'price' => $variation['price'] ?? $request->price,
                     'stock' => $variation['stock'] ?? 0,
                     'image' => $variationImagePath,
                     'sku' => $variation['sku'] ?? 'VAR-' . $productId . '-' . Str::random(6),
@@ -139,7 +119,9 @@ class ProductController extends Controller
         $categories = DB::table('categories')->get();
         $brands = DB::table('brand')->get();
         $variations = DB::table('product_variations')->where('product_id', $id)->get();
-        return view('admin.product.edit', compact('product', 'categories', 'title', 'variations'));
+        $sizes = Size::all();
+        $colors = Color::all();
+        return view('admin.product.edit', compact('product', 'categories', 'title', 'variations', 'brands', 'sizes', 'colors'));
     }
 
     public function update(Request $request, $id)
@@ -154,8 +136,8 @@ class ProductController extends Controller
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'categories_id' => 'nullable|exists:categories,id',
             'brand_id' => 'nullable|exists:brand,id',
-            'variations.*.size' => 'nullable|string|max:50',
-            'variations.*.color' => 'nullable|string|max:50',
+            'variations.*.size_id' => 'nullable|exists:sizes,id',
+            'variations.*.color_id' => 'nullable|exists:colors,id',
             'variations.*.price' => 'nullable|numeric',
             'variations.*.stock' => 'nullable|integer',
             'variations.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -220,8 +202,8 @@ class ProductController extends Controller
 
                 DB::table('product_variations')->insert([
                     'product_id' => $id,
-                    'size' => $variation['size'] ?? null,
-                    'color' => $variation['color'] ?? null,
+                    'size_id' => $variation['size_id'] ?? null,
+                    'color_id' => $variation['color_id'] ?? null,
                     'price' => $variation['price'] ?? $request->price,
                     'stock' => $variation['stock'] ?? 0,
                     'image' => $variationImagePath,

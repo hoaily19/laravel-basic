@@ -10,16 +10,16 @@
     @endif
 
     <table class="table table-bordered mt-3">
-        <thead>
+        <thead class="text-center">
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Tên Thương Hiệu</th>
                 <th>Danh Mục</th>
                 <th>Hình Ảnh</th>
                 <th>Hành Động</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
             @foreach ($brands as $brand)
             <tr>
                 <td>{{ $brand->id }}</td>
@@ -31,9 +31,9 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ route('admin.brand.edit', $brand->id) }}" class="btn btn-sm btn-warning">Sửa</a>
+                    <a href="{{ route('admin.brand.edit', $brand->id) }}" class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></a> |
                     <a href="{{ route('admin.brand.delete', $brand->id) }}" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Bạn có chắc muốn xóa danh mục?')">Xóa</a>
+                        onclick="return confirm('Bạn có chắc muốn xóa danh mục?')"> <i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
             @endforeach

@@ -11,16 +11,16 @@
         </div>
     @endif
     <table class="table table-bordered mt-3">
-        <thead>
+        <thead class="text-center">
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Tên Logo</th>
                 <th>Hình Ảnh</th>
                 <th>Trạng Thái</th>
                 <th>Hành Động</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
             @foreach ($logos as $logo)
             <tr>
                 <td>{{ $logo->id }}</td>

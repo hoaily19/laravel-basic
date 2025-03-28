@@ -82,14 +82,24 @@
                 @foreach($variations as $index => $variation)
                     <div class="variation-group">
                         <h5>Biến thể {{ $index + 1 }}</h5>
-                        <div class="form-group">
-                            <label for="variations[{{ $index }}][size]">Kích Cỡ</label>
-                            <input type="text" name="variations[{{ $index }}][size]" class="form-control" value="{{ old("variations.$index.size", $variation->size) }}">
+                        <div class="col-md-2">
+                            <label for="variations[{{ $index }}][size_id]">Kích Thước</label>
+                            <select name="variations[{{ $index }}][size_id]" class="form-control">
+                                <option value="">Chọn kích thước</option>
+                                @foreach($sizes as $size)
+                                    <option value="{{ $size->id }} {{old ("variations.$index.size_id", $variation->size_id) == $size->id ? 'selected' : ''}}">{{ $size->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-
-                        <div class="form-group">
-                            <label for="variations[{{ $index }}][color]">Màu Sắc</label>
-                            <input type="text" name="variations[{{ $index }}][color]" class="form-control" value="{{ old("variations.$index.color", $variation->color) }}">
+                        
+                        <div class="col-md-2">
+                            <label for="variations[{{ $index }}][color_id]">Màu Sắc</label>
+                            <select name="variations[{{ $index }}][color_id]" class="form-control">
+                                <option value="">Chọn màu sắc</option>
+                                @foreach($colors as $color)
+                                    <option value="{{ $color->id }} {{old ("variations.$index.color_id", $variation->color_id) == $color->id ? 'selected' : ''}}">{{ $color->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">

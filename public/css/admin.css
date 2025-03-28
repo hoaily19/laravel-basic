@@ -140,3 +140,9 @@
         width: 100%;
     }
 }
+
+
+    .table thead th {
+        background-color: #000 !important;
+        color: #fff; 
+    }

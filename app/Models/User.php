@@ -22,7 +22,12 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'role'
+        'role',
+        'avatar',
+        'reset_token',
+        'reset_token_expires_at',
+        'oauth_provider',
+        'oauth_id',
     ];
 
     /**
@@ -51,5 +56,10 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
     }
 }

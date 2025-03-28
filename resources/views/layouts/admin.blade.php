@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? '' }} | Admin Dashboard</title>
-    <link rel="icon" tye="image/x-icon" href="https://finatech.s3.ap-southeast-1.amazonaws.com/20220929/23109627/Shopee.jpg" class="">
+    <link rel="icon" tye="image/x-icon"
+        href="https://finatech.s3.ap-southeast-1.amazonaws.com/20220929/23109627/Shopee.jpg" class="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
@@ -16,7 +20,9 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="/" class="text-decoration-none"><h4 class="text-white text-center mb-4">Admin Shop</h4></a>
+        <a href="/" class="text-decoration-none">
+            <h4 class="text-white text-center mb-4">Admin Shop</h4>
+        </a>
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link active" href="/admin#dashboard">
@@ -46,8 +52,11 @@
                 </a>
                 <div class="collapse" id="productsMenu">
                     <ul class="nav flex-column ps-3">
-                        <li><a class="nav-link" href="{{ route('admin.product.index') }}                                                                                            ">Danh sách sản phẩm</a></li>
+                        <li><a class="nav-link"
+                                href="{{ route('admin.product.index') }}                                                                                            ">Danh
+                                sách sản phẩm</a></li>
                         <li><a class="nav-link" href="{{ route('admin.product.create') }}">Thêm sản phẩm</a></li>
+                        <li><a class="nav-link" href="{{ route('variants.index') }}">Các thuộc tính</a></li>
                     </ul>
                 </div>
             </li>
@@ -65,7 +74,7 @@
                     </ul>
                 </div>
             </li>
-            
+
 
             <li class="nav-item">
                 <a class="nav-link" href="/admin/users#users">
@@ -126,7 +135,7 @@
                     this.classList.add('active');
 
                     const href = this.getAttribute('href');
-                    window.location.href = href; 
+                    window.location.href = href;
                 });
             });
 
@@ -148,7 +157,7 @@
             window.addEventListener('hashchange', setActiveFromHash);
         });
     </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

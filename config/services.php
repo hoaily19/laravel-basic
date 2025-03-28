@@ -13,7 +13,17 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URL'),
+    ],
+    'vnpay' => [
+        'tmn_code' => env('VNPAY_TMN_CODE'),
+        'hash_secret' => env('VNPAY_HASH_SECRET'),
+        'url' => env('VNPAY_URL'),
+        'callback' => env('VNPAY_CALLBACK_URL'),
+    ],
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

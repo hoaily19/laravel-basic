@@ -26,3 +26,7 @@ php artisan storage:link
 ```bash
 php artisan serve
 ```
+### Thư viện socialite
+```bash
+composer require laravel/socialite
+```
