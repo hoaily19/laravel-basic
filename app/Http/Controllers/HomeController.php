@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Size;
+use App\Models\Brand;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -30,17 +32,69 @@ class HomeController extends Controller
         return view('index', compact('products', 'categories', 'title'));
     }
 
-    public function product()
+    public function product(Request $request)
     {
         $query = DB::table('products');
-        if (request()->has('search')) {
-            $search = request()->input('search');
+        // Tìm kiếm theo tên sản phẩm
+        if ($request->has('search')) {
+            $search = $request->input('search');
             $query->where('name', 'like', '%' . $search . '%');
         }
+        // Lọc theo danh mục
+        if ($request->has('categories')) {
+            $categories = $request->input('categories');
+            if (!empty($categories)) {
+                $query->whereIn('categories_id', $categories);
+            }
+        }
+        // Lọc theo thương hiệu
+        if ($request->has('brands')) {
+            $brands = $request->input('brands');
+            if (!empty($brands)) {
+                $query->whereIn('brand_id', $brands);
+            }
+        }
+        // Lọc theo khoảng giá
+        if ($request->has('price_range')) {
+            $priceRanges = $request->input('price_range');
+            $query->where(function ($q) use ($priceRanges) {
+                foreach ($priceRanges as $range) {
+                    if ($range == 'under_500k') {
+                        $q->orWhere('price', '<', 500000);
+                    } elseif ($range == '500k_1m') {
+                        $q->orWhereBetween('price', [500000, 1000000]);
+                    } elseif ($range == '1m_2m') {
+                        $q->orWhereBetween('price', [1000000, 2000000]);
+                    } elseif ($range == '2m_5m') {
+                        $q->orWhereBetween('price', [2000000, 5000000]);
+                    } elseif ($range == 'above_5m') {
+                        $q->orWhere('price', '>', 5000000);
+                    }
+                }
+            });
+        }
+        // Sắp xếp
+        if ($request->has('sort')) {
+            $sort = $request->input('sort');
+            if ($sort == 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif ($sort == 'price_desc') {
+                $query->orderBy('price', 'desc');
+            } elseif ($sort == 'newest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($sort == 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            }
+        }
+        $products = $query->paginate(15);
+        $categories = Category::with('brands')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $brands = DB::table('brand')
+            ->orderBy('created_at', 'desc')
+            ->get();
         $title = 'Sản phẩm';
-        $products = DB::table('products')->paginate(15);
-        $categories = Category::with('brands')->get();
-        return view('product', compact('products', 'categories', 'title'));
+        return view('product', compact('products', 'categories', 'title', 'brands'));
     }
 
     public function show($slug)

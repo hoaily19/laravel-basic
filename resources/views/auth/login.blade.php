@@ -46,34 +46,65 @@
         margin-top: -10px;
         margin-bottom: 10px;
     }
+    .social-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .google-btn, .facebook-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #333;
+        font-size: 14px;
+    }
+    .google-btn i, .facebook-btn i {
+        margin-right: 10px;
+    }
+    .google-btn {
+        background-color: #fff;
+    }
 </style>
 
 <div class="login-container shadow">
+    @if (session('error'))
+<script>
+    iziToast.error({
+        title: 'Lỗi',
+        message: '{{ session('error') }}',
+        position: 'topRight'
+    });
+</script>
+@endif
     <h2>Đăng Nhập</h2>
     <form action="{{ route('login') }}" method="POST">
         @csrf
         <div>
-            <input type="email" class="form-control" name="email" placeholder="Nhập email" required>
+            <input type="email" class="form-control" name="email" placeholder="Nhập email" >
             @error('email')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <div>
-            <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" required>
+            <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" >
             @error('password')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+        <div class="mb-3">
+            <a href="/quen-mat-khau" class="text-decoration-none text-orange"> Quên mật khẩu</a>
+        </div>
     </form>
     <div class="text-center mt-3">
-        <p>Hoặc đăng nhập bằng:</p>
-        <div class="d-flex justify-content-center gap-2">
-            <a href="/auth/facebook" class="btn btn-facebook social-btn w-100">
-                <i class="bi bi-facebook me-2"></i> Facebook
-            </a>
-            <a href="/auth/google" class="btn btn-google social-btn w-100">
-                <i class="bi bi-google me-2"></i> Google
+        <p>Hoặc đăng ký với</p>
+        <div class="social-btn">
+            <a href="auth/google" class="google-btn text-decoration-none">
+                <i class="fab fa-google"></i> Google
             </a>
         </div>
     </div>

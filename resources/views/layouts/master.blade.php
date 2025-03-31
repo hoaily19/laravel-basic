@@ -8,7 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/master.css') }}">
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
 
@@ -29,12 +30,6 @@
             <div class="d-flex justify-content-between align-items-center">
                 <!-- Left Side Links -->
                 <div class="shopee-top-links">
-                    <a href="#" class="text-white">Kênh Người Bán</a>
-                    <span class="text-white mx-2">|</span>
-                    <a href="#" class="text-white">Trở thành Người bán </a>
-                    <span class="text-white mx-2">|</span>
-                    <a href="#" class="text-white">Tải ứng dụng</a>
-                    <span class="text-white mx-2">|</span>
                     <a href="#" class="text-white">Kết nối</a>
                     <a href="#" class="text-white ms-2"><i class="fab fa-facebook"></i></a>
                     <a href="#" class="text-white ms-2"><i class="fab fa-instagram"></i></a>
@@ -44,8 +39,6 @@
                     <a href="#" class="text-white"><i class="fas fa-bell me-1"></i> Thông Báo</a>
                     <span class="text-white mx-2">|</span>
                     <a href="#" class="text-white"><i class="fas fa-question-circle me-1"></i> Hỗ Trợ</a>
-                    <span class="text-white mx-2">|</span>
-                    <a href="#" class="text-white"><i class="fas fa-globe me-1"></i> Tiếng Việt <i class="fas fa-chevron-down"></i></a>
                     <span class="text-white mx-2">|</span>
                     @guest
                         <a href="{{ route('register') }}" class="text-white">Đăng Ký</a>
@@ -115,21 +108,11 @@
     <div class="shopee-categories-bar">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-center">
-                @if (isset($categories) && $categories->isNotEmpty())
-                    @foreach ($categories as $category)
-                        <div class="category-item">
-                            <a href="{{ route('product.product', ['category' => $category->id]) }}" class="category-link">{{ $category->name }}</a>
-                            
-                            @if ($category->brands->isNotEmpty()) 
-                                <div class="brand-dropdown">
-                                    @foreach ($category->brands as $brand)
-                                        <a href="{{ route('product.product', ['category' => $category->id, 'brand' => $brand->id]) }}" class="brand-link">{{ $brand->name }}</a>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-                    @endforeach
-                @endif
+                <a href="{{ route('product.index') }}" class="category-link">Trang Chủ</a>
+                <a href="{{ route('product.product') }}" class="category-link">Sản Phẩm</a>
+                <a href="#" class="category-link">Giới Thiệu</a>
+                <a href="#" class="category-link">Liên Hệ</a>
+
             </div>
         </div>
     </div>
@@ -234,6 +217,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     @yield('scripts')
 </body>
 </html>

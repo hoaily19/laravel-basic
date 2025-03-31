@@ -59,7 +59,9 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/')->with('success', 'Đăng nhập thành công..');
+        }else {
+            return back()->with('error', 'Sai tài khoản hoặc mật khẩu');
         }
 
         return back()->withErrors([
@@ -74,6 +76,7 @@ class UserController extends Controller
         return redirect('/login');
     }
 
+    //login gooogle
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
@@ -177,6 +180,7 @@ class UserController extends Controller
         return response()->json(['success' => true, 'message' => 'Xóa ảnh thành công']);
     }
 
+    //update new password
     public function changePassword()
     {
         $title = "Đổi mật khẩu";
@@ -219,7 +223,7 @@ class UserController extends Controller
         $title = "Thêm địa chỉ";
         $user = Auth::user();
         $addresses = $user->addresses ?? collect();
-        Log::info('Addresses:', ['addresses' => $addresses]); // Log to storage/logs/laravel.log
+        Log::info('Addresses:', ['addresses' => $addresses]); 
         return view('address', compact('addresses', 'title'));
     }
     public function storeAddress(Request $request)
@@ -244,7 +248,6 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        // Lưu địa chỉ mới
         $address = new Address([
             'user_id' => $user->id,
             'receiver_name' => $request->receiver_name,
@@ -256,7 +259,6 @@ class UserController extends Controller
             'is_default' => $request->is_default ? true : false,
         ]);
 
-        // Nếu đặt làm mặc định, bỏ mặc định của các địa chỉ khác
         if ($request->is_default) {
             Address::where('user_id', $user->id)->update(['is_default' => false]);
         }
@@ -271,5 +273,114 @@ class UserController extends Controller
         $address = Address::findOrFail($id);
         $address->delete();
         return redirect()->route('profile.address')->with('success', 'Xóa địa chỉ thành cong');
+    }
+
+    // forgot password
+    public function forgotPassword(Request $request)
+    {
+        $title = 'Quên mật khẩu';
+        return view('auth.forgot-password', compact('title'));
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ], [
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Email không đúng định dạng',
+            'email.exists' => 'Không tìm thấy tài khoản với email này'
+        ]);
+
+        $request->session()->forget(['email', 'otp_verified']);
+
+        $user = User::where('email', $request->email)->first();
+
+        $user->sendPasswordResetEmail();
+
+        $request->session()->put('email', $request->email);
+
+        return redirect()->route('password.verify-otp')
+            ->with('success', 'Mã OTP đã được gửi đến email của bạn');
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $title = 'Xác nhận OTP';
+        return view('auth.verify-otp', compact('title'));
+    }
+
+    public function validateOtp(Request $request)
+    {
+        $request->validate([
+            'otp' => 'required|numeric|digits:6'
+        ], [
+            'otp.required' => 'Vui lòng nhập mã OTP',
+            'otp.numeric' => 'Mã OTP phải là số',
+            'otp.digits' => 'Mã OTP phải có 6 chữ số'
+        ]);
+
+        $email = $request->session()->get('email');
+
+        if (!$email) {
+            return redirect()->route('password.forgot')
+                ->with('error', 'Phiên làm việc đã hết hạn. Vui lòng thực hiện lại quy trình đặt lại mật khẩu.');
+        }
+
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return redirect()->route('password.forgot')
+                ->with('error', 'Không tìm thấy tài khoản');
+        }
+
+        if (!$user->verifyResetToken($request->otp)) {
+            return redirect()->route('password.verify-otp')
+                ->with('error', 'Mã OTP không hợp lệ hoặc đã hết hạn');
+        }
+
+        $request->session()->put('otp_verified', true);
+
+        return redirect()->route('password.reset');
+    }
+
+    public function showResetForm()
+    {
+        if (!session('otp_verified')) {
+            return redirect()->route('password.forgot');
+        }
+
+        $title = 'Đặt lại mật khẩu';
+        return view('auth.reset-password', compact('title'));
+    }
+
+    public function resetPassword(Request $request)
+    {
+        if (!session('otp_verified')) {
+            return redirect()->route('password.forgot');
+        }
+
+        $request->validate([
+            'password' => 'required|min:6|confirmed',
+        ], [
+            'password.required' => 'Vui lòng nhập mật khẩu mới',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự',
+            'password.confirmed' => 'Xác nhận mật khẩu không khớp'
+        ]);
+
+        $email = $request->session()->get('email');
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $user->password = Hash::make($request->password);
+            $user->clearResetToken();
+            $user->save();
+
+            $request->session()->forget(['email', 'otp_verified']);
+
+            return redirect()->route('login')->with('success', 'Mật khẩu đã được đổi thành công. Vui lòng đăng nhập.');
+        }
+
+        return back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
     }
 }

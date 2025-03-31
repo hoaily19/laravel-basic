@@ -112,7 +112,6 @@ Route::get('/login/google/callback', [UserController::class, 'handleGoogleCallba
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 //cart
-
 Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
@@ -123,8 +122,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 
-
-
+//quen mat khau
+Route::get('/quen-mat-khau', [UserController::class, 'forgotPassword'])->name('password.forgot');
+Route::post('/quen-mat-khau', [UserController::class, 'sendResetLink'])->name('password.send-link');
+Route::get('/xac-nhan-otp', [UserController::class, 'verifyOtp'])->name('password.verify-otp');
+Route::post('/xac-nhan-otp', [UserController::class, 'validateOtp'])->name('password.validate-otp');
+Route::get('/dat-lai-mat-khau', [UserController::class, 'showResetForm'])->name('password.reset');
+Route::post('/dat-lai-mat-khau', [UserController::class, 'resetPassword'])->name('password.update');
 
 //404 Notfound
 Route::fallback(function () {
