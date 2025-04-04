@@ -16,7 +16,10 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('user.index');
+        $title = 'Quản lý người dùng';
+        $users = User::orderBy('created_at', 'asc')   
+            ->paginate(12);
+        return view('admin.user.index', compact('title', 'users'));
     }
 
     public function showRegistrationForm()
@@ -226,6 +229,7 @@ class UserController extends Controller
         Log::info('Addresses:', ['addresses' => $addresses]); 
         return view('address', compact('addresses', 'title'));
     }
+    
     public function storeAddress(Request $request)
     {
         $request->validate([
@@ -382,5 +386,58 @@ class UserController extends Controller
         }
 
         return back()->with('error', 'Có lỗi xảy ra. Vui lòng thử lại.');
+    }
+
+    public function updateRole(Request $request, $id)
+    {
+        $currentUser = Auth::user();
+        $targetUser = User::findOrFail($id);
+
+        if ($currentUser->role === 'admin') {
+            if ($targetUser->role === 'admin') {
+                return back()->with('error', 'Không được thao tác với admin khác');
+            }
+            if (!in_array($request->role, ['user', 'admin'])) {
+                return back()->with('error', 'Role không hợp lệ');
+            }
+        } else if ($currentUser->role === 'admin') {
+            if ($targetUser->role === 'admin') {
+                return back()->with('error', 'Không được thao tác với admin');
+            }
+            if (!in_array($request->role, ['user', 'admin'])) {
+                return back()->with('error', 'Role không hợp lệ');
+            }
+        } else {
+            return back()->with('error', 'Bạn không có quyền thực hiện thao tác này');
+        }
+
+        $targetUser->update(['role' => $request->role]);
+
+        return back()->with('success', 'Cập nhật role thành công');
+    }
+
+    public function destroy($id)
+    {
+        $currentUser = Auth::user();
+        $targetUser = User::findOrFail($id);
+
+
+        if ($currentUser->role === 'admin') {
+            if ($targetUser->id === $currentUser->id) {
+                return back()->with('error', 'Không thể xóa chính mình');
+            }
+            if ($targetUser->role === 'admin') {
+                return back()->with('error', 'Không thể xóa admin khác');
+            }
+        } else if ($currentUser->role === 'admin') {
+            if ($targetUser->role !== 'user') {
+                return back()->with('error', 'Bạn chỉ được xóa user thường');
+            }
+        } else {
+            return back()->with('error', 'Bạn không có quyền thực hiện thao tác này');
+        }
+
+        $targetUser->delete();
+        return back()->with('success', 'Xóa người dùng thành công');
     }
 }

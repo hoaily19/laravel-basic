@@ -9,8 +9,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\LogoController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\OrdersController;
 
 
 //Admin
@@ -19,6 +21,7 @@ Route::middleware('check.role:admin')->group(function () {
         $title = 'Trang quản trị';
         return view('admin.index', compact('title'));
     });
+   
     //Danh mục
     Route::prefix('admin/category')->name('admin.category.')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
@@ -74,8 +77,24 @@ Route::middleware('check.role:admin')->group(function () {
         Route::put('/update/{id}', [SizeController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [SizeController::class, 'delete'])->name('delete');
     });
+    //user
+    Route::prefix('admin/user')->name('admin.user.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::post('/{id}/update-role', [UserController::class, 'updateRole'])->name('update-role');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
     Route::prefix('admin')->group(function () {
         Route::get('/variants', [HomeController::class, 'variations'])->name('variants.index');
+    });
+
+    Route::prefix('admin/coupon')->name('admin.coupon.')->group(function () {
+        Route::get('/', [CouponController::class, 'index'])->name('index');
+        Route::get('/create', [CouponController::class, 'create'])->name('create');
+        Route::post('/store', [CouponController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [CouponController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [CouponController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [CouponController::class, 'delete'])->name('delete');
     });
 });
 
@@ -130,6 +149,31 @@ Route::post('/xac-nhan-otp', [UserController::class, 'validateOtp'])->name('pass
 Route::get('/dat-lai-mat-khau', [UserController::class, 'showResetForm'])->name('password.reset');
 Route::post('/dat-lai-mat-khau', [UserController::class, 'resetPassword'])->name('password.update');
 
+Route::middleware('is_login')->group(function () {
+    Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout.index');
+    Route::post('/checkout', [OrdersController::class, 'store'])->name('orders.store');
+    Route::get('/checkout/success/{order}', [OrdersController::class, 'success'])->name('orders.success');
+});
+
+Route::get('/vnpay/callback', [PaymentController::class, 'vnpayCallback'])->name('vnpay.callback');
+Route::get('/momo/callback', [PaymentController::class, 'momoCallback'])->name('momo.callback');
+Route::post('/momo/ipn', [PaymentController::class, 'momoIpn'])->name('momo.ipn');
+Route::get('/zalopay/callback', [PaymentController::class, 'zalopayCallback'])->name('zalopay.callback');
+
+//coupon
+Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('coupon.apply');
+
+Route::get('/success', function () {
+    $title = "Thành công!";
+    return view('waring.success', compact('title'));
+})->name('waring.success');
+Route::get('/fail', function () {
+    $title = "Thất bại!";
+    return view('waring.fail', compact('title'));
+})->name('waring.fail');
+
+
+Route::get('/waring/success', [OrdersController::class, 'success'])->name('waring.success');
 //404 Notfound
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);

@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('cart.checkout') }}" method="POST" id="cart-form">
+            <form action="{{ route('checkout.index') }}" method="GET" id="cart-form">
                 @csrf
                 <div class="card mt-3">
                     <div class="card-body d-flex justify-content-between align-items-center">

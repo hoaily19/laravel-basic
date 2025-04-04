@@ -7,6 +7,9 @@ use App\Models\Category;
 use App\Models\Color;
 use App\Models\Size;
 use App\Models\Brand;
+use App\Models\Cart;
+use App\Models\Address;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +43,6 @@ class HomeController extends Controller
             $search = $request->input('search');
             $query->where('name', 'like', '%' . $search . '%');
         }
-        // Lọc theo danh mục
         if ($request->has('categories')) {
             $categories = $request->input('categories');
             if (!empty($categories)) {
@@ -117,5 +119,18 @@ class HomeController extends Controller
         $sizes = Size::all();
         $colors = Color::all();
         return view('admin.variants.index', compact('sizes', 'colors', 'title'));
+    }
+
+    public function checkout()
+    {
+        $title = "Thanh toán";
+
+        $user_id = Auth::user()->id ?? null;
+
+        $carts = Cart::with(['product', 'variation'])
+        ->where('user_id', $user_id)
+        ->get();
+        $addresses = Address::where('user_id', Auth::user()->id)->get();
+        return view('checkout', compact('title', 'addresses', 'carts'));
     }
 }

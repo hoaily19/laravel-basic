@@ -14,6 +14,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            prefix: 'tw-',
+            corePlugins: {
+                preflight: false,
+            }
+        }
+    </script>
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 
@@ -60,7 +69,7 @@
                     </ul>
                 </div>
             </li>
-
+            
             <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                     href="#logoMenu" role="button">
@@ -75,9 +84,22 @@
                 </div>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                    href="#couponMenu" role="button">
+                    <div><i class="bi bi-cash-stack me-2"></i> Mã giảm giá</div>
+                    <i class="bi bi-chevron-down"></i>
+                </a>
+                <div class="collapse" id="couponMenu">
+                    <ul class="nav flex-column ps-3">
+                        <li><a class="nav-link" href="{{ route('admin.coupon.index') }}">Mã giảm giá</a></li>
+                        <li><a class="nav-link" href="{{ route('admin.coupon.create') }}">Thêm mã giảm giá</a></li>
+                    </ul>
+                </div>
+            </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/admin/users#users">
+                <a class="nav-link" href="{{ route('admin.user.index') }}">
                     <i class="bi bi-person me-2"></i>Users
                 </a>
             </li>

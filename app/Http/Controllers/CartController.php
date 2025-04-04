@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
-use App\Models\Variations; 
+use App\Models\Variations;
+use App\Models\Address;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); 
+        $this->middleware('is_login');
     }
 
     /**
@@ -54,7 +55,7 @@ class CartController extends Controller
 
         $price = $variation ? $variation->price : $product->price;
         $stock = $variation ? $variation->stock : $product->stock;
-        
+
         if ($quantity > $stock) {
             return redirect()->back()->with('error', 'Số lượng yêu cầu vượt quá số lượng tồn kho!');
         }
@@ -170,14 +171,26 @@ class CartController extends Controller
     /**
      * Handle checkout (placeholder for now).
      */
-    public function checkout(Request $request)
+    public function checkout()
     {
-        $selectedItems = $request->input('selected_items', []);
+        $user = Auth::user();
+
+        $selectedItems = request()->input('selected_items', []);
 
         if (empty($selectedItems)) {
             return redirect()->route('cart.index')->with('error', 'Vui lòng chọn ít nhất một sản phẩm để thanh toán!');
         }
 
-        return redirect()->route('cart.index')->with('success', 'Chức năng thanh toán đang được phát triển!');
+        $carts = Cart::where('user_id', $user->id)
+            ->whereIn('id', $selectedItems)
+            ->with('product', 'variation')
+            ->get();
+
+        $totalAmount = $carts->sum(function ($item) {
+            return $item->price * $item->quantity;
+        });
+        $addresses = Address::where('user_id', $user->id)->get();
+
+        return view('checkout', compact('carts', 'totalAmount', 'addresses'));
     }
 }
