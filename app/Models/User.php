@@ -55,6 +55,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
+    }
     public function isAdmin()
     {
         return $this->role === 'admin';
@@ -110,4 +114,10 @@ class User extends Authenticatable
                     ->subject('Mã OTP Đặt Lại Mật Khẩu');
         });
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Orders::class);
+    }
+    
 }

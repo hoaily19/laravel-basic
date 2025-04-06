@@ -26,12 +26,22 @@ class CartController extends Controller
         $carts = Cart::where('user_id', $user->id)
             ->with('product', 'variation.size', 'variation.color')
             ->get();
-
+    
         $total = $carts->sum(function ($item) {
             return $item->price * $item->quantity;
         });
-
-        return view('cart', compact('carts', 'title', 'total'));
+    
+        $products = \App\Models\Product::paginate(5);
+        $categories = \App\Models\Category::all();
+        $brands = \App\Models\Brands::whereIn('categories_id', $categories->pluck('id'))->get();
+    
+        $cartItemCount = 0;
+        if (Auth::check()) {
+            $cartItemCount = Cart::where('user_id', Auth::id())->sum('quantity');
+        }
+    
+        // Pass all necessary variables to the view, including $carts and $total
+        return view('cart', compact('carts', 'total', 'products', 'categories', 'brands', 'cartItemCount', 'title'));
     }
 
     /**

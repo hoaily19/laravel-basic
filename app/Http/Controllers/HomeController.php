@@ -38,7 +38,6 @@ class HomeController extends Controller
     public function product(Request $request)
     {
         $query = DB::table('products');
-        // Tìm kiếm theo tên sản phẩm
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where('name', 'like', '%' . $search . '%');
@@ -49,14 +48,12 @@ class HomeController extends Controller
                 $query->whereIn('categories_id', $categories);
             }
         }
-        // Lọc theo thương hiệu
         if ($request->has('brands')) {
             $brands = $request->input('brands');
             if (!empty($brands)) {
                 $query->whereIn('brand_id', $brands);
             }
         }
-        // Lọc theo khoảng giá
         if ($request->has('price_range')) {
             $priceRanges = $request->input('price_range');
             $query->where(function ($q) use ($priceRanges) {
@@ -75,7 +72,6 @@ class HomeController extends Controller
                 }
             });
         }
-        // Sắp xếp
         if ($request->has('sort')) {
             $sort = $request->input('sort');
             if ($sort == 'price_asc') {

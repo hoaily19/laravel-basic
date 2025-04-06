@@ -323,11 +323,15 @@
                                 <i class="fas fa-plus"></i> Thêm địa chỉ mới
                             </button>
                         </div>
+                    @else
+                        <!-- Hiển thị thông báo nếu không có địa chỉ -->
+                        <div class="text-center py-3">Bạn chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới.</div>
                     @endif
 
                     <!-- New address form -->
                     <form action="{{ route('profile.storeAddress') }}" method="POST" id="new-address-form"
-                        style="display: {{ empty($addresses) ? 'block' : 'none' }};" class="mt-4">
+                        style="display: {{ empty($addresses) || count($addresses) == 0 ? 'block' : 'none' }};"
+                        class="mt-4">
                         @csrf
 
                         <div class="row">
@@ -503,9 +507,6 @@
                 const addressInput = document.getElementById('address_id');
                 if (addressInput) {
                     addressInput.value = addressId;
-                    console.log('Updated address_id to:', addressInput.value);
-                } else {
-                    console.error('address_id input not found');
                 }
             }
 
@@ -541,8 +542,8 @@
 
             const toggleAddressFormBtn = document.getElementById("toggle-address-form");
             const newAddressForm = document.getElementById("new-address-form");
-            let isFormVisible = {{ empty($addresses) ? 'true' : 'false' }};
-
+            let isFormVisible = {{ empty($addresses) || count($addresses) == 0 ? 'true' : 'false' }};
+            console.log("isFormVisible:", isFormVisible);
             if (toggleAddressFormBtn) {
                 toggleAddressFormBtn.addEventListener("click", function() {
                     if (isFormVisible) {

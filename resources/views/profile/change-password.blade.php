@@ -68,10 +68,13 @@
         <div class="col-md-3 col-lg-2 sidebar">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('profile') }}">Thông tin</a>
+                    <a class="nav-link" href="{{ route('profile.profile') }}">Thông tin</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('profile.address') }}">Địa Chỉ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('profile.orders') }}">Đơn Mua</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ route('profile.changePassword') }}">Đổi mật khẩu</a>
@@ -88,6 +91,10 @@
                     <img src="https://fullstack.edu.vn/assets/f8-icon-lV2rGpF0.png" alt="Avatar">
                 @endif
                 <h2>{{ Auth::user()->username }}</h2>
+                <div class="profile-header-info">
+                    <h2>{{ $user->name }}</h2>
+                    <p>{{ $user->email }}</p>
+                </div>
             </div>
 
             <div class="card">

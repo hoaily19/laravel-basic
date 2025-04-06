@@ -1,20 +1,27 @@
 @extends('layouts.master')
 
 @section('content')
+@if (session('success'))
+    <script>
+        iziToast.success({
+            title: 'Thành công',
+            message: '{{ session('success') }}',
+            position: 'topRight'
+        });
+    </script>
+@endif
+@if (session('error'))
+    <script>
+        iziToast.error({
+            title: 'Lỗi',
+            message: '{{ session('error') }}',
+            position: 'topRight'
+        });
+    </script>
+@endif
     <div class="container my-4">
         <h2 class="mb-4">Giỏ Hàng</h2>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
 
         @if ($carts->isEmpty())
             <div class="alert alert-info">
@@ -38,16 +45,19 @@
                     @foreach ($carts as $cart)
                         <div class="row align-items-center py-3 border-bottom">
                             <div class="col-1">
-                                <input type="checkbox" name="selected_items[]" value="{{ $cart->id }}" class="cart-item-checkbox" onclick="updateTotal()" form="cart-form">
+                                <input type="checkbox" name="selected_items[]" value="{{ $cart->id }}"
+                                    class="cart-item-checkbox" onclick="updateTotal()" form="cart-form">
                             </div>
                             <div class="col-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="{{ $cart->product->image ? Storage::url($cart->product->image) : 'https://via.placeholder.com/80' }}" alt="{{ $cart->product->name }}" class="me-3" style="width: 80px; height: 80px; object-fit: cover;">
+                                    <img src="{{ $cart->product->image ? Storage::url($cart->product->image) : 'https://via.placeholder.com/80' }}"
+                                        alt="{{ $cart->product->name }}" class="me-3"
+                                        style="width: 80px; height: 80px; object-fit: cover;">
                                     <div>
                                         <p class="mb-1">{{ $cart->product->name }}</p>
                                         @if ($cart->variation)
                                             <small class="text-muted">
-                                                Phân loại: 
+                                                Phân loại:
                                                 @if ($cart->variation->size)
                                                     {{ $cart->variation->size->name }}
                                                 @endif
@@ -64,19 +74,26 @@
                             </div>
                             <div class="col-2 text-center">
                                 <div class="input-group" style="width: auto; margin: 0 auto;">
-                                    <a href="{{ route('cart.update', ['id' => $cart->id, 'change' => -1]) }}" class="btn btn-outline-secondary">-</a>
-                                    <form action="{{ route('cart.update.quantity', $cart->id) }}" method="POST" class="d-inline">
+                                    <a href="{{ route('cart.update', ['id' => $cart->id, 'change' => -1]) }}"
+                                        class="btn btn-outline-secondary">-</a>
+                                    <form action="{{ route('cart.update.quantity', $cart->id) }}" method="POST"
+                                        class="d-inline">
                                         @csrf
-                                        <input type="number" name="quantity" class="form-control text-center" value="{{ $cart->quantity }}" min="1" max="{{ $cart->variation ? $cart->variation->stock : $cart->product->stock }}" onchange="this.form.submit()">
+                                        <input type="number" name="quantity" class="form-control text-center"
+                                            value="{{ $cart->quantity }}" min="1"
+                                            max="{{ $cart->variation ? $cart->variation->stock : $cart->product->stock }}"
+                                            onchange="this.form.submit()">
                                     </form>
-                                    <a href="{{ route('cart.update', ['id' => $cart->id, 'change' => 1]) }}" class="btn btn-outline-secondary">+</a>
+                                    <a href="{{ route('cart.update', ['id' => $cart->id, 'change' => 1]) }}"
+                                        class="btn btn-outline-secondary">+</a>
                                 </div>
                             </div>
                             <div class="col-2 text-center">
                                 <span class="text-danger">đ{{ number_format($cart->price * $cart->quantity, 0) }}</span>
                             </div>
                             <div class="col-1 text-center">
-                                <a href="{{ route('cart.delete', $cart->id) }}" class="text-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
+                                <a href="{{ route('cart.delete', $cart->id) }}" class="text-danger"
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
                             </div>
                         </div>
                     @endforeach
@@ -126,7 +143,8 @@
 
             checkboxes.forEach(checkbox => {
                 const cartItem = checkbox.closest('.row');
-                const price = parseFloat(cartItem.querySelector('.col-2:nth-child(3) span').textContent.replace('đ', '').replace(/,/g, ''));
+                const price = parseFloat(cartItem.querySelector('.col-2:nth-child(3) span').textContent.replace('đ',
+                    '').replace(/,/g, ''));
                 const quantity = parseInt(cartItem.querySelector('.form-control').value);
                 total += price * quantity;
             });
@@ -158,7 +176,7 @@
             const sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep;
             const dec = (typeof dec_point === 'undefined') ? '.' : dec_point;
             let s = '';
-            const toFixedFix = function (n, prec) {
+            const toFixedFix = function(n, prec) {
                 const k = Math.pow(10, prec);
                 return Math.round(n * k) / k;
             };

@@ -105,17 +105,26 @@ Route::get('/product', [HomeController::class, 'product'])->name('product.produc
 Route::get('/product/{slug}', [HomeController::class, 'show'])->name('product.show');
 
 //profile
-Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-Route::put('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
-Route::post('/profile/delete-avatar', [UserController::class, 'deleteAvatar'])->name('profile.delete.avatar');
-Route::get('/profile/change-password', [UserController::class, 'changePassword'])->name('profile.changePassword');
-Route::put('/profile/update-password', [UserController::class, 'updatePassword'])->name('profile.updatePassword');
+Route::prefix('profile')->group(function () {
+    // Profile
+    Route::get('/', [UserController::class, 'profile'])->name('profile.profile');
+    Route::put('/update', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/delete-avatar', [UserController::class, 'deleteAvatar'])->name('profile.delete.avatar');
+    Route::get('/change-password', [UserController::class, 'changePassword'])->name('profile.changePassword');
+    Route::put('/update-password', [UserController::class, 'updatePassword'])->name('profile.updatePassword');
 
-//address
-Route::get('/profile/address', [UserController::class, 'address'])->name('profile.address');
-Route::post('/profile/address/store', [UserController::class, 'storeAddress'])->name('profile.storeAddress');
-Route::delete('/profile/address/delete/{id}', [UserController::class, 'deleteAddress'])->name('profile.deleteAddress');
+    // Address
+    Route::get('/address', [UserController::class, 'address'])->name('profile.address');
+    Route::post('/address/store', [UserController::class, 'storeAddress'])->name('profile.storeAddress');
+    Route::post('/address/set-default/{id}', [UserController::class, 'setAddress'])->name('profile.setAddress');
+    Route::delete('/address/delete/{id}', [UserController::class, 'deleteAddress'])->name('profile.deleteAddress');
 
+    //Order
+    Route::get('/orders', [UserController::class, 'orders'])->name('profile.orders');
+    Route::get('/orders/{id}', [UserController::class, 'orderDetail'])->name('profile.orderDetail');
+    Route::post('/orders/cancel/{id}', [UserController::class, 'cancelOrder'])->name('profile.cancelOrder');
+    Route::get('/orders/return/{id}', [UserController::class, 'returnOrder'])->name('profile.returnOrder');
+});
 
 // Route đăng ký
 Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');

@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Trang Chủ') | HoaiLy Shop</title>
-    <link rel="icon" type="image/png" href="https://finatech.s3.ap-southeast-1.amazonaws.com/20220929/23109627/Shopee.jpg">
+    <link rel="icon" type="image/png"
+        href="https://finatech.s3.ap-southeast-1.amazonaws.com/20220929/23109627/Shopee.jpg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -24,13 +26,14 @@
     </script>
 
     @yield('styles')
-    
+
 </head>
-    <style >
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+</style>
+
 <body>
 
 
@@ -56,16 +59,27 @@
                         <a href="{{ route('login') }}" class="text-white">Đăng Nhập</a>
                     @endguest
                     @auth
-                        <a href="#" class="text-white dropdown-toggle" id="userDropdown" role="button" 
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
+                        <a href="#" class="text-white dropdown-toggle" id="userDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            @if (Auth::user()->avatar)
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="Avatar" class="rounded-circle me-2"
+                                    width="32" height="32">
+                            @else
+                                <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(Auth::user()->email))) }}?s=32&d=mp"
+                                    alt="Avatar" class="rounded-circle me-2" width="32" height="32">
+                            @endif
+                            <span>{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item text-black" href="{{ url('/profile') }}">Hồ sơ</a></li>
-                            @if(Auth::user()->role === 'admin')
+                            <li><a class="dropdown-item text-black" href="{{ url('/profile/orders') }}">Đơn hàng của tôi</a>
+                            </li>
+                            @if (Auth::user()->role === 'admin')
                                 <li><a class="dropdown-item text-black" href="{{ url('/admin') }}">Quản trị</a></li>
                             @endif
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -86,17 +100,19 @@
                 @php
                     $logo = \App\Models\Logo::where('is_active', true)->first();
                 @endphp
-                @if($logo)
-                    <img src="{{ asset('storage/' . $logo->image) }}" alt="Thêm logo ở trang admin" height="40" onerror="this.src='{{ asset('images/default-logo.png') }}';">
+                @if ($logo)
+                    <img src="{{ asset('storage/' . $logo->image) }}" alt="Thêm logo ở trang admin" height="40"
+                        onerror="this.src='{{ asset('images/default-logo.png') }}';">
                 @else
-                    <span class="text-white">Thêm logo ở trang admin</span> 
+                    <span class="text-white">Thêm logo ở trang admin</span>
                 @endif
             </a>
-            
+
 
             <form class="d-flex mx-auto shopee-search" method="GET" action="{{ route('product.index') }}">
                 <div class="input-group">
-                    <input type="text" class="form-control me-2" placeholder="Tìm kiếm trên shophoaily..." name="search" value="{{ request()->input('search') }}">
+                    <input type="text" class="form-control me-2" placeholder="Tìm kiếm trên shophoaily..."
+                        name="search" value="{{ request()->input('search') }}">
                     <button class="btn btn-orange border" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
@@ -107,8 +123,19 @@
                 </div>
             @endif --}}
 
-            <a href="{{ url('/cart') }}" class="shopee-cart-icon">
-                <i class="fas fa-shopping-cart fa-2x"></i>
+            <a href="{{ url('/cart') }}" class="shopee-cart-icon text-decoration-none position-relative">
+                Giỏ hàng
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                    class="bi bi-cart3" viewBox="0 0 16 16">
+                    <path
+                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                </svg>
+                @if ($cartItemCount > 0)
+                    <span class="badge bg-danger rounded-circle position-absolute"
+                        style="top: -10px; right: -10px; font-size: 12px;">
+                        {{ $cartItemCount }}
+                    </span>
+                @endif
             </a>
         </div>
     </nav>
@@ -126,7 +153,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <div class="container mt-4">
         @yield('content')
@@ -165,7 +192,7 @@
                 <div class="col-md-2">
                     <h5>THANH TOÁN</h5>
                     <div class="payment-methods">
-                    
+
                     </div>
                 </div>
 
@@ -179,11 +206,16 @@
                     </div>
                     <h5 class="mt-4">ĐƠN VỊ VẬN CHUYỂN</h5>
                     <div class="tracking-methods">
-                        <img src="https://down-vn.img.susercontent.com/file/957f4e2d8f5a5f5a5e2a5f5a5e2a5f5a" alt="SPX Express">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Viettel Post">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Vietnam Post">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="J&T Express">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="GrabExpress">
+                        <img src="https://down-vn.img.susercontent.com/file/957f4e2d8f5a5f5a5e2a5f5a5e2a5f5a"
+                            alt="SPX Express">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                            alt="Viettel Post">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                            alt="Vietnam Post">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                            alt="J&T Express">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                            alt="GrabExpress">
                         <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Ninja Van">
                         <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Be">
                         <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="AhaMove">
@@ -199,8 +231,10 @@
                     </div>
                     <div class="app-downloads">
                         <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="App Store">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Google Play">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="App Gallery">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                            alt="Google Play">
+                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                            alt="App Gallery">
                     </div>
                 </div>
             </div>
@@ -230,4 +264,5 @@
 
     @yield('scripts')
 </body>
+
 </html>

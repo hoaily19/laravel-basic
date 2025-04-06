@@ -1,6 +1,15 @@
 @extends('layouts.master')
 
 @section('content')
+@if (session('success'))
+    <script>
+        iziToast.success({
+            title: 'Thành công',
+            message: '{{ session('success') }}',
+            position: 'topRight'
+        });
+    </script>
+@endif
     <div class="container my-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -19,11 +28,6 @@
             </ol>
         </nav>
         <h2 class="mb-3">{{ $product->name }}</h2>
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
         
         <div class="row">
             <!-- Ảnh sản phẩm -->

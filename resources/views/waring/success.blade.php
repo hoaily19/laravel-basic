@@ -75,7 +75,7 @@
                 </div>
                 <h2 class="fw-bold mb-3">Hoàn thành!</h2>
                 <p class="lead mb-4">Đơn hàng đã được đặt hàng thành công!</p>
-                <a href="/profile" class="btn btn-primary">Xem hồ sơ</a>
+                <a href="/profile/orders" class="btn btn-primary">Xem hồ sơ</a>
             </div>
         </div>
     </div>

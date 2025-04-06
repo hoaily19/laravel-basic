@@ -21,4 +21,14 @@ class Address extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getAddressAttribute()
+    {
+        return implode(', ', array_filter([
+            $this->street,
+            $this->ward,
+            $this->district,
+            $this->province,
+        ]));
+    }
 }

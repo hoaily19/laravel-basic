@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Orders;
+use App\Models\Orders_item;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -17,7 +20,7 @@ class UserController extends Controller
     public function index()
     {
         $title = 'Quản lý người dùng';
-        $users = User::orderBy('created_at', 'asc')   
+        $users = User::orderBy('created_at', 'asc')
             ->paginate(12);
         return view('admin.user.index', compact('title', 'users'));
     }
@@ -63,7 +66,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/')->with('success', 'Đăng nhập thành công..');
-        }else {
+        } else {
             return back()->with('error', 'Sai tài khoản hoặc mật khẩu');
         }
 
@@ -115,7 +118,7 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        return view('profile', compact('user'));
+        return view('profile.profile', compact('user'));
     }
 
     public function updateProfile(Request $request)
@@ -188,7 +191,7 @@ class UserController extends Controller
     {
         $title = "Đổi mật khẩu";
         $user = Auth::user();
-        return view('change-password', compact('user', 'title'));
+        return view('profile.change-password', compact('user', 'title'));
     }
 
     public function updatePassword(Request $request)
@@ -226,10 +229,10 @@ class UserController extends Controller
         $title = "Thêm địa chỉ";
         $user = Auth::user();
         $addresses = $user->addresses ?? collect();
-        Log::info('Addresses:', ['addresses' => $addresses]); 
-        return view('address', compact('addresses', 'title'));
+        Log::info('Addresses:', ['addresses' => $addresses]);
+        return view('profile.address', compact('addresses', 'title', 'user'));
     }
-    
+
     public function storeAddress(Request $request)
     {
         $request->validate([
@@ -272,6 +275,21 @@ class UserController extends Controller
         return redirect()->route('profile.address')->with('success', 'Thêm địa chỉ thành công');
     }
 
+    public function setAddress($id)
+    {
+        $address = Address::findOrFail($id);
+        $user = Auth::user();
+        if ($address->user_id !== $user->id) {
+            return redirect()->route('profile.address')
+                ->with('error', 'Địa chỉ không thuộc về bạn.');
+        }
+        Address::where('user_id', $user->id)->update(['is_default' => false]);
+        $address->is_default = true;
+        $address->save();
+
+        return redirect()->route('profile.address')
+            ->with('success', 'Đặt địa chỉ mặc định thành công.');
+    }
     public function deleteAddress($id)
     {
         $address = Address::findOrFail($id);
@@ -439,5 +457,77 @@ class UserController extends Controller
 
         $targetUser->delete();
         return back()->with('success', 'Xóa người dùng thành công');
+    }
+
+    //orders
+    public function orders()
+    {
+        $user = Auth::user();
+        $orders = $user->orders()
+            ->with(['orderItems.product', 'orderItems.variation'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
+
+        return view('profile.orders', compact('orders'));
+    }
+
+    /**
+     * Xem chi tiết một đơn hàng
+     */
+    public function orderDetail($id)
+    {
+        $user = Auth::user();
+        $order = $user->orders()
+            ->with(['orderItems.product', 'orderItems.variation.color', 'orderItems.variation.size', 'address'])
+            ->findOrFail($id);
+
+        return view('profile.order_detail', compact('order'));
+    }
+
+    /**
+     * Hủy đơn hàng
+     */
+
+    public function cancelOrder($id)
+    {
+        $user = Auth::user();
+        $order = $user->orders()->findOrFail($id);
+
+        if (in_array($order->status, ['paid', 'shipping', 'delivering'])) {
+            return redirect()->back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
+        }
+
+        $order->update(['status' => 'cancelled']);
+
+        return redirect()->route('profile.orders')
+            ->with('success', 'Đơn hàng đã được hủy thành công.');
+    }
+
+    /**
+     * Mua lại đơn hàng
+     */
+    public function returnOrder($id)
+    {
+        $user = Auth::user();
+        $oldOrder = $user->orders()->with('orderItems')->findOrFail($id);
+        $defaultAddress = $user->addresses()->where('is_default', true)->first();
+        if (!$defaultAddress) {
+            return redirect()->route('profile.orders')
+                ->with('error', 'Vui lòng thiết lập địa chỉ mặc định trước khi mua lại.');
+        }
+        $user->cart()->delete();
+
+        foreach ($oldOrder->orderItems as $item) {
+            Cart::create([
+                'user_id' => $user->id,
+                'product_id' => $item->product_id,
+                'product_variations_id' => $item->product_variations_id,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+            ]);
+        }
+
+        return redirect()->route('checkout.index')
+            ->with('success', 'Sản phẩm đã được thêm vào giỏ hàng. Vui lòng kiểm tra và thanh toán.');
     }
 }
