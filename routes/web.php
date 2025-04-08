@@ -88,13 +88,23 @@ Route::middleware('check.role:admin')->group(function () {
         Route::get('/variants', [HomeController::class, 'variations'])->name('variants.index');
     });
 
+    //Coupon
     Route::prefix('admin/coupon')->name('admin.coupon.')->group(function () {
         Route::get('/', [CouponController::class, 'index'])->name('index');
         Route::get('/create', [CouponController::class, 'create'])->name('create');
         Route::post('/store', [CouponController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [CouponController::class, 'edit'])->name('edit');
-        Route::put('/update/{id}', [CouponController::class, 'update'])->name('update');
+        Route::put('/update', [CouponController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [CouponController::class, 'delete'])->name('delete');
+    });
+
+    //Orders
+    Route::prefix('admin/order')->name('admin.order.')->group(function () {
+        Route::get('/', [OrdersController::class, 'index'])->name('index');
+        Route::get('/{id}', [OrdersController::class, 'show'])->name('show');
+        Route::post('/update-status/{id}', [OrdersController::class, 'updateStatus'])->name('update-status');
+        Route::put('/{id}', [OrdersController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [OrdersController::class, 'destroy'])->name('destroy');
     });
 });
 

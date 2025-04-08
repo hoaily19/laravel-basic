@@ -12,6 +12,7 @@ class Variations extends Model
         'size',
         'color',
         'price',
+        'original_price',
         'image',
         'stock',
         'sku',

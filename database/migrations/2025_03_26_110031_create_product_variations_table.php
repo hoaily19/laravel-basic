@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('size_id')->nullable();  // Liên kết với bảng sizes
             $table->unsignedBigInteger('color_id')->nullable(); // Liên kết với bảng colors
             $table->decimal('price', 10, 2)->nullable();  
+            $table->decimal('original_price', 10, 2)->nullable(); 
             $table->string('image')->nullable();  
             $table->integer('stock')->default(0);  
             $table->string('sku')->nullable()->unique();  

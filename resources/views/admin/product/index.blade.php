@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2>Danh sách danh mục </h2>
+    <h2>Danh sách sản phẩm </h2>
     <a href="{{ route('admin.product.create') }}" class="btn btn-primary">Thêm sản phẩm</a>
 
     @if (session('success'))
@@ -31,6 +31,7 @@
                 <th>Tên Sản Phẩm</th>
                 <th>Hình Ảnh</th>
                 <th>Giá</th>
+                <th>Lợi Nhuận Ước Chừng</th>
                 <th>Số Lượng</th>
                 <th>Hành Động</th>
             </tr>
@@ -42,10 +43,11 @@
                 <td>{{ $product->name }}</td>
                 <td>
                     @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" width="80">
+                    <img src="{{ asset('storage/' . $product->image) }}" width="50">
                     @endif
                 </td>
                 <td>{{ number_format($product->price) }} VNĐ</td>
+                <td class="text-danger">{{ number_format($product->price-$product->original_price) }} VNĐ</td>
                 <td>{{ $product->stock }}</td>
                 <td>
                     <a href="{{ route('admin.product.edit', $product->id) }}" class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></a> |

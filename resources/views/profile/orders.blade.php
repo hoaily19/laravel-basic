@@ -170,10 +170,22 @@
         color: #155724;
     }
 
-    .status-shipping {
-        background-color: #cce5ff;
-        color: #004085;
+    .status-delivered {
+        background-color: #d4edda;
+        color: #155724;
     }
+
+    .status-processing {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-completed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+
 
     .status-delivering {
         background-color: #e2e3e5;
@@ -244,8 +256,9 @@
                                         $statusTranslations = [
                                             'pending' => 'Chờ Xử Lý',
                                             'paid' => 'Đã Thanh Toán',
-                                            'shipping' => 'Đang Vận Chuyển',
                                             'delivering' => 'Đang Giao Hàng',
+                                            'delivered' => 'Đã Giao Hàng',
+                                            'completed' => 'Đã Hoàn Thành',
                                             'cancelled' => 'Đã Hủy'
                                         ];
                                         echo $statusTranslations[strtolower($order->status)] ?? $order->status;

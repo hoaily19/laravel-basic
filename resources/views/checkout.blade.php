@@ -324,11 +324,9 @@
                             </button>
                         </div>
                     @else
-                        <!-- Hiển thị thông báo nếu không có địa chỉ -->
                         <div class="text-center py-3">Bạn chưa có địa chỉ nào. Vui lòng thêm địa chỉ mới.</div>
                     @endif
 
-                    <!-- New address form -->
                     <form action="{{ route('profile.storeAddress') }}" method="POST" id="new-address-form"
                         style="display: {{ empty($addresses) || count($addresses) == 0 ? 'block' : 'none' }};"
                         class="mt-4">

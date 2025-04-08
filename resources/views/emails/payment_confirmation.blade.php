@@ -24,7 +24,7 @@
         }
 
         .header {
-            background-color: #4CAF50;
+            background-color: #ee4d2d;
             color: #ffffff;
             text-align: center;
             padding: 20px;
@@ -43,7 +43,7 @@
 
         .content h2 {
             font-size: 20px;
-            color: #4CAF50;
+            color: #ee4d2d;
         }
 
         .order-details table {
@@ -77,7 +77,7 @@
         .button {
             display: block;
             padding: 10px 20px;
-            background-color: #4CAF50;
+            background-color: #ee4d2d;
             color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
@@ -87,7 +87,7 @@
         }
 
         .button:hover {
-            background-color: #45a049;
+            background-color: #c24026;
         }
     </style>
 </head>
@@ -102,7 +102,7 @@
         <!-- Content -->
         <div class="content">
             <h2>Chào {{ $order->user->name }},</h2>
-            <p>Cảm ơn bạn đã đặt hàng tại Kicap! Chúng tôi xin xác nhận rằng đơn hàng của bạn đã được ghi nhận thành
+            <p>Cảm ơn bạn đã đặt hàng tại ShopHoaiLy! Chúng tôi xin xác nhận rằng đơn hàng của bạn đã được ghi nhận thành
                 công và đang được xử lý.</p>
 
             <div class="order-details">
@@ -123,14 +123,14 @@
             </div>
 
             <p>Chúng tôi sẽ thông báo thêm khi đơn hàng của bạn được giao. Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ
-                qua <a href="mailto:support@yourcompany.com">support@kicap.com</a>.</p>
+                qua <a href="mailto:support@hoaily.click">support@hoaily.click</a>.</p>
 
             <a href="#" class="button" style="text-decoration: none; color:#ffffff">Xem chi tiết đơn hàng</a>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>© 2025 Kicap.vn All rights reserved.</p>
+            <p>© 2025 HoaiLy.Click All rights reserved.</p>
         </div>
     </div>
 </body>

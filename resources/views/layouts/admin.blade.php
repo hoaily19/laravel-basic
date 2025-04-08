@@ -99,6 +99,13 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.order.index') }}">
+                    <i class="fa-solid fa-bag-shopping"></i> Đơn Hàng
+                </a>
+
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.user.index') }}">
                     <i class="bi bi-person me-2"></i>Users
                 </a>

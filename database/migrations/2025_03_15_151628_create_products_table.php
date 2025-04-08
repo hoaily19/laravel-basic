@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);  
+            $table->decimal('original_price', 10, 2)->nullable();
             $table->integer('stock');  
             $table->string('sku')->nullable()->unique();
             $table->string('image')->nullable();  

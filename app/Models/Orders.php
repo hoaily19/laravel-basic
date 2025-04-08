@@ -33,10 +33,6 @@ class Orders extends Model
     {
         return $this->hasMany(Orders_item::class, 'order_id', 'id');
     }
-    public function variation()
-    {
-        return $this->belongsTo(Variations::class, 'product_variations_id');
-    }
 
     public function getDisplayStatusAttribute()
     {
@@ -45,9 +41,30 @@ class Orders extends Model
             'paid' => 'Đã Thanh Toán',
             'shipping' => 'Đang Vận Chuyển',
             'delivering' => 'Đang Giao Hàng',
+            'delivered' => 'Đã Giao Hàng',
+            'completed' => 'Hoàn Thành',
             'cancelled' => 'Đã Hủy',
         ];
 
         return $statusMap[$this->status] ?? $this->status;
+    }
+
+    public function calculateTotalOriginalPrice()
+    {
+        $totalOriginalPrice = 0;
+        foreach ($this->orderItems as $item) {
+            $originalPrice = $item->variation->original_price ?? $item->product->original_price ?? 0;
+            $totalOriginalPrice += $originalPrice * $item->quantity;
+        }
+        return $totalOriginalPrice;
+    }
+
+    public function calculateTotalProfit()
+    {
+        $totalPrice = $this->total_price ?? 0; 
+        $totalOriginalPrice = $this->calculateTotalOriginalPrice(); 
+        $shippingFee = 20000; 
+
+        return $totalPrice - $totalOriginalPrice - $shippingFee;
     }
 }

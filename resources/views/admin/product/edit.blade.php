@@ -63,6 +63,15 @@
         </div>
 
         <div class="form-group">
+            <label for="original_price">Giá Gốc</label>
+            <input type="number" id="original_price" name="original_price" class="form-control @error('original_price') is-invalid @enderror" 
+                   value="{{ old('original_price', $product->original_price) }}" step="0.01" required>
+            @error('original_price')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="form-group">
             <label for="price">Giá Sản Phẩm</label>
             <input type="number" id="price" name="price" class="form-control @error('price') is-invalid @enderror" 
                    value="{{ old('price', $product->price) }}" step="0.01" required>
@@ -163,8 +172,16 @@
                             <div class="col-md-2">
                                 <label>Giá</label>
                                 <input type="number" name="variations[{{ $index }}][price]" class="form-control @error("variations.{$index}.price") is-invalid @enderror" 
-                                       value="{{ old("variations.{$index}.price", $variation->price) }}" step="0.01" placeholder="Giá riêng">
+                                       value="{{ old("variations.{$index}.price", $variation->price) }}" step="0.01" placeholder="Giá bán">
                                 @error("variations.{$index}.price")
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                <label>Giá Gốc</label>
+                                <input type="number" name="variations[{{ $index }}][original_price]" class="form-control @error("variations.{$index}.original_price") is-invalid @enderror" 
+                                       value="{{ old("variations.{$index}.original_price", $variation->original_price) }}" step="0.01" placeholder="Giá gốc">
+                                @error("variations.{$index}.original_price")
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -252,7 +269,7 @@ function previewMultipleImages(event) {
 
 function previewVariationImage(event, index) {
     const file = event.target.files[0];
-    const preview = event.target.nextElementSibling;
+    const preview = event.target.previousElementSibling; // Sửa để lấy ảnh preview chính xác
     if (file) {
         const reader = new FileReader();
         reader.onload = function() {
@@ -294,6 +311,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-2">
                         <label>Giá</label>
                         <input type="number" name="variations[${variationCount}][price]" class="form-control" step="0.01" placeholder="Giá riêng">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Giá Gốc</label>
+                        <input type="number" name="variations[${variationCount}][original_price]" class="form-control" step="0.01" placeholder="Giá gốc">
                     </div>
                     <div class="col-md-2">
                         <label>Số Lượng</label>

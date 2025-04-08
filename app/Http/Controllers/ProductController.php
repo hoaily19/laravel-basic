@@ -36,6 +36,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'original_price' => 'nullable|numeric',
             'stock' => 'required|integer',
             'sku' => 'nullable|string|unique:products',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -45,6 +46,7 @@ class ProductController extends Controller
             'variations.*.size_id' => 'nullable|exists:sizes,id',
             'variations.*.color_id' => 'nullable|exists:colors,id',
             'variations.*.price' => 'nullable|numeric',
+            'variations.*.original_price' => 'nullable|numeric', 
             'variations.*.stock' => 'nullable|integer',
             'variations.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
@@ -76,6 +78,7 @@ class ProductController extends Controller
             'slug' => $slug,
             'description' => $request->description,
             'price' => $request->price,
+            'original_price' => $request->original_price,
             'stock' => $request->stock,
             'sku' => $request->sku,
             'image' => $imagePath,
@@ -100,6 +103,7 @@ class ProductController extends Controller
                     'size_id' => $variation['size_id'] ?? null, // Chỉ lấy từ $variation
                     'color_id' => $variation['color_id'] ?? null, // Chỉ lấy từ $variation
                     'price' => $variation['price'] ?? $request->price,
+                    'original_price' => $variation['original_price'] ?? $request->original_price,
                     'stock' => $variation['stock'] ?? 0,
                     'image' => $variationImagePath,
                     'sku' => $variation['sku'] ?? 'VAR-' . $productId . '-' . Str::random(6),
@@ -130,6 +134,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'original_price' => 'nullable|numeric',
             'stock' => 'required|integer',
             'sku' => 'nullable|string|unique:products,sku,' . $id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -139,6 +144,7 @@ class ProductController extends Controller
             'variations.*.size_id' => 'nullable|exists:sizes,id',
             'variations.*.color_id' => 'nullable|exists:colors,id',
             'variations.*.price' => 'nullable|numeric',
+            'variations.*.original_price' => 'nullable|numeric',
             'variations.*.stock' => 'nullable|integer',
             'variations.*.image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -174,6 +180,7 @@ class ProductController extends Controller
             'slug' => Str::slug($request->name),
             'description' => $request->description,
             'price' => $request->price,
+            'original_price' => $request->original_price,
             'stock' => $request->stock,
             'sku' => $request->sku,
             'image' => $imagePath,
@@ -205,6 +212,7 @@ class ProductController extends Controller
                     'size_id' => $variation['size_id'] ?? null,
                     'color_id' => $variation['color_id'] ?? null,
                     'price' => $variation['price'] ?? $request->price,
+                    'original_price' => $variation['original_price'] ?? $request->original_price,
                     'stock' => $variation['stock'] ?? 0,
                     'image' => $variationImagePath,
                     'sku' => $variation['sku'] ?? 'VAR-' . $id . '-' . Str::random(6),

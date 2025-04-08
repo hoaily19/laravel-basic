@@ -9,7 +9,7 @@ class Orders_item extends Model
 {
     use HasFactory;
 
-    protected $table = 'orders_item';
+    protected $table = 'orders_item'; // Điều chỉnh tên bảng nếu khác
 
     protected $fillable = [
         'order_id',
@@ -20,18 +20,13 @@ class Orders_item extends Model
         'subtotal',
     ];
 
-    public function order()
-    {
-        return $this->belongsTo(Orders::class);
-    }
-
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     public function variation()
     {
-        return $this->belongsTo(Variations::class, 'product_variations_id');
+        return $this->belongsTo(Variations::class, 'product_variations_id'); // Điều chỉnh tên model nếu khác
     }
 }

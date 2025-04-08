@@ -73,6 +73,7 @@
         .btn-set-default:hover {
             background-color: #e55a00;
         }
+
         .profile-header-info {
             margin-left: 20px;
         }
@@ -262,7 +263,6 @@
 
 @section('scripts')
     <script>
-        // Load provinces
         fetch('https://provinces.open-api.vn/api/p/')
             .then(response => response.json())
             .then(data => {
@@ -275,7 +275,6 @@
                 });
             });
 
-        // Load districts when a province is selected
         document.getElementById('province').addEventListener('change', function() {
             const provinceName = this.value;
             const districtSelect = document.getElementById('district');
@@ -308,7 +307,6 @@
             }
         });
 
-        // Load wards when a district is selected
         document.getElementById('district').addEventListener('change', function() {
             const districtName = this.value;
             const provinceName = document.getElementById('province').value;
@@ -324,13 +322,15 @@
                         const province = provinces.find(p => p.name === provinceName);
                         if (province) {
                             fetch(
-                                    `https://provinces.open-api.vn/api/d/search/?q=${districtName}&p=${province.code}`)
+                                    `https://provinces.open-api.vn/api/d/search/?q=${districtName}&p=${province.code}`
+                                    )
                                 .then(response => response.json())
                                 .then(districts => {
                                     const district = districts.find(d => d.name === districtName);
                                     if (district) {
                                         fetch(
-                                                `https://provinces.open-api.vn/api/d/${district.code}?depth=2`)
+                                                `https://provinces.open-api.vn/api/d/${district.code}?depth=2`
+                                                )
                                             .then(response => response.json())
                                             .then(data => {
                                                 wardSelect.disabled = false;

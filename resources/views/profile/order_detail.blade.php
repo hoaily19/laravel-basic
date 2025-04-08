@@ -306,14 +306,14 @@
                             </button>
                         @endif
                         
-                        @if(!in_array($order->status, ['completed', 'cancelled']))
+                        {{-- @if(!in_array($order->status, ['completed', 'cancelled']))
                             <form action="{{ route('profile.cancelOrder', $order->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này không?')">
                                     <i class="fas fa-times-circle"></i> Hủy đơn hàng
                                 </button>
                             </form>
-                        @endif
+                        @endif --}}
                         
                         <a href="{{ route('profile.orders') }}" class="btn btn-back">
                             <i class="fas fa-arrow-left"></i> Quay lại danh sách đơn hàng

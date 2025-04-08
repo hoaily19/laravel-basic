@@ -61,9 +61,18 @@
             </div>
 
             <div class="form-group">
+                <label for="original_price">Giá Gốc</label>
+                <input type="number" id="original_price" name="original_price" class="form-control @error('original_price') is-invalid @enderror" 
+                       value="{{ old('original_price') }}" step="0.01" placeholder="Nhập giá gốc nếu có">
+                @error('original_price')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <label for="price">Giá Sản Phẩm</label>
                 <input type="number" id="price" name="price" class="form-control @error('price') is-invalid @enderror" 
-                       value="{{ old('price') }}" step="0.01">
+                       value="{{ old('price') }}" step="0.01" placeholder="Nhập giá bán">
                 @error('price')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -147,8 +156,16 @@
                             <div class="col-md-2">
                                 <label>Giá</label>
                                 <input type="number" name="variations[0][price]" class="form-control @error('variations.0.price') is-invalid @enderror" 
-                                       value="{{ old('variations.0.price') }}" step="0.01" placeholder="Giá riêng">
+                                       value="{{ old('variations.0.price') }}" step="0.01" placeholder="Giá Bán....">
                                 @error('variations.0.price')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                <label>Giá Gốc</label>
+                                <input type="number" name="variations[0][original_price]" class="form-control @error('variations.0.original_price') is-invalid @enderror" 
+                                       value="{{ old('variations.0.original_price') }}" step="0.01" placeholder="Giá gốc.....">
+                                @error('variations.0.original_price')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -278,6 +295,10 @@
                             <div class="col-md-2">
                                 <label>Giá</label>
                                 <input type="number" name="variations[${variationCount}][price]" class="form-control" step="0.01" placeholder="Giá riêng">
+                            </div>
+                            <div class="col-md-2">
+                                <label>Giá Gốc</label>
+                                <input type="number" name="variations[${variationCount}][original_price]" class="form-control" step="0.01" placeholder="Giá gốc">
                             </div>
                             <div class="col-md-2">
                                 <label>Số Lượng</label>
