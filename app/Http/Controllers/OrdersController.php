@@ -7,12 +7,33 @@ use App\Models\Orders_item;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Variations;
+use App\Mail\OrderStatus;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
+    public function profileOrders(Request $request)
+    {
+        $user = Auth::user();
+        $status = $request->query('status', 'all'); // Lấy trạng thái từ query string, mặc định là 'all'
+
+        $query = Orders::where('user_id', $user->id)
+                       ->with('orderItems.product', 'orderItems.variation.color', 'orderItems.variation.size');
+
+        // Lọc theo trạng thái nếu không phải 'all'
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('profile.orders', compact('orders'));
+    }
+
+    // Các hàm khác giữ nguyên
     public function index()
     {
         $title = 'Quản lý đơn hàng';
@@ -43,7 +64,6 @@ class OrdersController extends Controller
 
         return view('admin.order.index', compact('title', 'orders', 'search', 'perPage', 'sortBy', 'sortOrder'));
     }
-
 
     public function store(Request $request)
     {
@@ -88,7 +108,6 @@ class OrdersController extends Controller
                     'subtotal' => $item->price * $item->quantity,
                 ]);
 
-                // Trừ số lượng tồn kho
                 if ($item->product_variations_id) {
                     $variation = Variations::findOrFail($item->product_variations_id);
                     if ($variation->stock < $item->quantity) {
@@ -142,6 +161,11 @@ class OrdersController extends Controller
 
         $order = Orders::findOrFail($id);
         $order->update(['status' => $request->status]);
+
+        // Send email notification to the user
+        if ($order->user && $order->user->email) {
+            Mail::to($order->user->email)->send(new OrderStatus($order));
+        }
 
         return redirect()->route('admin.order.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công!');
     }

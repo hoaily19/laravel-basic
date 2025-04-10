@@ -86,10 +86,10 @@
                         <p><strong>Email:</strong> <span id="userEmail"></span></p>
                         <p><strong>Phương thức thanh toán:</strong> <span id="paymentMethod"></span></p>
                         <p><strong>Trạng thái:</strong> <span id="status"></span></p>
-                        <p><strong>Phí vận chuyển:</strong> <span id="shippingFee"></span></p>
+                        <p><strong>Phí vận chuyển:</strong> <span id="shippingFee" class ="text-danger fw-bold" >+20.000đ</span></p>
                         <p><strong>Giảm giá:</strong> <span id="discount"></span></p>
-                        <p><strong>Tổng tiền:</strong> <span id="totalPrice"></span></p>
-                        <p><strong>Tổng lợi nhuận:</strong> <span id="totalProfit"></span></p>
+                        <p><strong>Tổng tiền:</strong> <span id="totalPrice" class ="text-danger fw-bold" ></span></p>
+                        <p><strong>Tổng lợi nhuận:</strong> <span class ="text-success fw-bold">+</span><span id="totalProfit" class ="text-success fw-bold"></span></p>
 
                         <h6>Danh sách sản phẩm</h6>
                         <table class="table table-bordered">
@@ -148,12 +148,12 @@
                 document.getElementById('userPhone').textContent = order.address ? order.address.phone : 'N/A';
                 document.getElementById('paymentMethod').textContent = order.payment_method;
                 document.getElementById('status').textContent = order.status;
-                document.getElementById('shippingFee').textContent = new Intl.NumberFormat('vi-VN').format(order.shipping_fee || 0) + ' VNĐ';
+                // document.getElementById('shippingFee').textContent = new Intl.NumberFormat('vi-VN').format(order.shipping_fee || 0) + ' VNĐ';
                 document.getElementById('discount').textContent = new Intl.NumberFormat('vi-VN').format(order.discount || 0) + ' VNĐ';
                 document.getElementById('totalPrice').textContent = new Intl.NumberFormat('vi-VN').format(order.total_price || 0) + ' VNĐ';
 
                 // Tính tổng lợi nhuận trong JavaScript
-                let totalProfit = order.total_price || 0; // Bắt đầu với total_price
+                let totalProfit = order.total_price || 0; 
                 let totalOriginalPrice = 0;
                 if (order.order_items && order.order_items.length > 0) {
                     order.order_items.forEach(item => {

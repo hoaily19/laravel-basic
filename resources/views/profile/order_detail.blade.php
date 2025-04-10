@@ -198,25 +198,30 @@
 
                     <!-- Timeline -->
                     <div class="order-timeline">
-                        <div class="step {{ in_array($order->status, ['pending', 'paid', 'shipping', 'delivering', 'completed']) ? 'active' : '' }}">
+                        <div
+                            class="step {{ in_array($order->status, ['pending', 'paid', 'shipping', 'delivering', 'completed']) ? 'active' : '' }}">
                             <div class="icon"><i class="fas fa-shopping-cart"></i></div>
                             <span>Đơn hàng đã đặt</span>
                             <span class="date">{{ $order->created_at->format('d/m/Y H:i') }}</span>
                         </div>
-                        <div class="step {{ in_array($order->status, ['paid', 'shipping', 'delivering', 'completed']) ? 'active' : '' }}">
+                        <div
+                            class="step {{ in_array($order->status, ['paid', 'shipping', 'delivering', 'completed']) ? 'active' : '' }}">
                             <div class="icon"><i class="fas fa-check-circle"></i></div>
                             <span>Đã xác nhận</span>
                             <span class="date">{{ $order->updated_at->format('d/m/Y H:i') }}</span>
                         </div>
-                        <div class="step {{ in_array($order->status, ['shipping', 'delivering', 'completed']) ? 'active' : '' }}">
+                        <div
+                            class="step {{ in_array($order->status, ['shipping', 'delivering', 'completed']) ? 'active' : '' }}">
                             <div class="icon"><i class="fas fa-truck"></i></div>
                             <span>Đang vận chuyển</span>
-                            <span class="date">{{ in_array($order->status, ['shipping', 'delivering', 'completed']) ? $order->updated_at->format('d/m/Y H:i') : '' }}</span>
+                            <span
+                                class="date">{{ in_array($order->status, ['shipping', 'delivering', 'completed']) ? $order->updated_at->format('d/m/Y H:i') : '' }}</span>
                         </div>
                         <div class="step {{ $order->status == 'completed' ? 'active' : '' }}">
                             <div class="icon"><i class="fas fa-box-open"></i></div>
                             <span>Đã giao hàng</span>
-                            <span class="date">{{ $order->status == 'completed' ? $order->updated_at->format('d/m/Y H:i') : '' }}</span>
+                            <span
+                                class="date">{{ $order->status == 'completed' ? $order->updated_at->format('d/m/Y H:i') : '' }}</span>
                         </div>
                     </div>
 
@@ -227,12 +232,15 @@
                             <p>{{ $order->address->phone ?? 'N/A' }}</p>
                             <p>
                                 @if ($order->address)
-                                    {{ implode(', ', array_filter([
-                                        $order->address->street,
-                                        $order->address->ward,
-                                        $order->address->district,
-                                        $order->address->province,
-                                    ])) }}
+                                    {{ implode(
+                                        ', ',
+                                        array_filter([
+                                            $order->address->street,
+                                            $order->address->ward,
+                                            $order->address->district,
+                                            $order->address->province,
+                                        ]),
+                                    ) }}
                                 @else
                                     N/A
                                 @endif
@@ -247,17 +255,18 @@
                                     'shipping' => 'Đang Vận Chuyển',
                                     'delivering' => 'Đang Giao Hàng',
                                     'completed' => 'Đã Hoàn Thành',
-                                    'cancelled' => 'Đã Hủy'
+                                    'cancelled' => 'Đã Hủy',
                                 ];
                                 $translatedStatus = $statusTranslations[strtolower($order->status)] ?? $order->status;
-                                
+
                                 $statusClass = 'status-' . strtolower($order->status);
                             @endphp
-                            <p><strong>Trạng thái:</strong> <span class="status-badge {{ $statusClass }}">{{ $translatedStatus }}</span></p>
+                            <p><strong>Trạng thái:</strong> <span
+                                    class="status-badge {{ $statusClass }}">{{ $translatedStatus }}</span></p>
                             <p><strong>Ngày đặt hàng:</strong> {{ $order->created_at->format('d/m/Y H:i:s') }}</p>
                             <p><strong>Cập nhật gần nhất:</strong> {{ $order->updated_at->format('d/m/Y H:i:s') }}</p>
-                            <p><strong>Phương thức thanh toán:</strong> 
-                                @if($order->payment_method == 'cod')
+                            <p><strong>Phương thức thanh toán:</strong>
+                                @if ($order->payment_method == 'cod')
                                     Thanh toán khi nhận hàng (COD)
                                 @elseif($order->payment_method == 'bank_transfer')
                                     Chuyển khoản ngân hàng
@@ -300,13 +309,18 @@
                     </div>
 
                     <div class="mt-4">
-                        @if($order->status == 'completed')
-                            <button class="btn btn-outline-action">
-                                <i class="fas fa-star"></i> Đánh giá sản phẩm
-                            </button>
-                        @endif
+                        <a href="{{ route('profile.orders') }}" class="btn btn-back">
+                            <i class="fas fa-arrow-left"></i> Quay lại danh sách đơn hàng
+                        </a>
                         
-                        {{-- @if(!in_array($order->status, ['completed', 'cancelled']))
+                        @if ($order->status == 'completed')
+                            <a href="{{ route('product.show', $item->product->slug) }}#review-section"
+                                class="btn btn-back">
+                                <i class="fas fa-star"></i> Đánh giá sản phẩm
+                            </a>
+                        @endif
+
+                        {{-- @if (!in_array($order->status, ['completed', 'cancelled']))
                             <form action="{{ route('profile.cancelOrder', $order->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này không?')">
@@ -314,10 +328,8 @@
                                 </button>
                             </form>
                         @endif --}}
+
                         
-                        <a href="{{ route('profile.orders') }}" class="btn btn-back">
-                            <i class="fas fa-arrow-left"></i> Quay lại danh sách đơn hàng
-                        </a>
                     </div>
                 </div>
             </div>

@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -99,10 +100,15 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.review.index') }}">
+                    <i class="fa-solid fa-star"></i> Đánh Giá Sản Phẩm
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.order.index') }}">
                     <i class="fa-solid fa-bag-shopping"></i> Đơn Hàng
                 </a>
-
             </li>
 
             <li class="nav-item">

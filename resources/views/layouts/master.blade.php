@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/master.css') }}">
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -57,6 +58,7 @@
                         <a href="{{ route('register') }}" class="text-white">Đăng Ký</a>
                         <span class="text-white mx-2">|</span>
                         <a href="{{ route('login') }}" class="text-white">Đăng Nhập</a>
+                        
                     @endguest
                     @auth
                         <a href="#" class="text-white dropdown-toggle" id="userDropdown" role="button"
@@ -72,8 +74,8 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item text-black" href="{{ url('/profile') }}">Hồ sơ</a></li>
-                            <li><a class="dropdown-item text-black" href="{{ url('/profile/orders') }}">Đơn hàng của tôi</a>
-                            </li>
+                            <li><a class="dropdown-item text-black" href="{{ url('/profile/orders') }}">Đơn hàng của tôi</a></li>
+                            <li><a class="dropdown-item text-black" href="{{ route('favorites') }}">Sản phẩm đã thích</a></li>
                             @if (Auth::user()->role === 'admin')
                                 <li><a class="dropdown-item text-black" href="{{ url('/admin') }}">Quản trị</a></li>
                             @endif

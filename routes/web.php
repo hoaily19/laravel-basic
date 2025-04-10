@@ -13,15 +13,15 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\LogoController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminController;
 
 
 //Admin
 Route::middleware('check.role:admin')->group(function () {
-    Route::get('/admin', function () {
-        $title = 'Trang quản trị';
-        return view('admin.index', compact('title'));
-    });
-   
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/statistics', [AdminController::class, 'statistics'])->name('admin.statistics.index');
+
     //Danh mục
     Route::prefix('admin/category')->name('admin.category.')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index');
@@ -48,6 +48,7 @@ Route::middleware('check.role:admin')->group(function () {
         Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [ProductController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('delete');
+        Route::get('/admin/product/seed', [ProductController::class, 'seedProducts'])->name('admin.product.seed');
     });
     //Logo
     Route::prefix('admin/logo')->name('admin.logo.')->group(function () {
@@ -106,6 +107,13 @@ Route::middleware('check.role:admin')->group(function () {
         Route::put('/{id}', [OrdersController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [OrdersController::class, 'destroy'])->name('destroy');
     });
+
+    //review
+    Route::prefix('admin/review')->name('admin.review.')->group(function () {
+        Route::get('/', [ReviewController::class, 'listReviews'])->name('index');
+        Route::post('/reply', [ReviewController::class, 'reply'])->name('reply'); // Sửa lại route
+    });
+
 });
 
 
@@ -113,6 +121,12 @@ Route::middleware('check.role:admin')->group(function () {
 Route::get('/', [HomeController::class, 'index'])->name('product.index');
 Route::get('/product', [HomeController::class, 'product'])->name('product.product');
 Route::get('/product/{slug}', [HomeController::class, 'show'])->name('product.show');
+
+//review
+Route::post('/product/{slug}/review', [HomeController::class, 'storeReview'])->name('product.review.store');
+Route::put('/product/review/{id}', [HomeController::class, 'updateReview'])->name('product.review.update');
+Route::delete('/product/review/{id}', [HomeController::class, 'deleteReview'])->name('product.review.delete');
+Route::post('/product/review/{review}/like', [HomeController::class, 'like'])->name('product.review.like');
 
 //profile
 Route::prefix('profile')->group(function () {
@@ -131,9 +145,13 @@ Route::prefix('profile')->group(function () {
 
     //Order
     Route::get('/orders', [UserController::class, 'orders'])->name('profile.orders');
+    Route::get('/profile/orders', [OrdersController::class, 'profileOrders'])->name('profile.orders');
     Route::get('/orders/{id}', [UserController::class, 'orderDetail'])->name('profile.orderDetail');
     Route::post('/orders/cancel/{id}', [UserController::class, 'cancelOrder'])->name('profile.cancelOrder');
     Route::get('/orders/return/{id}', [UserController::class, 'returnOrder'])->name('profile.returnOrder');
+
+    //favorite
+    Route::get('/favorites', [HomeController::class, 'favorites'])->name('favorites');
 });
 
 // Route đăng ký
@@ -182,6 +200,10 @@ Route::get('/zalopay/callback', [PaymentController::class, 'zalopayCallback'])->
 //coupon
 Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('coupon.apply');
 
+//favorite
+Route::post('/favorite/toggle', [HomeController::class, 'toggleFavorite'])->name('favorite.toggle');
+
+
 Route::get('/success', function () {
     $title = "Thành công!";
     return view('waring.success', compact('title'));
@@ -197,6 +219,3 @@ Route::get('/waring/success', [OrdersController::class, 'success'])->name('warin
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
-
-
-

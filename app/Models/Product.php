@@ -30,5 +30,23 @@ class Product extends Model
         return $this->belongsTo(Category::class, 'categories_id');
     }
 
-    
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brands::class, 'brand_id');
+    }
+    public function variations()
+    {
+        return $this->hasMany(Variations::class, 'product_id');
+    }
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'product_id', 'user_id')->withTimestamps();
+    }
+
 }

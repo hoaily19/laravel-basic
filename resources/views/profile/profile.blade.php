@@ -159,6 +159,9 @@
                         <a class="nav-link" href="{{ route('profile.address') }}">Địa Chỉ</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('favorites') }}">Sản phẩm yêu thích</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('profile.orders') }}">Đơn Mua</a>
                     </li>
                     <li class="nav-item">

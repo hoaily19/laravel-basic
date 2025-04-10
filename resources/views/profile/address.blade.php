@@ -91,6 +91,9 @@
                         <a class="nav-link active" href="{{ route('profile.address') }}">Địa Chỉ</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('favorites') }}">Sản phẩm yêu thích</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('profile.orders') }}">Đơn Mua</a>
                     </li>
                     <li class="nav-item">
@@ -105,7 +108,7 @@
                     @if (Auth::user()->avatar)
                         <img src="{{ asset(Auth::user()->avatar) }}" alt="Avatar">
                     @else
-                        <img src="https://fullstack.edu.vn/assets/f8-icon-lV2rGpF0.png" alt="Avatar">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS49js3RcY0xmikEsc693jaHzjSTI-6OiBYew&s" alt="Avatar">
                     @endif
                     <h2>{{ Auth::user()->username }}</h2>
                     <div class="profile-header-info">

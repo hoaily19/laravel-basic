@@ -120,4 +120,13 @@ class User extends Authenticatable
         return $this->hasMany(Orders::class);
     }
     
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Product::class, 'favorites', 'user_id', 'product_id')->withTimestamps();
+    }
 }

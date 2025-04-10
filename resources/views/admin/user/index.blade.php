@@ -36,7 +36,6 @@
                     <th class="tw-py-3 tw-px-4">#</th>
                     <th class="tw-py-3 tw-px-4">Tên</th>
                     <th class="tw-py-3 tw-px-4">Email</th>
-                    <th class="tw-py-3 tw-px-4">Họ tên</th>
                     <th class="tw-py-3 tw-px-4">Avatar</th>
                     <th class="tw-py-3 tw-px-4">Role</th>
                     <th class="tw-py-3 tw-px-4 tw-text-center">Thao tác</th>
@@ -46,9 +45,8 @@
                 @forelse ($users as $user)
                     <tr>
                         <td class="tw-px-4">{{ $loop->iteration }}</td>
-                        <td class="tw-px-4">{{ $user->username ?? 'N/A' }}</td>
+                        <td class="tw-px-4">{{ $user->name ?? 'N/A' }}</td>
                         <td class="tw-px-4">{{ $user->email ?? 'N/A' }}</td>
-                        <td class="tw-px-4">{{ $user->fullname ?? 'N/A' }}</td>
                         <td class="tw-px-4">
                             @if($user->avatar)
                                 <img src="{{ asset($user->avatar) }}" alt="Avatar" class="tw-w-10 tw-h-10 tw-rounded-full tw-object-cover">
