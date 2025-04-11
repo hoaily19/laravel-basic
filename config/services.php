@@ -24,6 +24,16 @@ return [
         'url' => env('VNPAY_URL'),
         'callback' => env('VNPAY_CALLBACK_URL'),
     ],
+
+    'momo' => [
+        'partnerCode' => env('MOMO_PARTNER_CODE'),
+        'accessKey' => env('MOMO_ACCESS_KEY'),
+        'secretKey' => env('MOMO_SECRET_KEY'),
+        'ipnUrl' => env('MOMO_URL'),
+        'returnUrl' => env('MOMO_RETURN_URL'),
+    ],
+    
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
