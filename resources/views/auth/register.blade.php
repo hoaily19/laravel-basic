@@ -81,33 +81,33 @@
     <form action="{{ route('register') }}" method="POST">
         @csrf
         <div>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên" required>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên" >
             @error('name')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <div>
-            <input type="text" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
+            <input type="text" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại" >
             @error('phone')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <div>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" >
             @error('email')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <div>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" >
             @error('password')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <div>
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Xác nhận mật khẩu" required>
+            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Xác nhận mật khẩu" >
             @error('password_confirmation')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <button type="submit" class="btn btn-primary w-100">Đăng Ký</button>

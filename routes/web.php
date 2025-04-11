@@ -153,7 +153,7 @@ Route::prefix('profile')->group(function () {
     //favorite
     Route::get('/favorites', [HomeController::class, 'favorites'])->name('favorites');
 });
-
+Route::post('/calculate-shipping', [OrdersController::class, 'calculateShipping'])->name('calculate-shipping');
 // Route đăng ký
 Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [UserController::class, 'register']);

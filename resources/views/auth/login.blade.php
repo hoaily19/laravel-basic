@@ -86,13 +86,13 @@
         <div>
             <input type="email" class="form-control" name="email" placeholder="Nhập email" >
             @error('email')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <div>
             <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu" >
             @error('password')
-            <div class="alert alert-danger">{{ $message }}</div>
+            <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
         <button type="submit" class="btn btn-primary">Đăng Nhập</button>

@@ -9,7 +9,7 @@ class Orders_item extends Model
 {
     use HasFactory;
 
-    protected $table = 'orders_item'; // Điều chỉnh tên bảng nếu khác
+    protected $table = 'orders_item'; 
 
     protected $fillable = [
         'order_id',
@@ -27,6 +27,6 @@ class Orders_item extends Model
 
     public function variation()
     {
-        return $this->belongsTo(Variations::class, 'product_variations_id'); // Điều chỉnh tên model nếu khác
+        return $this->belongsTo(Variations::class, 'product_variations_id'); 
     }
 }

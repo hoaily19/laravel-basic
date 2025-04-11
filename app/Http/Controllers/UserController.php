@@ -37,6 +37,17 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'phone' => 'nullable|string|max:10',
+        ],[
+            'name.required' => 'Vui lòng nhập tên người dùng',
+            'email.required' => 'Vui，lòng nhập điện thống',
+            'email.email' => 'Vui，lòng nhập điện thống',
+            'email.unique' => 'Email đã tốn tại',
+            'password.required' => 'Vui，lòng nhập mật khẻu',
+            'password.min' => 'Mật khẩu phải từ 6 số',
+            'password.confirmed' => 'Mật khẩu không khớp', 
+            'phone.max' => 'Số điện thoại tối đa 10 số',
+            'phone.unique' => 'Số điện thoại phải 10 số',
+            'phone.require' => 'Vui，nhập nhập số điện thoại'
         ]);
 
         User::create([
@@ -61,6 +72,11 @@ class UserController extends Controller
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+        ],[
+            'email.required' => 'Vui, lòng nhập email',
+            'email.email' => 'Email không đúng định dạng',
+            'password.required' => 'Vui，lòng nhập mật khẩu',
+            'password.password' => 'Mật khẩu không khớp'
         ]);
 
         if (Auth::attempt($credentials)) {

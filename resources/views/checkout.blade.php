@@ -2,7 +2,7 @@
 
 @section('content')
     <style>
-        /* Modern step indicator */
+        /* Giữ nguyên toàn bộ CSS hiện tại */
         .steps {
             display: flex;
             justify-content: space-between;
@@ -68,7 +68,6 @@
             color: #ee4d2d;
         }
 
-        /* Checkout form styling */
         .checkout-container {
             background: #fff;
             border-radius: 10px;
@@ -197,7 +196,7 @@
         }
 
         .btn-checkout:hover {
-            background: #ee4d2d;
+            background: #a7361f;
             transform: translateY(-2px);
         }
 
@@ -456,6 +455,9 @@
                             </button>
                         </div>
                         <div id="coupon_message" class="coupon-message"></div>
+                        <div id="freeship_message" class="coupon-message success" style="display: none;">
+                            Bạn được miễn phí vận chuyển!
+                        </div>
                     </div>
 
                     <div class="order-summary">
@@ -475,7 +477,7 @@
                         <div class="order-summary-item total">
                             <span class="label">Tổng cộng</span>
                             <span class="value"
-                                id="total_amount_display">{{ $carts->sum(fn($cart) => $cart->price * $cart->quantity) + 20000 }}₫</span>
+                                id="total_amount_display">{{ number_format($carts->sum(fn($cart) => $cart->price * $cart->quantity) + 20000) }}₫</span>
                         </div>
                     </div>
 
@@ -489,10 +491,16 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
+            if (document.querySelector('.address-card.selected')) {
+                const firstAddressId = document.querySelector('.address-card.selected').getAttribute('data-address-id');
+                calculateShippingFee(firstAddressId);
+            }
+
             document.querySelectorAll('.address-card').forEach(card => {
                 card.addEventListener('click', function() {
                     const addressId = this.getAttribute('data-address-id');
                     selectAddress(this, addressId);
+                    calculateShippingFee(addressId); 
                 });
             });
 
@@ -520,12 +528,6 @@
                 const radio = element.querySelector('input[type="radio"]');
                 if (radio) {
                     radio.checked = true;
-                } else {
-                    const radioId = method; // cod, vnpay, momo
-                    const radioElement = document.getElementById(radioId);
-                    if (radioElement) {
-                        radioElement.checked = true;
-                    }
                 }
             }
 
@@ -541,7 +543,6 @@
             const toggleAddressFormBtn = document.getElementById("toggle-address-form");
             const newAddressForm = document.getElementById("new-address-form");
             let isFormVisible = {{ empty($addresses) || count($addresses) == 0 ? 'true' : 'false' }};
-            console.log("isFormVisible:", isFormVisible);
             if (toggleAddressFormBtn) {
                 toggleAddressFormBtn.addEventListener("click", function() {
                     if (isFormVisible) {
@@ -595,8 +596,7 @@
                 const province = provinces?.find(p => p.name === provinceName);
 
                 if (province) {
-                    const data = await fetchData(
-                        `https://provinces.open-api.vn/api/p/${province.code}?depth=2`);
+                    const data = await fetchData(`https://provinces.open-api.vn/api/p/${province.code}?depth=2`);
                     if (data) {
                         data.districts.forEach(district => {
                             const option = document.createElement("option");
@@ -618,13 +618,11 @@
                 const province = provinces?.find(p => p.name === provinceName);
 
                 if (province) {
-                    const data = await fetchData(
-                        `https://provinces.open-api.vn/api/p/${province.code}?depth=2`);
+                    const data = await fetchData(`https://provinces.open-api.vn/api/p/${province.code}?depth=2`);
                     const district = data?.districts.find(d => d.name === districtName);
 
                     if (district) {
-                        const wardData = await fetchData(
-                            `https://provinces.open-api.vn/api/d/${district.code}?depth=2`);
+                        const wardData = await fetchData(`https://provinces.open-api.vn/api/d/${district.code}?depth=2`);
                         if (wardData) {
                             wardData.wards.forEach(ward => {
                                 const option = document.createElement("option");
@@ -637,21 +635,52 @@
                 }
             }
 
-            // Coupon 
+            async function calculateShippingFee(addressId) {
+                try {
+                    const response = await fetch("{{ route('calculate-shipping') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({ address_id: addressId })
+                    });
+
+                    const result = await response.json();
+                    if (result.success) {
+                        updateShippingFee(result.shipping_fee, result.is_free_ship);
+                    } else {
+                        throw new Error(result.message || "Lỗi khi tính phí vận chuyển");
+                    }
+                } catch (error) {
+                    console.error("Lỗi tính phí vận chuyển:", error);
+                    updateShippingFee(20000, false); 
+                }
+            }
+
+            function updateShippingFee(fee, isFreeShip) {
+                const shippingFeeDisplay = document.getElementById("shipping_fee_display");
+                const shippingFeeInput = document.getElementById("shipping_fee");
+                const totalAmountDisplay = document.getElementById("total_amount_display");
+                const totalAmountInput = document.getElementById("total_amount");
+                const discountInput = document.getElementById("discount");
+                const freeshipMessage = document.getElementById("freeship_message");
+
+                let subtotal = {{ $carts->sum(fn($cart) => $cart->price * $cart->quantity) }};
+                let discount = parseInt(discountInput.value) || 0;
+
+                shippingFeeDisplay.textContent = isFreeShip ? "Miễn phí" : fee.toLocaleString() + "₫";
+                shippingFeeInput.value = fee;
+                freeshipMessage.style.display = isFreeShip ? "block" : "none";
+
+                const totalAmount = subtotal + fee - discount;
+                totalAmountDisplay.textContent = totalAmount.toLocaleString() + "₫";
+                totalAmountInput.value = totalAmount;
+            }
+
             const applyCouponBtn = document.getElementById("apply_coupon");
             const couponCodeInput = document.getElementById("coupon_code");
             const couponMessage = document.getElementById("coupon_message");
-            const totalAmountDisplay = document.getElementById("total_amount_display");
-            const subtotalDisplay = document.getElementById("subtotal_display");
-            const discountDisplay = document.getElementById("discount_display");
-            const shippingFeeDisplay = document.getElementById("shipping_fee_display");
-            const shippingFeeInput = document.getElementById("shipping_fee");
-            const totalAmountInput = document.getElementById("total_amount");
-            const discountInput = document.getElementById("discount");
-
-            let shippingFee = parseInt(shippingFeeInput.value);
-            let originalSubtotal = {{ $carts->sum(fn($cart) => $cart->price * $cart->quantity) }};
-            let totalAmount = parseInt(totalAmountInput.value);
 
             applyCouponBtn.addEventListener("click", async function() {
                 const couponCode = couponCodeInput.value.trim();
@@ -667,12 +696,11 @@
                         headers: {
                             "Content-Type": "application/json",
                             "Accept": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector(
-                                'meta[name="csrf-token"]').content
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
                         },
                         body: JSON.stringify({
                             coupon_code: couponCode,
-                            total_amount: originalSubtotal
+                            total_amount: {{ $carts->sum(fn($cart) => $cart->price * $cart->quantity) }}
                         })
                     });
 
@@ -686,11 +714,12 @@
                         couponMessage.className = "coupon-message success";
                         couponMessage.textContent = result.message;
 
+                        const shippingFee = parseInt(document.getElementById("shipping_fee").value);
                         const newTotal = result.new_total + shippingFee;
-                        totalAmountDisplay.textContent = newTotal.toLocaleString() + "₫";
-                        discountDisplay.textContent = "-" + result.discount.toLocaleString() + "₫";
-                        totalAmountInput.value = newTotal;
-                        discountInput.value = result.discount;
+                        document.getElementById("total_amount_display").textContent = newTotal.toLocaleString() + "₫";
+                        document.getElementById("discount_display").textContent = "-" + result.discount.toLocaleString() + "₫";
+                        document.getElementById("total_amount").value = newTotal;
+                        document.getElementById("discount").value = result.discount;
                     } else {
                         couponMessage.className = "coupon-message error";
                         couponMessage.textContent = result.message;
