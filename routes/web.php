@@ -15,6 +15,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ChatController;
 
 
 //Admin
@@ -203,6 +204,8 @@ Route::post('/apply-coupon', [CouponController::class, 'applyCoupon'])->name('co
 //favorite
 Route::post('/favorite/toggle', [HomeController::class, 'toggleFavorite'])->name('favorite.toggle');
 
+//chatbot
+Route::post('/search-products', [ChatController::class, 'searchProducts'])->name('search.products');
 
 Route::get('/success', function () {
     $title = "Thành công!";

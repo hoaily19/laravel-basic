@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Http;
 
 class PaymentController extends Controller
 {
-    // Tạo URL thanh toán VNPay
     private function generateVnpayUrl($order, $amount)
     {
         $vnp_TmnCode = env('VNPAY_TMN_CODE');

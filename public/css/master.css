@@ -229,4 +229,33 @@ shopee-footer {
 
 .shopee-footer .international-links a:hover {
     color: #ee4d2d;
+}.product-results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
+
+.product-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-info span {
+    font-size: 14px;
+}
+

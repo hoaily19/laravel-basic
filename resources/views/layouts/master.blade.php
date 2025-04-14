@@ -16,39 +16,159 @@
     <link rel="stylesheet" href="{{ asset('css/master.css') }}">
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            prefix: 'tw-',
-            corePlugins: {
-                preflight: false,
-            }
-        }
-    </script>
 
     @yield('styles')
-
 </head>
+
 <style>
     body {
         font-family: 'Poppins', sans-serif;
     }
+
+    /* CSS cho Chatbot */
+    .chatbot-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .chatbot-button a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background-color: #ee4d2d;
+        color: white;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+    .chatbot-button a:hover {
+        transform: scale(1.1);
+    }
+
+    .chatbot-button i {
+        font-size: 24px;
+    }
+
+    .chat-window {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        width: 320px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        overflow: hidden;
+    }
+
+    .chat-header {
+        background-color: #ee4d2d;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chat-header h5 {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .chat-body {
+        padding: 15px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: #f5f5f5;
+    }
+
+    .chat-footer {
+        padding: 10px;
+        display: flex;
+        gap: 10px;
+        border-top: 1px solid #ddd;
+    }
+
+    .chat-footer input {
+        flex: 1;
+    }
+
+    .btn-orange {
+        background-color: #ee4d2d;
+        color: white;
+        border: none;
+    }
+
+    .btn-orange:hover {
+        background-color: #d84525;
+    }
+
+    .message {
+        margin: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        max-width: 80%;
+    }
+
+    .message.user {
+        background-color: #ee4d2d;
+        color: white;
+        margin-left: auto;
+        text-align: right;
+    }
+
+    .message.bot {
+        background-color: #e0e0e0;
+        color: black;
+        margin-right: auto;
+    }
+
+    .product-results {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .product-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    .product-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-info span {
+        font-size: 14px;
+    }
 </style>
 
 <body>
-
-
     <!-- Top Bar -->
     <div class="shopee-top-bar">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
-                <!-- Left Side Links -->
                 <div class="shopee-top-links">
                     <a href="#" class="text-white">Kết nối</a>
                     <a href="#" class="text-white ms-2"><i class="fab fa-facebook"></i></a>
                     <a href="#" class="text-white ms-2"><i class="fab fa-instagram"></i></a>
                 </div>
-                <!-- Right Side Links -->
                 <div class="shopee-top-links">
                     <a href="#" class="text-white"><i class="fas fa-bell me-1"></i> Thông Báo</a>
                     <span class="text-white mx-2">|</span>
@@ -58,7 +178,6 @@
                         <a href="{{ route('register') }}" class="text-white">Đăng Ký</a>
                         <span class="text-white mx-2">|</span>
                         <a href="{{ route('login') }}" class="text-white">Đăng Nhập</a>
-                        
                     @endguest
                     @auth
                         <a href="#" class="text-white dropdown-toggle" id="userDropdown" role="button"
@@ -74,8 +193,10 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item text-black" href="{{ url('/profile') }}">Hồ sơ</a></li>
-                            <li><a class="dropdown-item text-black" href="{{ url('/profile/orders') }}">Đơn hàng của tôi</a></li>
-                            <li><a class="dropdown-item text-black" href="{{ route('favorites') }}">Sản phẩm đã thích</a></li>
+                            <li><a class="dropdown-item text-black" href="{{ url('/profile/orders') }}">Đơn hàng của tôi</a>
+                            </li>
+                            <li><a class="dropdown-item text-black" href="{{ route('favorites') }}">Sản phẩm đã thích</a>
+                            </li>
                             @if (Auth::user()->role === 'admin')
                                 <li><a class="dropdown-item text-black" href="{{ url('/admin') }}">Quản trị</a></li>
                             @endif
@@ -95,6 +216,28 @@
         </div>
     </div>
 
+    <!-- Nút Bot Chat -->
+    <div class="chatbot-button">
+        <a href="#chat" id="openChatBot" class="text-decoration-none">
+            <i class="fas fa-comment-dots"></i>
+        </a>
+    </div>
+
+    <!-- Cửa sổ Chat (ẩn mặc định) -->
+    <div id="chatWindow" class="chat-window" style="display: none;">
+        <div class="chat-header">
+            <h5>Chat với HoaiLy</h5>
+            <button id="closeChat" class="btn-close"></button>
+        </div>
+        <div class="chat-body" id="chatMessages">
+            <p>Xin chào! Chúng tôi có thể giúp gì cho bạn hôm nay?</p>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chatInput" placeholder="Nhập tin nhắn..." class="form-control">
+            <button id="sendMessage" class="btn btn-orange">Gửi</button>
+        </div>
+    </div>
+
     <!-- Main Navbar -->
     <nav class="navbar shopee-navbar">
         <div class="container">
@@ -109,8 +252,6 @@
                     <span class="text-white">Thêm logo ở trang admin</span>
                 @endif
             </a>
-
-
             <form class="d-flex mx-auto shopee-search" method="GET" action="{{ route('product.index') }}">
                 <div class="input-group">
                     <input type="text" class="form-control me-2" placeholder="Tìm kiếm trên shophoaily..."
@@ -118,13 +259,6 @@
                     <button class="btn btn-orange border" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
-
-            {{-- @if (isset($products) && $products->isEmpty())
-                <div class="no-products-message">
-                    <p>Không tìm thấy sản phẩm "{{ request()->input('search') }}".</p>
-                </div>
-            @endif --}}
-
             <a href="{{ url('/cart') }}" class="shopee-cart-icon text-decoration-none position-relative">
                 Giỏ hàng
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -142,7 +276,6 @@
         </div>
     </nav>
 
-
     <!-- Categories Bar -->
     <div class="shopee-categories-bar">
         <div class="container">
@@ -151,11 +284,9 @@
                 <a href="{{ route('product.product') }}" class="category-link">Sản Phẩm</a>
                 <a href="#" class="category-link">Giới Thiệu</a>
                 <a href="#" class="category-link">Liên Hệ</a>
-
             </div>
         </div>
     </div>
-
 
     <div class="container mt-4">
         @yield('content')
@@ -165,7 +296,6 @@
         <br>
         <div class="container">
             <div class="row">
-                <!-- Customer Service -->
                 <div class="col-md-3">
                     <h5>DỊCH VỤ KHÁCH HÀNG</h5>
                     <ul>
@@ -178,8 +308,6 @@
                         <li><a href="#">Chính Sách Bảo Hành</a></li>
                     </ul>
                 </div>
-
-                <!-- About HOAILY Vietnam -->
                 <div class="col-md-3">
                     <h5>VỀ HOAILY VIỆT NAM</h5>
                     <ul>
@@ -189,16 +317,10 @@
                         <li><a href="#">Kênh Người Bán</a></li>
                     </ul>
                 </div>
-
-                <!-- Payment Methods -->
                 <div class="col-md-2">
                     <h5>THANH TOÁN</h5>
-                    <div class="payment-methods">
-
-                    </div>
+                    <div class="payment-methods"></div>
                 </div>
-
-                <!-- Tracking and Social Media -->
                 <div class="col-md-2">
                     <h5>THEO DÕI HOAILY</h5>
                     <div class="social-icons">
@@ -223,8 +345,6 @@
                         <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="AhaMove">
                     </div>
                 </div>
-
-                <!-- App Downloads -->
                 <div class="col-md-2">
                     <h5>TẢI ỨNG DỤNG HOAILY</h5>
                     <div class="qr-codes">
@@ -240,8 +360,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Copyright and International Links -->
             <div class="copyright">
                 <p>© 2025 HoaiLy. Tất cả các quyền được bảo lưu.</p>
                 <div class="international-links">
@@ -263,8 +381,100 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     @yield('scripts')
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendMessage = document.getElementById('sendMessage');
+        const openChatBot = document.getElementById('openChatBot');
+        const closeChat = document.getElementById('closeChat');
+        const chatWindow = document.getElementById('chatWindow');
+
+        openChatBot.addEventListener('click', (e) => {
+            e.preventDefault();
+            chatWindow.style.display = 'block';
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
+        });
+
+        function appendMessage(sender, content) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = content;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        sendMessage.addEventListener('click', async () => {
+            const userQuery = chatInput.value.trim();
+            if (!userQuery) return;
+
+            appendMessage('user', userQuery);
+            chatInput.value = '';
+
+            try {
+                const response = await fetch('{{ route('search.products') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        query: userQuery
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Response is not JSON');
+                }
+
+                const data = await response.json();
+
+                if (data.message) {
+                    appendMessage('bot', data.message);
+                }
+
+                if (data.products && data.products.length > 0) {
+                    let productList = '<div class="product-results">';
+                    data.products.forEach(product => {
+                        // Sử dụng product.image trực tiếp từ JSON, thêm tiền tố /storage/ nếu cần
+                        const imagePath = product.image.startsWith('http') ? product.image :
+                            `/storage/${product.image}`;
+                        productList += `
+                            <div class="product-item">
+                                <a href="/product/${product.slug}" class="text-decoration-none">
+                                    <img src="${imagePath}" alt="${product.name}" class="product-image">
+                                    <div class="product-info">
+                                        <span>${product.name}</span>
+                                        <span class="text-danger">${product.price}đ</span>
+                                    </div>
+                                </a>
+                            </div>`;
+                    });
+                    productList += '</div>';
+                    appendMessage('bot', productList);
+                } else if (!data.message) {
+                    appendMessage('bot', `Không tìm thấy sản phẩm cho "${userQuery}". Hãy thử từ khóa khác!`);
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+                appendMessage('bot', 'Có lỗi xảy ra. Vui lòng thử lại!');
+            }
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage.click();
+            }
+        });
+    </script>
 </body>
 
 </html>

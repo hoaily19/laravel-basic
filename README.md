@@ -30,3 +30,12 @@ php artisan serve
 ```bash
 composer require laravel/socialite
 ```
+
+### Tích hợp gemini AI
+```bash
+composer require google/cloud-aiplatform
+```
+### Tích hợp gemini AI
+```bash
+composer require google/generative-ai
+```

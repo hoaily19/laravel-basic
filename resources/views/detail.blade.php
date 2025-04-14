@@ -21,15 +21,16 @@
     @endif
 
     <style>
-        #mainImageContainer {
+        /* #mainImageContainer {
             position: relative;
             overflow: hidden;
         }
 
         #mainImage {
             width: 100%;
+            height: 100%;
             transition: opacity 0.3s ease-in-out;
-        }
+        } */
 
         .additional-image:hover {
             border-color: #ff5722;
@@ -313,7 +314,7 @@
                     @if ($product->image)
                         <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" id="mainImage"
                             class="img-fluid mb-3 rounded image-format"
-                            style="max-height: 400px; object-fit: cover; transition: opacity 0.3s;">
+                            style="max-height: 640px; object-fit: cover; transition: opacity 0.3s;">
                     @else
                         <img src="https://via.placeholder.com/400" alt="No Image" id="mainImage"
                             class="img-fluid mb-3 rounded image-format">

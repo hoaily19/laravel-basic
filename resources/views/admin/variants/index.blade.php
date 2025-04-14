@@ -10,8 +10,23 @@
         + Thêm màu sắc
     </a>
 
-    @if(session('success'))
-        <div class="alert alert-success mt-3">{{ session('success') }}</div>
+    @if (session('success'))
+        <script>
+            iziToast.success({
+                title: 'Thành công',
+                message: '{{ session('success') }}',
+                position: 'topRight'
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            iziToast.error({
+                title: 'Lỗi',
+                message: '{{ session('error') }}',
+                position: 'topRight'
+            });
+        </script>
     @endif
 
     <table class="table table-bordered mt-3">
@@ -35,10 +50,14 @@
                     <a href="{{ route('admin.variants.size.edit', $size->id) }}" class="btn btn-sm btn-warning">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a href="{{ route('admin.variants.size.delete', $size->id) }}" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Bạn có chắc muốn xóa kích thước này?')">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
+                    <form action="{{ route('admin.variants.size.delete', $size->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" 
+                                onclick="return confirm('Bạn có chắc muốn xóa kích thước này?')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
             @endforeach
@@ -61,10 +80,14 @@
                 <td>
                     <a href="{{ route('admin.variants.color.edit', $color->id) }}" class="btn btn-sm btn-warning">
                         <i class="fa-solid fa-pen-to-square"></i></a> |
-                    <a href="{{ route('admin.variants.color.delete', $color->id) }}" class="btn btn-sm btn-danger"
-                        onclick="return confirm('Bạn có chắc muốn xóa màu sắc này?')">
-                        <i class="fa-solid fa-trash"></i>
-                    </a>
+                    <form action="{{ route('admin.variants.color.delete', $color->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger" 
+                                onclick="return confirm('Bạn có chắc muốn xóa màu này?')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
             @endforeach

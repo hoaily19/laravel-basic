@@ -475,7 +475,6 @@ class UserController extends Controller
         return back()->with('success', 'Xóa người dùng thành công');
     }
 
-    //orders
     public function orders()
     {
         $user = Auth::user();
@@ -487,9 +486,7 @@ class UserController extends Controller
         return view('profile.orders', compact('orders'));
     }
 
-    /**
-     * Xem chi tiết một đơn hàng
-     */
+  
     public function orderDetail($id)
     {
         $user = Auth::user();
@@ -500,9 +497,7 @@ class UserController extends Controller
         return view('profile.order_detail', compact('order'));
     }
 
-    /**
-     * Hủy đơn hàng
-     */
+
 
     public function cancelOrder($id)
     {
@@ -519,9 +514,6 @@ class UserController extends Controller
             ->with('success', 'Đơn hàng đã được hủy thành công.');
     }
 
-    /**
-     * Mua lại đơn hàng
-     */
     public function returnOrder($id)
     {
         $user = Auth::user();

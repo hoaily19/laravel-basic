@@ -108,7 +108,7 @@
                     @if (Auth::user()->avatar)
                         <img src="{{ asset(Auth::user()->avatar) }}" alt="Avatar">
                     @else
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS49js3RcY0xmikEsc693jaHzjSTI-6OiBYew&s" alt="Avatar">
+                        <img src="https://cdn2.fptshop.com.vn/small/avatar_trang_1_cd729c335b.jpg" alt="Avatar">
                     @endif
                     <h2>{{ Auth::user()->username }}</h2>
                     <div class="profile-header-info">

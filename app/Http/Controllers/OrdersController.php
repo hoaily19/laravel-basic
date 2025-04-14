@@ -160,7 +160,7 @@ class OrdersController extends Controller
 
     private function checkFreeShip($subtotal, Address $address)
     {
-        $minimumOrderValue = 500000;
+        $minimumOrderValue = 400000;
         $freeShipProvince = 'Đăk Lăk';
         return $subtotal >= $minimumOrderValue || $address->province === $freeShipProvince;
     }
