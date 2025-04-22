@@ -118,7 +118,7 @@
             </li>
 
             <!-- Menu phân cấp Settings -->
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
                     href="#settingsMenu" role="button">
                     <div><i class="bi bi-gear me-2"></i>Settings</div>
@@ -138,7 +138,7 @@
                 <a class="nav-link" href="/admin/reports#reports">
                     <i class="bi bi-bar-chart me-2"></i>Reports
                 </a>
-            </li>
+            </li> --}}
         </ul>
         
     </div>

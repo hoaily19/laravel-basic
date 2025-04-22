@@ -18,6 +18,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @yield('styles')
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            prefix: 'tw-',
+            corePlugins: {
+                preflight: false,
+            }
+        }
+    </script>
 </head>
 
 <style>
@@ -444,7 +454,6 @@
                 if (data.products && data.products.length > 0) {
                     let productList = '<div class="product-results">';
                     data.products.forEach(product => {
-                        // Sử dụng product.image trực tiếp từ JSON, thêm tiền tố /storage/ nếu cần
                         const imagePath = product.image.startsWith('http') ? product.image :
                             `/storage/${product.image}`;
                         productList += `

@@ -5,9 +5,25 @@
     <h2>Danh sách mã giảm giá </h2>
     <a href="{{ route('admin.coupon.create') }}" class="btn btn-primary">Thêm mã giảm giá</a>
 
-    @if(session('success'))
-        <div class="alert alert-success mt-3">{{ session('success') }}</div>
+    @if (session('success'))
+        <script>
+            iziToast.success({
+                title: 'Thành công',
+                message: '{{ session('success') }}',
+                position: 'topRight'
+            });
+        </script>
     @endif
+    @if (session('error'))
+        <script>
+            iziToast.error({
+                title: 'Lỗi',
+                message: '{{ session('error') }}',
+                position: 'topRight'
+            });
+        </script>
+    @endif
+
 
     <table class="table table-bordered mt-3">
         <thead class="text-center">

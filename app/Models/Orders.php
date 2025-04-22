@@ -67,4 +67,6 @@ class Orders extends Model
 
         return $totalPrice - $totalOriginalPrice - $shippingFee;
     }
+
+  
 }

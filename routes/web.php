@@ -20,7 +20,7 @@ use App\Http\Controllers\ChatController;
 
 //Admin
 Route::middleware('check.role:admin')->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.index');
     Route::get('/admin/statistics', [AdminController::class, 'statistics'])->name('admin.statistics.index');
 
     //Danh mục
@@ -96,7 +96,7 @@ Route::middleware('check.role:admin')->group(function () {
         Route::get('/create', [CouponController::class, 'create'])->name('create');
         Route::post('/store', [CouponController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [CouponController::class, 'edit'])->name('edit');
-        Route::put('/update', [CouponController::class, 'update'])->name('update');
+        Route::put('/{id}', [CouponController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [CouponController::class, 'delete'])->name('delete');
     });
 
@@ -114,7 +114,6 @@ Route::middleware('check.role:admin')->group(function () {
         Route::get('/', [ReviewController::class, 'listReviews'])->name('index');
         Route::post('/reply', [ReviewController::class, 'reply'])->name('reply'); // Sửa lại route
     });
-
 });
 
 
