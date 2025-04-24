@@ -94,8 +94,8 @@
         </div>
 
         <!-- Sản Phẩm Nổi Bật -->
-        <h2 class="mb-4 text-center text-orange">Sản Phẩm Nổi Bật</h2>
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3 shopee-product-grid">
+        <h2 class="mb-4 text-center text-orange mt-5">Sản Phẩm Nổi Bật</h2>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3 shopee-product-grid bg-light p-4 rounded-3 shadow-sm">
             @foreach ($products as $product)
                 <div class="col">
                     <div class="card shopee-product-card">
@@ -148,9 +148,8 @@
             {{ $products->links('pagination::bootstrap-5') }}
         </div>
 
-        <!-- Sản Phẩm Theo Danh Mục -->
         @foreach ($categories as $category)
-            <div class="mt-5">
+            <div class="mt-5 bg-light p-4 rounded-3 shadow-sm category-section">
                 <h3 class="mb-3 text-orange text-center">{{ $category->name }}</h3>
                 <p class="text-center">{{ $category->description }}</p>
                 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3 shopee-product-grid">
@@ -203,7 +202,6 @@
             const favoriteButtons = document.querySelectorAll('.favorite-btn');
             const categoryItems = document.querySelectorAll('.category-item');
 
-            // Favorite button functionality
             favoriteButtons.forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -256,24 +254,20 @@
                 });
             });
 
-            // Category dropdown toggle on click for mobile
             categoryItems.forEach(item => {
                 item.addEventListener('click', function (e) {
                     e.preventDefault();
                     const dropdown = this.querySelector('.brand-dropdown');
                     if (dropdown) {
                         const isVisible = dropdown.style.display === 'block';
-                        // Hide all dropdowns
                         document.querySelectorAll('.brand-dropdown').forEach(d => {
                             d.style.display = 'none';
                         });
-                        // Toggle current dropdown
                         dropdown.style.display = isVisible ? 'none' : 'block';
                     }
                 });
             });
 
-            // Close dropdowns when clicking outside
             document.addEventListener('click', function (e) {
                 if (!e.target.closest('.category-item')) {
                     document.querySelectorAll('.brand-dropdown').forEach(d => {

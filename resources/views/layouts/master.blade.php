@@ -202,33 +202,27 @@
                     </div>
                     <h5 class="mt-4">ĐƠN VỊ VẬN CHUYỂN</h5>
                     <div class="tracking-methods">
-                        <img src="https://down-vn.img.susercontent.com/file/957f4e2d8f5a5f5a5e2a5f5a5e2a5f5a"
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3IPhfmJp6In8rzQI9nwzZVeUPvwNnbEfRyQ&s"
                             alt="SPX Express">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3JFaXgriZ41FGihpOPCtUs-1vfDdf1GJRAw&s"
                             alt="Viettel Post">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                        <img src="https://pos.nvncdn.com/4e732c-26/art/artCT/20180926_NqnLwGSsCEX7XcgUZ4hrpUT7.jpg"
                             alt="Vietnam Post">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsp4ZryqzRmaanPYpBEsHhNAleNGhKCGIh0w&s"
                             alt="J&T Express">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
-                            alt="GrabExpress">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Ninja Van">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="Be">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="AhaMove">
+                        
                     </div>
                 </div>
                 <div class="col-md-2">
                     <h5>TẢI ỨNG DỤNG HOAILY</h5>
                     <div class="qr-codes">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="QR Code">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="QR Code">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwKuqNI5dhocsYugLdXtrnwjAuRdyTZLvJASg4Hz-f1CFJGTkx5IIAPZoJ7R4KOJ1DZWE&usqp=CAU" alt="QR Code">
                     </div>
                     <div class="app-downloads">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789" alt="App Store">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/App_Store_%28iOS%29.svg/800px-App_Store_%28iOS%29.svg.png" alt="App Store">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb5LOPUgzjbz_m4aVulC-GU5zu-30HBdYnAg&s"
                             alt="Google Play">
-                        <img src="https://down-vn.img.susercontent.com/file/5e7282bd0f7ee0872f90c789"
-                            alt="App Gallery">
+               
                     </div>
                 </div>
             </div>

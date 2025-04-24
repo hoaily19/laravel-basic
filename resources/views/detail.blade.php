@@ -586,7 +586,7 @@
                         @foreach ($reviews as $review)
                             <div class="border-bottom py-3">
                                 <div class="d-flex align-items-center mb-2">
-                                    <img src="{{ $review->user->avatar ?? 'https://via.placeholder.com/40' }}"
+                                    <img src="http://127.0.0.1:8000/{{ $review->user->avatar ?? 'https://via.placeholder.com/40' }}"
                                         alt="User Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px;">
                                     <div>
                                         <strong>{{ $review->user->name }}</strong>
