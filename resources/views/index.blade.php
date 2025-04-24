@@ -20,11 +20,11 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img src="https://cf.shopee.vn/file/sg-11134258-7rd3n-m7up6n78yizr66_xxhdpi" class="d-block w-100"
-                                alt="Banner 1" style="height: 300px; object-fit: cover;">
+                                alt="Banner 1" style="height: 300px; object-fit: cover;" loading="lazy">
                         </div>
                         <div class="carousel-item">
                             <img src="https://cf.shopee.vn/file/vn-11134258-7ras8-m5184szf0klz56_xxhdpi"
-                                class="d-block w-100" alt="Banner 2" style="height: 300px; object-fit: cover;">
+                                class="d-block w-100" alt="Banner 2" style="height: 300px; object-fit: cover;" loading="lazy">
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel"
@@ -45,11 +45,11 @@
                 <div class="row g-2">
                     <div class="col-12">
                         <img src="https://cf.shopee.vn/file/sg-11134258-7rd3n-m7uh5nilj4lf34_xhdpi" class="w-100 rounded-3"
-                            alt="Side Banner 1" style="height: 145px; object-fit: cover;">
+                            alt="Side Banner 1" style="height: 145px; object-fit: cover;" loading="lazy">
                     </div>
                     <div class="col-12">
                         <img src="https://cf.shopee.vn/file/sg-11134258-7rd6a-m7uhc2cdnwgk99_xhdpi" class="w-100 rounded-3"
-                            alt="Side Banner 2" style="height: 145px; object-fit: cover;">
+                            alt="Side Banner 2" style="height: 145px; object-fit: cover;" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                                             class="text-decoration-none text-dark">
                                             <img src="{{ asset('storage/' . $category->image) }}"
                                                 class="d-block mx-auto mb-1 rounded-circle" alt="{{ $category->name }}"
-                                                style="width: 50px; height: 50px; object-fit: cover;">
+                                                style="width: 50px; height: 50px; object-fit: cover;" loading="lazy">
                                             <small class="d-block" style="font-size: 12px;">{{ $category->name }}</small>
                                         </a>
                                         @if ($category->brands->isNotEmpty())
@@ -95,27 +95,27 @@
 
         <!-- Sản Phẩm Nổi Bật -->
         <h2 class="mb-4 text-center text-orange">Sản Phẩm Nổi Bật</h2>
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-3 shophoaily-product-grid">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3 shopee-product-grid">
             @foreach ($products as $product)
                 <div class="col">
-                    <div class="card shophoaily-product-card">
-                        <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top shophoaily-product-image"
-                            alt="{{ $product->name }}">
+                    <div class="card shopee-product-card">
+                        <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top shopee-product-image"
+                            alt="{{ $product->name }}" loading="lazy">
                         <div class="card-body p-2">
-                            <h6 class="shophoaily-product-title">{{ $product->name }}</h6>
-                            <div class="shophoaily-price-section">
-                                <span class="shophoaily-discount-price me-4 text-danger">-1%</span>
-                                <span class="shophoaily-price">{{ number_format($product->price) }} VNĐ</span>
+                            <h6 class="shopee-product-title">{{ $product->name }}</h6>
+                            <div class="shopee-price-section">
+                                <span class="shopee-discount-price me-4 text-danger">-1%</span>
+                                <span class="shopee-price">{{ number_format($product->price) }} VNĐ</span>
                             </div>
-                            <div class="shophoaily-rating">
+                            <div class="shopee-rating">
                                 <span><i class="fas fa-star text-warning"></i> 4.5</span> |
                                 <span>Đã bán 1k</span>
                             </div>
-                            <div class="shophoaily-buttons d-flex align-items-center justify-content-between">
+                            <div class="shopee-buttons d-flex align-items-center justify-content-between">
                                 <a href="{{ route('product.show', $product->slug) }}"
                                     class="btn btn-sm btn-orange flex-grow-1 me-1">Mua Ngay</a>
                                 <div class="d-flex flex-grow-1">
-                                    <a href="{{ route('product.show', $product->slug) }}" 
+                                    <a href="{{ route('product.show', $product->slug) }}"
                                        class="btn btn-sm btn-outline-orange flex-grow-1 me-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
                                              class="bi bi-cart3" viewBox="0 0 16 16">
@@ -125,7 +125,8 @@
                                     </a>
                                     <button class="btn btn-sm favorite-btn flex-shrink-0 {{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'favorited' : '' }}"
                                             data-product-id="{{ $product->id }}"
-                                            title="{{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'Bỏ yêu thích' : 'Yêu thích' }}">
+                                            title="{{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'Bỏ yêu thích' : 'Yêu thích' }}"
+                                            aria-label="{{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'Bỏ yêu thích' : 'Yêu thích' }}">
                                         <i class="fas fa-heart"></i>
                                     </button>
                                 </div>
@@ -152,27 +153,27 @@
             <div class="mt-5">
                 <h3 class="mb-3 text-orange text-center">{{ $category->name }}</h3>
                 <p class="text-center">{{ $category->description }}</p>
-                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-3 shophoaily-product-grid">
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3 shopee-product-grid">
                     @foreach ($categoryProducts[$category->id] as $product)
                         <div class="col">
-                            <div class="card shophoaily-product-card">
-                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top shophoaily-product-image"
-                                    alt="{{ $product->name }}">
+                            <div class="card shopee-product-card">
+                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top shopee-product-image"
+                                    alt="{{ $product->name }}" loading="lazy">
                                 <div class="card-body p-2">
-                                    <h6 class="shophoaily-product-title">{{ $product->name }}</h6>
-                                    <div class="shophoaily-price-section">
-                                        <span class="shophoaily-discount-price me-4 text-danger">-1%</span>
-                                        <span class="shophoaily-price">{{ number_format($product->price) }} VNĐ</span>
+                                    <h6 class="shopee-product-title">{{ $product->name }}</h6>
+                                    <div class="shopee-price-section">
+                                        <span class="shopee-discount-price me-4 text-danger">-1%</span>
+                                        <span class="shopee-price">{{ number_format($product->price) }} VNĐ</span>
                                     </div>
-                                    <div class="shophoaily-rating">
+                                    <div class="shopee-rating">
                                         <span><i class="fas fa-star text-warning"></i> 4.5</span> |
                                         <span>Đã bán 1k</span>
                                     </div>
-                                    <div class="shophoaily-buttons d-flex align-items-center justify-content-between">
+                                    <div class="shopee-buttons d-flex align-items-center justify-content-between">
                                         <a href="{{ route('product.show', $product->slug) }}"
                                             class="btn btn-sm btn-orange flex-grow-1 me-1">Mua Ngay</a>
                                         <div class="d-flex flex-grow-1">
-                                            <a href="{{ route('product.show', $product->slug) }}" 
+                                            <a href="{{ route('product.show', $product->slug) }}"
                                                class="btn btn-sm btn-outline-orange flex-grow-1 me-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor"
                                                      class="bi bi-cart3" viewBox="0 0 16 16">
@@ -182,7 +183,8 @@
                                             </a>
                                             <button class="btn btn-sm favorite-btn flex-shrink-0 {{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'favorited' : '' }}"
                                                     data-product-id="{{ $product->id }}"
-                                                    title="{{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'Bỏ yêu thích' : 'Yêu thích' }}">
+                                                    title="{{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'Bỏ yêu thích' : 'Yêu thích' }}"
+                                                    aria-label="{{ Auth::check() && Auth::user()->favorites->contains($product->id) ? 'Bỏ yêu thích' : 'Yêu thích' }}">
                                                 <i class="fas fa-heart"></i>
                                             </button>
                                         </div>
@@ -192,22 +194,20 @@
                         </div>
                     @endforeach
                 </div>
-               
             </div>
         @endforeach
     </div>
 
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const favoriteButtons = document.querySelectorAll('.favorite-btn');
+            const categoryItems = document.querySelectorAll('.category-item');
 
+            // Favorite button functionality
             favoriteButtons.forEach(button => {
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
-
                     const productId = this.getAttribute('data-product-id');
-
                     fetch('{{ route('favorite.toggle') }}', {
                         method: 'POST',
                         headers: {
@@ -222,6 +222,7 @@
                             if (data.is_favorited) {
                                 this.classList.add('favorited');
                                 this.title = 'Bỏ yêu thích';
+                                this.setAttribute('aria-label', 'Bỏ yêu thích');
                                 iziToast.success({
                                     title: 'Thành công',
                                     message: data.message,
@@ -230,6 +231,7 @@
                             } else {
                                 this.classList.remove('favorited');
                                 this.title = 'Yêu thích';
+                                this.setAttribute('aria-label', 'Yêu thích');
                                 iziToast.info({
                                     title: 'Thông báo',
                                     message: data.message,
@@ -252,6 +254,32 @@
                         });
                     });
                 });
+            });
+
+            // Category dropdown toggle on click for mobile
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const dropdown = this.querySelector('.brand-dropdown');
+                    if (dropdown) {
+                        const isVisible = dropdown.style.display === 'block';
+                        // Hide all dropdowns
+                        document.querySelectorAll('.brand-dropdown').forEach(d => {
+                            d.style.display = 'none';
+                        });
+                        // Toggle current dropdown
+                        dropdown.style.display = isVisible ? 'none' : 'block';
+                    }
+                });
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.category-item')) {
+                    document.querySelectorAll('.brand-dropdown').forEach(d => {
+                        d.style.display = 'none';
+                    });
+                }
             });
         });
     </script>

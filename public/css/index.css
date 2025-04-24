@@ -1,121 +1,127 @@
+/* General styles */
 .text-muted {
     display: none;
 }
+
 .search-bar {
-margin-bottom: 40px;
-max-width: 500px;
-margin-left: auto;
-margin-right: auto;
+    margin-bottom: 40px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .search-bar input {
-border-radius: 50px 0 0 50px;
-border: 1px solid #ee4d2d; 
+    border-radius: 50px 0 0 50px;
+    border: 1px solid #ee4d2d;
 }
 
 .search-bar .btn-orange {
-border-radius: 0 50px 50px 0;
-background-color: #ee4d2d;
-color: white;
-border: 1px solid #ee4d2d;
+    border-radius: 0 50px 50px 0;
+    background-color: #ee4d2d;
+    color: white;
+    border: 1px solid #ee4d2d;
 }
 
 .search-bar .btn-orange:hover {
-background-color: #d73211;
+    background-color: #d73211;
 }
 
 .text-orange {
-color: #ee4d2d;
+    color: #ee4d2d;
 }
 
 .shopee-product-grid {
-margin-top: 20px;
+    margin-top: 20px;
 }
 
 .shopee-product-card {
-border: none;
-border-radius: 8px;
-overflow: hidden;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-transition: transform 0.2s ease;
-position: relative;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    position: relative;
 }
 
 .shopee-product-card:hover {
-transform: translateY(-5px);
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.shophoaily-product-image {
-height: 210px;
-width: 100%; 
-transition: transform 0.2s ease;
+.shopee-product-image {
+    height: 210px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
 }
 
-.shophoaily-product-card:hover .shophoaily-product-image {
-transform: scale(1.05);
+.shopee-product-card:hover .shopee-product-image {
+    transform: scale(1.05);
 }
 
-.shophoaily-product-title {
-font-size: 0.95rem;
-color: #333;
-height: 2.25rem;
-overflow: hidden;
-display: -webkit-box;
--webkit-line-clamp: 2;
--webkit-box-orient: vertical;
-margin-bottom: 6px;
+.shopee-product-title {
+    font-size: 0.95rem;
+    color: #333;
+    height: 2.25rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 6px;
 }
 
-.shophoaily-price-section {
-margin-bottom: 5px;
+.shopee-price-section {
+    margin-bottom: 5px;
 }
 
-.shophoaily-price {
-color: #ee4d2d;
-font-weight: bold;
-font-size: 1rem;
+.shopee-price {
+    color: #ee4d2d;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
-.shophoaily-rating {
-font-size: 0.8rem;
-color: #555;
-margin-bottom: 5px;
+.shopee-rating {
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 5px;
 }
 
-.shophoaily-buttons .btn {
-font-size: 0.85rem;
-padding: 5px;
+.shopee-buttons .btn {
+    font-size: 0.85rem;
+    padding: 5px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-orange {
-background-color: #ee4d2d;
-color: white;
-border: none;
+    background-color: #ee4d2d;
+    color: white;
+    border: none;
 }
 
 .btn-orange:hover {
-background-color: #d73211;
+    background-color: #d73211;
 }
 
 .btn-outline-orange {
-color: #ee4d2d;
-border: 1px solid #ee4d2d;
-background-color: transparent;
+    color: #ee4d2d;
+    border: 1px solid #ee4d2d;
+    background-color: transparent;
 }
 
 .btn-outline-orange:hover {
-background-color: #ee4d2d;
-color: white;
+    background-color: #ee4d2d;
+    color: white;
 }
 
-
-
 .no-products-message {
-font-size: 1.2rem;
-color: #ff5722;
-text-align: center;
-margin-top: 20px;
+    font-size: 1.2rem;
+    color: #ff5722;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .shopee-categories-bar {
@@ -131,7 +137,7 @@ margin-top: 20px;
 }
 
 .category-item:hover .brand-dropdown {
-    display: block !important;
+    display: block;
 }
 
 .brand-dropdown {
@@ -143,25 +149,19 @@ margin-top: 20px;
     border-radius: 5px;
 }
 
-/* CSS cho nút trong shophoaily-buttons */
-.shophoaily-buttons {
+.shopee-buttons {
     gap: 5px;
 }
 
-.shophoaily-buttons .btn {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-}
-
-/* CSS cho nút yêu thích */
 .favorite-btn {
-    min-width: 40px;
+    min-width: 44px;
+    min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    border: 1px solid #d2d2d2; 
-    color: #d2d2d2; 
+    border: 1px solid #d2d2d2;
+    color: #d2d2d2;
     transition: all 0.3s ease;
 }
 
@@ -179,9 +179,156 @@ margin-top: 20px;
 }
 
 .favorite-btn.favorited i {
-    color: #dc3545; 
+    color: #dc3545;
 }
 
 .favorite-btn.favorited:hover i {
     transform: scale(1.2);
+}
+
+/* Mobile-specific styles */
+@media (max-width: 576px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .carousel-item img {
+        height: 200px !important;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 10%;
+    }
+
+    .col-md-8,
+    .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .col-md-4 .row .col-12 img {
+        height: 100px !important;
+    }
+
+    .search-bar {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .search-bar input {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .search-bar .btn-orange {
+        padding: 8px 15px;
+    }
+
+    .shopee-categories-bar .d-flex {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+    }
+
+    .category-item {
+        flex: 0 0 auto;
+        margin: 0 10px;
+    }
+
+    .category-item img {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .category-item small {
+        font-size: 10px;
+    }
+
+    .category-item:hover .brand-dropdown {
+        display: none !important;
+    }
+
+    .row-cols-2,
+    .row-cols-md-3,
+    .row-cols-lg-5 {
+        row-gap: 15px;
+    }
+
+    .shopee-product-grid {
+        gap: 0px;
+    }
+
+    .shopee-product-card {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .shopee-product-image {
+        height: 120px; /* Reduced for mobile two-column layout */
+    }
+
+    .shopee-product-title {
+        font-size: 0.8rem;
+        height: 2rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .shopee-price {
+        font-size: 0.85rem;
+    }
+
+    .shopee-discount-price {
+        font-size: 0.75rem;
+    }
+
+    .shopee-rating {
+        font-size: 0.7rem;
+    }
+
+    .shopee-buttons .btn {
+        font-size: 0.75rem;
+        padding: 4px;
+        min-width: 36px;
+        min-height: 36px;
+    }
+
+    .shopee-buttons .btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .favorite-btn {
+        min-width: 36px;
+        min-height: 36px;
+    }
+
+    .pagination {
+        font-size: 0.85rem;
+    }
+
+    .pagination .page-link {
+        padding: 5px 10px;
+    }
+}
+
+/* Tablet-specific styles */
+@media (min-width: 576px) and (max-width: 768px) {
+    .carousel-item img {
+        height: 250px !important;
+    }
+
+    .col-md-4 .row .col-12 img {
+        height: 120px !important;
+    }
+
+    .shopee-product-image {
+        height: 180px;
+    }
+
+    .category-item img {
+        width: 45px !important;
+        height: 45px !important;
+    }
 }
