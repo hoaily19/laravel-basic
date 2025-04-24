@@ -22,446 +22,450 @@
 
     <style>
         /* General styles */
-.text-orange {
-    color: #ee4d2d;
-}
-
-.shopee-cart-card {
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.shopee-cart-header {
-    font-size: 0.95rem;
-    color: #333;
-    font-weight: 500;
-}
-
-.shopee-cart-item {
-    font-size: 0.9rem;
-}
-
-.shopee-cart-image {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.shopee-cart-product-name {
-    font-size: 0.95rem;
-    color: #333;
-    line-height: 1.3;
-}
-
-.shopee-cart-price,
-.shopee-cart-total {
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.shopee-cart-quantity .input-group {
-    width: 120px;
-    margin: 0 auto;
-}
-
-.shopee-cart-quantity .form-control {
-    font-size: 0.9rem;
-    padding: 4px;
-    width: 50px;
-}
-
-.shopee-cart-quantity .btn {
-    font-size: 0.9rem;
-    padding: 4px 8px;
-}
-
-.shopee-cart-delete {
-    font-size: 0.9rem;
-}
-
-.shopee-cart-footer {
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.shopee-cart-footer label,
-.shopee-cart-footer strong {
-    font-size: 0.95rem;
-}
-
-.shopee-cart-delete-selected {
-    font-size: 0.95rem;
-}
-
-.btn-orange {
-    background-color: #ee4d2d;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 0.95rem;
-}
-
-.btn-orange:hover {
-    background-color: #d73211;
-}
-
-.alert-info {
-    font-size: 0.95rem;
-}
-
-/* Mobile-specific styles */
-@media (max-width: 576px) {
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .my-4 {
-        margin-top: 1.5rem !important;
-        margin-bottom: 1.5rem !important;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .shopee-cart-card {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .shopee-cart-header {
-        display: none; /* Hide header labels on mobile */
-    }
-
-    .shopee-cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 0;
-        font-size: 0.85rem;
-    }
-
-    .shopee-cart-item > div {
-        margin-bottom: 10px;
-        width: 100%;
-    }
-
-    .shopee-cart-image {
-        width: 60px;
-        height: 60px;
-    }
-
-    .shopee-cart-product-name {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-price,
-    .shopee-cart-total {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-quantity .input-group {
-        width: 100px;
-    }
-
-    .shopee-cart-quantity .form-control {
-        font-size: 0.85rem;
-        width: 40px;
-    }
-
-    .shopee-cart-quantity .btn {
-        font-size: 0.85rem;
-        padding: 2px 6px;
-    }
-
-    .shopee-cart-delete {
-        font-size: 0.85rem;
-    }
-
-    .shopee-cart-footer {
-        padding: 10px;
-    }
-
-    .shopee-cart-footer label,
-    .shopee-cart-footer strong {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-delete-selected {
-        font-size: 0.9rem;
-    }
-
-    .btn-orange {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-        width: 100%;
-    }
-
-    .alert-info {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .shopee-cart-footer .d-flex {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px !important;
-    }
-
-    .shopee-cart-footer .d-flex > div {
-        width: 100%;
-    }
-
-    .cart-item-checkbox {
-        transform: scale(1.2);
-    }
-}
-
-/* Tablet-specific styles */
-@media (min-width: 576px) and (max-width: 768px) {
-    .shopee-cart-image {
-        width: 70px;
-        height: 70px;
-    }
-
-    .shopee-cart-product-name {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-price,
-    .shopee-cart-total {
-        font-size: 0.95rem;
-    }
-
-    .shopee-cart-quantity .input-group {
-        width: 110px;
-    }
-
-    .shopee-cart-quantity .form-control {
-        font-size: 0.85rem;
-    }
-}/* General styles */
-.text-orange {
-    color: #ee4d2d;
-}
-
-.shopee-cart-card {
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.shopee-cart-header {
-    font-size: 0.95rem;
-    color: #333;
-    font-weight: 500;
-}
-
-.shopee-cart-item {
-    font-size: 0.9rem;
-}
-
-.shopee-cart-image {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.shopee-cart-product-name {
-    font-size: 0.95rem;
-    color: #333;
-    line-height: 1.3;
-}
-
-.shopee-cart-price,
-.shopee-cart-total {
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.shopee-cart-quantity .input-group {
-    width: 120px;
-    margin: 0 auto;
-}
-
-.shopee-cart-quantity .form-control {
-    font-size: 0.9rem;
-    padding: 4px;
-    width: 50px;
-}
-
-.shopee-cart-quantity .btn {
-    font-size: 0.9rem;
-    padding: 4px 8px;
-}
-
-.shopee-cart-delete {
-    font-size: 0.9rem;
-}
-
-.shopee-cart-footer {
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.shopee-cart-footer label,
-.shopee-cart-footer strong {
-    font-size: 0.95rem;
-}
-
-.shopee-cart-delete-selected {
-    font-size: 0.95rem;
-}
-
-.btn-orange {
-    background-color: #ee4d2d;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 0.95rem;
-}
-
-.btn-orange:hover {
-    background-color: #d73211;
-}
-
-.alert-info {
-    font-size: 0.95rem;
-}
-
-/* Mobile-specific styles */
-@media (max-width: 576px) {
-    .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .my-4 {
-        margin-top: 1.5rem !important;
-        margin-bottom: 1.5rem !important;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    .shopee-cart-card {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-
-    .shopee-cart-header {
-        display: none; /* Hide header labels on mobile */
-    }
-
-    .shopee-cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px 0;
-        font-size: 0.85rem;
-    }
-
-    .shopee-cart-item > div {
-        margin-bottom: 10px;
-        width: 100%;
-    }
-
-    .shopee-cart-image {
-        width: 60px;
-        height: 60px;
-    }
-
-    .shopee-cart-product-name {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-price,
-    .shopee-cart-total {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-quantity .input-group {
-        width: 100px;
-    }
-
-    .shopee-cart-quantity .form-control {
-        font-size: 0.85rem;
-        width: 40px;
-    }
-
-    .shopee-cart-quantity .btn {
-        font-size: 0.85rem;
-        padding: 2px 6px;
-    }
-
-    .shopee-cart-delete {
-        font-size: 0.85rem;
-    }
-
-    .shopee-cart-footer {
-        padding: 10px;
-    }
-
-    .shopee-cart-footer label,
-    .shopee-cart-footer strong {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-delete-selected {
-        font-size: 0.9rem;
-    }
-
-    .btn-orange {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-        width: 100%;
-    }
-
-    .alert-info {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .shopee-cart-footer .d-flex {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px !important;
-    }
-
-    .shopee-cart-footer .d-flex > div {
-        width: 100%;
-    }
-
-    .cart-item-checkbox {
-        transform: scale(1.2);
-    }
-}
-
-/* Tablet-specific styles */
-@media (min-width: 576px) and (max-width: 768px) {
-    .shopee-cart-image {
-        width: 70px;
-        height: 70px;
-    }
-
-    .shopee-cart-product-name {
-        font-size: 0.9rem;
-    }
-
-    .shopee-cart-price,
-    .shopee-cart-total {
-        font-size: 0.95rem;
-    }
-
-    .shopee-cart-quantity .input-group {
-        width: 110px;
-    }
-
-    .shopee-cart-quantity .form-control {
-        font-size: 0.85rem;
-    }
-}
+        .text-orange {
+            color: #ee4d2d;
+        }
+
+        .shopee-cart-card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .shopee-cart-header {
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .shopee-cart-item {
+            font-size: 0.9rem;
+        }
+
+        .shopee-cart-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .shopee-cart-product-name {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .shopee-cart-price,
+        .shopee-cart-total {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .shopee-cart-quantity .input-group {
+            width: 120px;
+            margin: 0 auto;
+        }
+
+        .shopee-cart-quantity .form-control {
+            font-size: 0.9rem;
+            padding: 4px;
+            width: 50px;
+        }
+
+        .shopee-cart-quantity .btn {
+            font-size: 0.9rem;
+            padding: 4px 8px;
+        }
+
+        .shopee-cart-delete {
+            font-size: 0.9rem;
+        }
+
+        .shopee-cart-footer {
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .shopee-cart-footer label,
+        .shopee-cart-footer strong {
+            font-size: 0.95rem;
+        }
+
+        .shopee-cart-delete-selected {
+            font-size: 0.95rem;
+        }
+
+        .btn-orange {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.95rem;
+        }
+
+        .btn-orange:hover {
+            background-color: #d73211;
+        }
+
+        .alert-info {
+            font-size: 0.95rem;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 576px) {
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .my-4 {
+                margin-top: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .shopee-cart-card {
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+
+            .shopee-cart-header {
+                display: none;
+                /* Hide header labels on mobile */
+            }
+
+            .shopee-cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 0;
+                font-size: 0.85rem;
+            }
+
+            .shopee-cart-item>div {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+
+            .shopee-cart-image {
+                width: 60px;
+                height: 60px;
+            }
+
+            .shopee-cart-product-name {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-price,
+            .shopee-cart-total {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-quantity .input-group {
+                width: 100px;
+            }
+
+            .shopee-cart-quantity .form-control {
+                font-size: 0.85rem;
+                width: 40px;
+            }
+
+            .shopee-cart-quantity .btn {
+                font-size: 0.85rem;
+                padding: 2px 6px;
+            }
+
+            .shopee-cart-delete {
+                font-size: 0.85rem;
+            }
+
+            .shopee-cart-footer {
+                padding: 10px;
+            }
+
+            .shopee-cart-footer label,
+            .shopee-cart-footer strong {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-delete-selected {
+                font-size: 0.9rem;
+            }
+
+            .btn-orange {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+                width: 100%;
+            }
+
+            .alert-info {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .shopee-cart-footer .d-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px !important;
+            }
+
+            .shopee-cart-footer .d-flex>div {
+                width: 100%;
+            }
+
+            .cart-item-checkbox {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Tablet-specific styles */
+        @media (min-width: 576px) and (max-width: 768px) {
+            .shopee-cart-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .shopee-cart-product-name {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-price,
+            .shopee-cart-total {
+                font-size: 0.95rem;
+            }
+
+            .shopee-cart-quantity .input-group {
+                width: 110px;
+            }
+
+            .shopee-cart-quantity .form-control {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* General styles */
+        .text-orange {
+            color: #ee4d2d;
+        }
+
+        .shopee-cart-card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .shopee-cart-header {
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .shopee-cart-item {
+            font-size: 0.9rem;
+        }
+
+        .shopee-cart-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .shopee-cart-product-name {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .shopee-cart-price,
+        .shopee-cart-total {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .shopee-cart-quantity .input-group {
+            width: 120px;
+            margin: 0 auto;
+        }
+
+        .shopee-cart-quantity .form-control {
+            font-size: 0.9rem;
+            padding: 4px;
+            width: 50px;
+        }
+
+        .shopee-cart-quantity .btn {
+            font-size: 0.9rem;
+            padding: 4px 8px;
+        }
+
+        .shopee-cart-delete {
+            font-size: 0.9rem;
+        }
+
+        .shopee-cart-footer {
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .shopee-cart-footer label,
+        .shopee-cart-footer strong {
+            font-size: 0.95rem;
+        }
+
+        .shopee-cart-delete-selected {
+            font-size: 0.95rem;
+        }
+
+        .btn-orange {
+            background-color: #ee4d2d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.95rem;
+        }
+
+        .btn-orange:hover {
+            background-color: #d73211;
+        }
+
+        .alert-info {
+            font-size: 0.95rem;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 576px) {
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .my-4 {
+                margin-top: 1.5rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .shopee-cart-card {
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+
+            .shopee-cart-header {
+                display: none;
+                /* Hide header labels on mobile */
+            }
+
+            .shopee-cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 0;
+                font-size: 0.85rem;
+            }
+
+            .shopee-cart-item>div {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+
+            .shopee-cart-image {
+                width: 60px;
+                height: 60px;
+            }
+
+            .shopee-cart-product-name {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-price,
+            .shopee-cart-total {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-quantity .input-group {
+                width: 100px;
+            }
+
+            .shopee-cart-quantity .form-control {
+                font-size: 0.85rem;
+                width: 40px;
+            }
+
+            .shopee-cart-quantity .btn {
+                font-size: 0.85rem;
+                padding: 2px 6px;
+            }
+
+            .shopee-cart-delete {
+                font-size: 0.85rem;
+            }
+
+            .shopee-cart-footer {
+                padding: 10px;
+            }
+
+            .shopee-cart-footer label,
+            .shopee-cart-footer strong {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-delete-selected {
+                font-size: 0.9rem;
+            }
+
+            .btn-orange {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+                width: 100%;
+            }
+
+            .alert-info {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            .shopee-cart-footer .d-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px !important;
+            }
+
+            .shopee-cart-footer .d-flex>div {
+                width: 100%;
+            }
+
+            .cart-item-checkbox {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Tablet-specific styles */
+        @media (min-width: 576px) and (max-width: 768px) {
+            .shopee-cart-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .shopee-cart-product-name {
+                font-size: 0.9rem;
+            }
+
+            .shopee-cart-price,
+            .shopee-cart-total {
+                font-size: 0.95rem;
+            }
+
+            .shopee-cart-quantity .input-group {
+                width: 110px;
+            }
+
+            .shopee-cart-quantity .form-control {
+                font-size: 0.85rem;
+            }
+        }
     </style>
     <div class="container my-4">
         <h2 class="mb-4 text-orange">Giỏ Hàng</h2>
@@ -531,7 +535,8 @@
                                 </div>
                             </div>
                             <div class="col-6 col-md-2 text-center mb-2 mb-md-0">
-                                <span class="text-danger shopee-cart-total">đ{{ number_format($cart->price * $cart->quantity, 0) }}</span>
+                                <span
+                                    class="text-danger shopee-cart-total">đ{{ number_format($cart->price * $cart->quantity, 0) }}</span>
                             </div>
                             <div class="col-6 col-md-1 text-center">
                                 <a href="{{ route('cart.delete', $cart->id) }}" class="text-danger shopee-cart-delete"
@@ -551,7 +556,8 @@
                                 <input type="checkbox" id="select-all-footer" onclick="toggleSelectAll()">
                                 <label for="select-all-footer" class="ms-2">Chọn Tất Cả ({{ $carts->count() }})</label>
                             </div>
-                            <a href="#" class="text-danger shopee-cart-delete-selected" onclick="deleteSelectedItems()">Xóa</a>
+                            <a href="#" class="text-danger shopee-cart-delete-selected"
+                                onclick="deleteSelectedItems()">Xóa</a>
                         </div>
                         <div class="d-flex align-items-center flex-wrap gap-3 mt-2 mt-md-0">
                             <div>
@@ -587,7 +593,8 @@
 
             checkboxes.forEach(checkbox => {
                 const cartItem = checkbox.closest('.shopee-cart-item');
-                const price = parseFloat(cartItem.querySelector('.shopee-cart-price').textContent.replace('đ', '').replace(/,/g, ''));
+                const price = parseFloat(cartItem.querySelector('.shopee-cart-price').textContent.replace('đ', '')
+                    .replace(/,/g, ''));
                 const quantity = parseInt(cartItem.querySelector('.form-control').value);
                 total += price * quantity;
             });
@@ -634,7 +641,7 @@
             const sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep;
             const dec = (typeof dec_point === 'undefined') ? '.' : dec_point;
             let s = '';
-            const toFixedFix = function (n, prec) {
+            const toFixedFix = function(n, prec) {
                 const k = Math.pow(10, prec);
                 return Math.round(n * k) / k;
             };

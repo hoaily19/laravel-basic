@@ -40,95 +40,94 @@ class HomeController extends Controller
     }
 
     public function product(Request $request)
-{
-    $query = Product::query();
+    {
+        $query = Product::query();
 
-    // Search by product name
-    if ($request->has('search')) {
-        $search = $request->input('search');
-        $query->where('name', 'like', '%' . $search . '%');
-    }
-
-    // Filter by categories
-    if ($request->has('categories')) {
-        $categories = $request->input('categories');
-        if (!empty($categories)) {
-            $query->whereIn('categories_id', $categories);
+        // Search by product name
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', '%' . $search . '%');
         }
-    }
 
-    // Filter by brands
-    if ($request->has('brands')) {
-        $brands = $request->input('brands');
-        if (!empty($brands)) {
-            $query->whereIn('brand_id', $brands);
-        }
-    }
-
-    // Filter by dynamic price range
-    if ($request->has('price_min') && $request->has('price_max')) {
-        $priceMin = $request->input('price_min');
-        $priceMax = $request->input('price_max');
-        if ($priceMin >= 0 && $priceMax >= $priceMin) {
-            $query->whereBetween('price', [$priceMin, $priceMax]);
-        }
-    }
-
-    // Filter by attributes (e.g., color, size)
-    if ($request->has('attributes')) {
-        $attributes = $request->input('attributes');
-        foreach ($attributes as $attributeId => $values) {
-            if (!empty($values)) {
-                $query->whereHas('attributes', function ($q) use ($attributeId, $values) {
-                    $q->where('attribute_id', $attributeId)->whereIn('value', $values);
-                });
+        // Filter by categories
+        if ($request->has('categories')) {
+            $categories = $request->input('categories');
+            if (!empty($categories)) {
+                $query->whereIn('categories_id', $categories);
             }
         }
-    }
 
-    // Filter by rating
-    if ($request->has('rating') && $request->input('rating') > 0) {
-        $rating = $request->input('rating');
-        $query->where('average_rating', '>=', $rating);
-    }
-
-    // Filter by stock availability
-    if ($request->has('in_stock') && $request->input('in_stock') == '1') {
-        $query->where('stock', '>', 0);
-    }
-
-    // Sorting
-    if ($request->has('sort')) {
-        $sort = $request->input('sort');
-        if ($sort == 'price_asc') {
-            $query->orderBy('price', 'asc');
-        } elseif ($sort == 'price_desc') {
-            $query->orderBy('price', 'desc');
-        } elseif ($sort == 'newest') {
-            $query->orderBy('created_at', 'desc');
-        } elseif ($sort == 'oldest') {
-            $query->orderBy('created_at', 'asc');
-        } elseif ($sort == 'rating_desc') {
-            $query->orderBy('average_rating', 'desc');
+        // Filter by brands
+        if ($request->has('brands')) {
+            $brands = $request->input('brands');
+            if (!empty($brands)) {
+                $query->whereIn('brand_id', $brands);
+            }
         }
+
+        // Filter by dynamic price range
+        if ($request->has('price_min') && $request->has('price_max')) {
+            $priceMin = $request->input('price_min');
+            $priceMax = $request->input('price_max');
+            if ($priceMin >= 0 && $priceMax >= $priceMin) {
+                $query->whereBetween('price', [$priceMin, $priceMax]);
+            }
+        }
+
+        // Filter by attributes (e.g., color, size)
+        if ($request->has('attributes')) {
+            $attributes = $request->input('attributes');
+            foreach ($attributes as $attributeId => $values) {
+                if (!empty($values)) {
+                    $query->whereHas('attributes', function ($q) use ($attributeId, $values) {
+                        $q->where('attribute_id', $attributeId)->whereIn('value', $values);
+                    });
+                }
+            }
+        }
+
+        // Filter by rating
+        if ($request->has('rating') && $request->input('rating') > 0) {
+            $rating = $request->input('rating');
+            $query->where('average_rating', '>=', $rating);
+        }
+
+        // Filter by stock availability
+        if ($request->has('in_stock') && $request->input('in_stock') == '1') {
+            $query->where('stock', '>', 0);
+        }
+
+        // Sorting
+        if ($request->has('sort')) {
+            $sort = $request->input('sort');
+            if ($sort == 'price_asc') {
+                $query->orderBy('price', 'asc');
+            } elseif ($sort == 'price_desc') {
+                $query->orderBy('price', 'desc');
+            } elseif ($sort == 'newest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($sort == 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            } elseif ($sort == 'rating_desc') {
+                $query->orderBy('average_rating', 'desc');
+            }
+        }
+
+        $products = $query->paginate(15);
+
+        // Fetch filter data
+        $categories = Category::with('brands')->orderBy('created_at', 'desc')->get();
+        $brands = Brands::orderBy('created_at', 'desc')->get();
+        $maxPrice = Product::max('price') ?: 10000000;
+        $minPrice = Product::min('price') ?: 0;
+        $title = 'Sản phẩm';
+
+        return view('product', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'title'));
     }
-
-    $products = $query->paginate(15);
-
-    // Fetch filter data
-    $categories = Category::with('brands')->orderBy('created_at', 'desc')->get();
-    $brands = Brands::orderBy('created_at', 'desc')->get();
-    $maxPrice = Product::max('price') ?: 10000000;
-    $minPrice = Product::min('price') ?: 0;
-    $title = 'Sản phẩm';
-
-    return view('product', compact('products', 'categories', 'brands', 'minPrice', 'maxPrice', 'title'));
-}
 
     public function show($slug)
     {
         $product = Product::where('slug', $slug)->firstOrFail();
-
         $variations = $product->variations()
             ->with(['size', 'color'])
             ->get()

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Product;
 use App\Models\Size;
 use App\Models\Color;
 
@@ -13,11 +14,54 @@ class ProductController extends Controller
 {
 
 
-    public function indexadmin()
+    public function indexadmin(Request $request)
     {
         $title = 'Quản lí sản phẩm';
-        $products = DB::table('products')->paginate(5);
-        return view('admin.product.index', compact('products', 'title'));
+        $query = Product::query();
+        $sort = $request->query('sort', 'id_desc');
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'stock_asc':
+                $query->orderBy('stock', 'asc');
+                break;
+            case 'stock_desc':
+                $query->orderBy('stock', 'desc');
+                break;
+            default:
+                $query->orderBy('id', 'desc');
+                break;
+        }
+
+        if ($stock = $request->query('stock')) {
+            if ($stock === 'low') {
+                $query->where('stock', '<=', 10);
+            } elseif ($stock === 'out') {
+                $query->where('stock', 0);
+            }
+        }
+
+        if ($minPrice = $request->query('min_price')) {
+            $query->where('price', '>=', $minPrice);
+        }
+
+        if ($maxPrice = $request->query('max_price')) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        $products = $query->paginate(10); 
+
+        return view('admin.product.index', compact('products', 'title', 'sort'));
     }
 
     public function create()
@@ -35,8 +79,8 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric',
-            'original_price' => 'nullable|numeric',
+            'price' => 'required|numeric|min:0',
+            'original_price' => 'nullable|numeric|min:0',
             'stock' => 'required|integer',
             'sku' => 'nullable|string|unique:products',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -53,6 +97,10 @@ class ProductController extends Controller
             'name.required' => 'Tên sản phẩm không được để trống',
             'description.required' => 'Mô tả sản phẩm không được để trống',
             'price.required' => 'Giá sản phẩm không được để trống',
+            'price.numeric' => 'Giá sản phẩm phải là số',
+            'price.min' => 'Giá sản phẩm không được là số âm',
+            'original_price.numeric' => 'Giá gốc sản phẩm phải là số',
+            'original_price.min' => 'Giá gốc sản phẩm không được là số âm',
             'stock.required' => 'Số lượng tồn kho không được để trống',
             'image.image' => 'Ảnh sản phẩm phải là hình ảnh',
             'image.max' => 'Dung lượng ảnh sản phẩm không được vượt quá 2MB',
@@ -100,8 +148,8 @@ class ProductController extends Controller
 
                 DB::table('product_variations')->insert([
                     'product_id' => $productId,
-                    'size_id' => $variation['size_id'] ?? null, // Chỉ lấy từ $variation
-                    'color_id' => $variation['color_id'] ?? null, // Chỉ lấy từ $variation
+                    'size_id' => $variation['size_id'] ?? null, 
+                    'color_id' => $variation['color_id'] ?? null, 
                     'price' => $variation['price'] ?? $request->price,
                     'original_price' => $variation['original_price'] ?? $request->original_price,
                     'stock' => $variation['stock'] ?? 0,
